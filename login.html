@@ -412,7 +412,7 @@
       await signInWithEmailAndPassword(auth, email, password);
       showMessage('Logged in successfully! Redirecting…', 'success');
       // Redirect after login — change to your desired page
-      setTimeout(() => { window.location.href = 'index.html'; }, 900);
+      setTimeout(() => { window.location.href = 'app.html'; }, 900);
     } catch (err) {
       showMessage(friendlyError(err), 'error');
     } finally {
@@ -437,7 +437,7 @@
         await updateProfile(cred.user, { displayName: name });
       }
       showMessage('Account created! Redirecting…', 'success');
-      setTimeout(() => { window.location.href = 'index.html'; }, 900);
+      setTimeout(() => { window.location.href = 'app.html'; }, 900);
     } catch (err) {
       showMessage(friendlyError(err), 'error');
     } finally {
@@ -453,7 +453,7 @@
     try {
       await signInWithPopup(auth, googleProvider);
       showMessage('Logged in with Google! Redirecting…', 'success');
-      setTimeout(() => { window.location.href = 'index.html'; }, 900);
+      setTimeout(() => { window.location.href = 'app.html'; }, 900);
     } catch (err) {
       showMessage(friendlyError(err), 'error');
     } finally {
