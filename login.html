@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In — Craft Setu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:        #faf5e8;
+    --cream-deep:   #f2e9d6;
+    --paper:        #fffdf8;
+    --sage:         #6f9273;
+    --sage-deep:    #4f7355;
+    --sage-dark:    #2f4a35;
+    --sage-line:    #a9c2a4;
+    --gold:         #c39a4d;
+    --gold-soft:    #dcc084;
+    --clay:         #d99b7c;
+    --ink:          #33422f;
+    --ink-soft:     #5c6b57;
+    --error:        #b3543f;
+    --shadow:       0 20px 45px -20px rgba(47,74,53,.35);
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  body{
+    font-family:'Jost', sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 20px;
+    position:relative;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:radial-gradient(circle at 2px 2px, rgba(111,146,115,.09) 1.4px, transparent 1.4px);
+    background-size:26px 26px;
+    pointer-events:none;
+  }
+  a{ text-decoration:none; color:inherit; }
+  h1,h2,.serif{ font-family:'Cormorant Garamond', serif; color:var(--sage-dark); font-weight:600; }
+
+  .top-logo{
+    position:fixed; top:26px; left:28px;
+    display:flex; align-items:center; gap:10px;
+    z-index:5;
+  }
+  .top-logo img{ width:36px; height:36px; border-radius:50%; object-fit:cover; }
+  .top-logo span{
+    font-family:'Cormorant Garamond', serif; font-size:1.4rem; font-weight:700; color:var(--sage-dark);
+  }
+  .top-logo em{ font-style:italic; color:var(--gold); font-weight:600; }
+
+  .auth-wrap{
+    position:relative;
+    width:100%;
+    max-width:420px;
+  }
+
+  .auth-card{
+    background:var(--paper);
+    border:1px solid var(--sage-line);
+    border-radius:26px;
+    padding:44px 38px 38px;
+    box-shadow:var(--shadow);
+  }
+
+  .eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-size:.78rem;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--sage-deep);
+    margin-bottom:14px;
+    justify-content:center;
+  }
+  .eyebrow::before,.eyebrow::after{ content:""; width:20px; height:1px; background:var(--gold); }
+
+  .auth-card h1{
+    font-size:2rem;
+    text-align:center;
+    margin-bottom:8px;
+  }
+  .auth-card > p.sub{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:.94rem;
+    margin-bottom:30px;
+  }
+
+  .tabs{
+    display:flex;
+    background:var(--cream-deep);
+    border-radius:999px;
+    padding:4px;
+    margin-bottom:26px;
+  }
+  .tabs button{
+    flex:1;
+    border:none;
+    background:transparent;
+    padding:10px 0;
+    border-radius:999px;
+    font-family:'Jost', sans-serif;
+    font-size:.9rem;
+    font-weight:500;
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:background .25s ease, color .25s ease, box-shadow .25s ease;
+  }
+  .tabs button.active{
+    background:var(--paper);
+    color:var(--sage-dark);
+    box-shadow:0 6px 14px -8px rgba(47,74,53,.35);
+  }
+
+  form{ display:flex; flex-direction:column; gap:16px; }
+  .field{ display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-size:.82rem; color:var(--ink-soft); letter-spacing:.02em; }
+  .field input{
+    font-family:'Jost', sans-serif;
+    font-size:.95rem;
+    padding:13px 16px;
+    border-radius:12px;
+    border:1.4px solid var(--sage-line);
+    background:var(--cream);
+    color:var(--ink);
+    outline:none;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .field input:focus{
+    border-color:var(--sage);
+    box-shadow:0 0 0 3px rgba(111,146,115,.18);
+  }
+
+  .row-between{ display:flex; align-items:center; justify-content:space-between; font-size:.84rem; }
+  .row-between a{ color:var(--sage-deep); }
+  .row-between a:hover{ text-decoration:underline; }
+  .checkbox-line{ display:flex; align-items:center; gap:8px; color:var(--ink-soft); }
+  .checkbox-line input{ accent-color:var(--sage); }
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    font-family:'Jost', sans-serif;
+    font-size:.95rem;
+    font-weight:500;
+    padding:13px 22px;
+    border-radius:999px;
+    cursor:pointer;
+    border:none;
+    width:100%;
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease, opacity .2s ease;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg, var(--sage) 0%, var(--sage-deep) 100%);
+    color:#fbf8ef;
+    box-shadow:0 12px 24px -10px rgba(79,115,85,.55);
+    margin-top:4px;
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 16px 30px -10px rgba(79,115,85,.65); }
+  .btn-primary:disabled{ opacity:.65; cursor:not-allowed; transform:none; }
+
+  .btn-google{
+    background:var(--paper);
+    color:var(--ink);
+    border:1.4px solid var(--sage-line);
+  }
+  .btn-google:hover{ background:var(--cream-deep); transform:translateY(-2px); }
+  .btn-google svg{ width:18px; height:18px; }
+
+  .divider{
+    display:flex; align-items:center; gap:14px;
+    margin:22px 0;
+    color:var(--ink-soft);
+    font-size:.78rem;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+  }
+  .divider::before,.divider::after{ content:""; flex:1; height:1px; background:var(--sage-line); }
+
+  .switch-line{
+    text-align:center;
+    margin-top:22px;
+    font-size:.88rem;
+    color:var(--ink-soft);
+  }
+  .switch-line a{ color:var(--sage-deep); font-weight:500; }
+  .switch-line a:hover{ text-decoration:underline; }
+
+  .msg{
+    display:none;
+    font-size:.85rem;
+    padding:11px 14px;
+    border-radius:10px;
+    line-height:1.5;
+  }
+  .msg.error{ display:block; background:#f6e4e0; color:var(--error); border:1px solid #e3bfb5; }
+  .msg.success{ display:block; background:#e7f0e6; color:var(--sage-deep); border:1px solid var(--sage-line); }
+
+  .back-home{
+    display:block;
+    text-align:center;
+    margin-top:22px;
+    font-size:.86rem;
+    color:var(--ink-soft);
+  }
+  .back-home:hover{ color:var(--sage-deep); }
+
+  .sparkle{ position:absolute; color:var(--gold); opacity:.6; }
+
+  @media (max-width:480px){
+    .auth-card{ padding:36px 24px 30px; }
+    .top-logo{ position:static; justify-content:center; margin-bottom:26px; }
+  }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="top-logo">
+  <img src="data:image/jpeg;base64,LOGO_BASE64_PLACEHOLDER" alt="Craft Setu logo">
+  <span>Craft <em>Setu</em></span>
+</a>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="eyebrow">Welcome back</div>
+    <h1 id="cardTitle">Log In to Craft Setu</h1>
+    <p class="sub" id="cardSub">Continue your craft journey with your community.</p>
+
+    <div class="tabs">
+      <button type="button" class="active" id="tabLogin">Log In</button>
+      <button type="button" id="tabSignup">Sign Up</button>
+    </div>
+
+    <div id="msgBox" class="msg"></div>
+
+    <!-- Google sign-in -->
+    <button type="button" class="btn btn-google" id="googleBtn">
+      <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.6 32.9 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.9 5.5 29.7 3.5 24 3.5 12.7 3.5 3.5 12.7 3.5 24S12.7 44.5 24 44.5 44.5 35.3 44.5 24c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.9 18.9 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.9 6.5 29.7 4.5 24 4.5c-7.7 0-14.4 4.3-17.7 10.6z"/><path fill="#4CAF50" d="M24 44.5c5.6 0 10.7-1.9 14.6-5.2l-6.7-5.7c-2.1 1.5-4.8 2.4-7.9 2.4-5.2 0-9.6-3.1-11.3-7.6l-6.6 5.1C9.5 40.1 16.2 44.5 24 44.5z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.6l6.7 5.7C41.9 35.9 44.5 30.3 44.5 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
+      Continue with Google
+    </button>
+
+    <div class="divider">or</div>
+
+    <!-- Log In form -->
+    <form id="loginForm">
+      <div class="field">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com" required>
+      </div>
+      <div class="field">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" required>
+      </div>
+      <div class="row-between">
+        <label class="checkbox-line"><input type="checkbox" id="rememberMe"> Remember me</label>
+        <a href="#" id="forgotPasswordLink">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn btn-primary" id="loginSubmitBtn">Log In</button>
+    </form>
+
+    <!-- Sign Up form -->
+    <form id="signupForm" style="display:none;">
+      <div class="field">
+        <label for="signupName">Full name</label>
+        <input type="text" id="signupName" placeholder="Your name" required>
+      </div>
+      <div class="field">
+        <label for="signupEmail">Email</label>
+        <input type="email" id="signupEmail" placeholder="you@example.com" required>
+      </div>
+      <div class="field">
+        <label for="signupPassword">Password</label>
+        <input type="password" id="signupPassword" placeholder="At least 6 characters" required minlength="6">
+      </div>
+      <button type="submit" class="btn btn-primary" id="signupSubmitBtn">Create Account</button>
+    </form>
+
+    <p class="switch-line" id="switchLine">
+      Don't have an account? <a href="#" id="switchToSignup">Sign up</a>
+    </p>
+
+    <a href="index.html" class="back-home">← Back to home</a>
+  </div>
+</div>
+
+<!-- =====================================================
+     FIREBASE
+     ---------------------------------------------------
+     1. Create a project at https://console.firebase.google.com
+     2. Enable Authentication → Sign-in method → Email/Password and Google
+     3. Paste your web app config into firebaseConfig below
+     4. That's it — the forms above are already wired up to it
+===================================================== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+    sendPasswordResetEmail,
+    updateProfile,
+    setPersistence,
+    browserLocalPersistence,
+    browserSessionPersistence
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  // ============ PASTE YOUR FIREBASE CONFIG HERE ============
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+  // ===========================================================
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const googleProvider = new GoogleAuthProvider();
+
+  // ---- UI elements ----
+  const tabLogin = document.getElementById('tabLogin');
+  const tabSignup = document.getElementById('tabSignup');
+  const loginForm = document.getElementById('loginForm');
+  const signupForm = document.getElementById('signupForm');
+  const cardTitle = document.getElementById('cardTitle');
+  const cardSub = document.getElementById('cardSub');
+  const switchLine = document.getElementById('switchLine');
+  const switchToSignup = document.getElementById('switchToSignup');
+  const msgBox = document.getElementById('msgBox');
+  const googleBtn = document.getElementById('googleBtn');
+  const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+  const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+  const signupSubmitBtn = document.getElementById('signupSubmitBtn');
+
+  function showMessage(text, type){
+    msgBox.textContent = text;
+    msgBox.className = 'msg ' + type;
+  }
+  function clearMessage(){
+    msgBox.className = 'msg';
+    msgBox.textContent = '';
+  }
+
+  function showLogin(){
+    tabLogin.classList.add('active');
+    tabSignup.classList.remove('active');
+    loginForm.style.display = 'flex';
+    signupForm.style.display = 'none';
+    cardTitle.textContent = 'Log In to Craft Setu';
+    cardSub.textContent = 'Continue your craft journey with your community.';
+    switchLine.innerHTML = 'Don\'t have an account? <a href="#" id="switchToSignup">Sign up</a>';
+    document.getElementById('switchToSignup').addEventListener('click', (e) => { e.preventDefault(); showSignup(); });
+    clearMessage();
+  }
+
+  function showSignup(){
+    tabSignup.classList.add('active');
+    tabLogin.classList.remove('active');
+    signupForm.style.display = 'flex';
+    loginForm.style.display = 'none';
+    cardTitle.textContent = 'Join Craft Setu';
+    cardSub.textContent = 'Create an account to share and explore handmade art.';
+    switchLine.innerHTML = 'Already have an account? <a href="#" id="switchToLogin">Log in</a>';
+    document.getElementById('switchToLogin').addEventListener('click', (e) => { e.preventDefault(); showLogin(); });
+    clearMessage();
+  }
+
+  tabLogin.addEventListener('click', showLogin);
+  tabSignup.addEventListener('click', showSignup);
+  switchToSignup.addEventListener('click', (e) => { e.preventDefault(); showSignup(); });
+
+  function friendlyError(err){
+    const code = err && err.code ? err.code : '';
+    const map = {
+      'auth/invalid-email': 'That email address looks invalid.',
+      'auth/user-not-found': 'No account found with that email.',
+      'auth/wrong-password': 'Incorrect password. Please try again.',
+      'auth/invalid-credential': 'Incorrect email or password.',
+      'auth/email-already-in-use': 'An account already exists with that email.',
+      'auth/weak-password': 'Password should be at least 6 characters.',
+      'auth/popup-closed-by-user': 'Google sign-in was closed before finishing.',
+      'auth/network-request-failed': 'Network error — please check your connection.'
+    };
+    return map[code] || (err && err.message ? err.message : 'Something went wrong. Please try again.');
+  }
+
+  // ---- Email/Password Log In ----
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearMessage();
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const remember = document.getElementById('rememberMe').checked;
+
+    loginSubmitBtn.disabled = true;
+    loginSubmitBtn.textContent = 'Logging in…';
+    try {
+      await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+      await signInWithEmailAndPassword(auth, email, password);
+      showMessage('Logged in successfully! Redirecting…', 'success');
+      // Redirect after login — change to your desired page
+      setTimeout(() => { window.location.href = 'index.html'; }, 900);
+    } catch (err) {
+      showMessage(friendlyError(err), 'error');
+    } finally {
+      loginSubmitBtn.disabled = false;
+      loginSubmitBtn.textContent = 'Log In';
+    }
+  });
+
+  // ---- Email/Password Sign Up ----
+  signupForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearMessage();
+    const name = document.getElementById('signupName').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
+
+    signupSubmitBtn.disabled = true;
+    signupSubmitBtn.textContent = 'Creating account…';
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      if (name) {
+        await updateProfile(cred.user, { displayName: name });
+      }
+      showMessage('Account created! Redirecting…', 'success');
+      setTimeout(() => { window.location.href = 'index.html'; }, 900);
+    } catch (err) {
+      showMessage(friendlyError(err), 'error');
+    } finally {
+      signupSubmitBtn.disabled = false;
+      signupSubmitBtn.textContent = 'Create Account';
+    }
+  });
+
+  // ---- Google Sign-In ----
+  googleBtn.addEventListener('click', async () => {
+    clearMessage();
+    googleBtn.disabled = true;
+    try {
+      await signInWithPopup(auth, googleProvider);
+      showMessage('Logged in with Google! Redirecting…', 'success');
+      setTimeout(() => { window.location.href = 'index.html'; }, 900);
+    } catch (err) {
+      showMessage(friendlyError(err), 'error');
+    } finally {
+      googleBtn.disabled = false;
+    }
+  });
+
+  // ---- Forgot Password ----
+  forgotPasswordLink.addEventListener('click', async (e) => {
+    e.preventDefault();
+    clearMessage();
+    const email = document.getElementById('loginEmail').value.trim();
+    if (!email) {
+      showMessage('Enter your email above first, then click "Forgot password?".', 'error');
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      showMessage('Password reset email sent — check your inbox.', 'success');
+    } catch (err) {
+      showMessage(friendlyError(err), 'error');
+    }
+  });
+</script>
+
+</body>
+</html>
