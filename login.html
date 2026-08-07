@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0/dist/iife/sdk.js"></script>
 <style>
   :root{
     --cream: #faf5e8; --cream-deep: #f2e9d6; --paper: #fffdf8;
@@ -160,8 +160,8 @@
 
   // Already logged in?
   account.get().then(() => {
-    window.location.href = 'app.html';
-  }).catch(() => { /* not logged in — stay */ });
+    window.location.replace('app.html');
+  }).catch(() => { /* stay on login */ });
 
   const tabLogin = document.getElementById('tabLogin');
   const tabSignup = document.getElementById('tabSignup');
@@ -229,9 +229,15 @@
     loginSubmitBtn.disabled = true;
     loginSubmitBtn.textContent = 'Logging in…';
     try {
-      await account.createEmailPasswordSession(email, password);
+      try {
+        await account.createEmailPasswordSession({ email, password });
+      } catch (e1) {
+        await account.createEmailPasswordSession(email, password);
+      }
+      // Confirm session exists before redirect (avoids bounce loop)
+      await account.get();
       showMessage('Logged in! Redirecting…', 'success');
-      setTimeout(() => { window.location.href = 'app.html'; }, 500);
+      setTimeout(() => { window.location.replace('app.html'); }, 400);
     } catch (err) {
       console.error(err);
       showMessage(friendlyError(err), 'error');
@@ -254,10 +260,19 @@
     signupSubmitBtn.disabled = true;
     signupSubmitBtn.textContent = 'Creating account…';
     try {
-      await account.create(ID.unique(), email, password, name);
-      await account.createEmailPasswordSession(email, password);
+      try {
+        await account.create({ userId: ID.unique(), email, password, name });
+      } catch (e1) {
+        await account.create(ID.unique(), email, password, name);
+      }
+      try {
+        await account.createEmailPasswordSession({ email, password });
+      } catch (e2) {
+        await account.createEmailPasswordSession(email, password);
+      }
+      await account.get();
       showMessage('Account created! Redirecting…', 'success');
-      setTimeout(() => { window.location.href = 'app.html'; }, 500);
+      setTimeout(() => { window.location.replace('app.html'); }, 400);
     } catch (err) {
       console.error(err);
       showMessage(friendlyError(err), 'error');
