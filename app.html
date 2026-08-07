@@ -296,14 +296,29 @@
     document.getElementById('authFallback').style.display = 'inline';
   }, 8000);
 
-  // Auth check
-  account.get().then(user => {
-    clearTimeout(authTimeout);
-    enterApp(user);
-  }).catch(() => {
-    clearTimeout(authTimeout);
-    window.location.replace('login.html');
-  });
+  // Auth check with retries (session can lag on GitHub Pages)
+  async function checkAuth(attempt = 1) {
+    try {
+      const user = await account.get();
+      clearTimeout(authTimeout);
+      enterApp(user);
+    } catch (err) {
+      console.warn('Auth attempt', attempt, err);
+      if (attempt < 4) {
+        setTimeout(() => checkAuth(attempt + 1), 500 * attempt);
+        return;
+      }
+      clearTimeout(authTimeout);
+      const status = document.getElementById('authStatus');
+      const spinner = document.getElementById('authSpinner');
+      const fallback = document.getElementById('authFallback');
+      if (spinner) spinner.style.display = 'none';
+      if (status) status.textContent = 'Session not found. Log in again (check browser is not blocking third-party cookies).';
+      if (fallback) fallback.style.display = 'inline';
+      setTimeout(() => { window.location.replace('login.html'); }, 2800);
+    }
+  }
+  checkAuth();
 
   async function loadFeed(reset) {
     if (loadingMore) return;
