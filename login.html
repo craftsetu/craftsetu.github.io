@@ -7,215 +7,83 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0"></script>
 <style>
   :root{
-    --cream:        #faf5e8;
-    --cream-deep:   #f2e9d6;
-    --paper:        #fffdf8;
-    --sage:         #6f9273;
-    --sage-deep:    #4f7355;
-    --sage-dark:    #2f4a35;
-    --sage-line:    #a9c2a4;
-    --gold:         #c39a4d;
-    --gold-soft:    #dcc084;
-    --clay:         #d99b7c;
-    --ink:          #33422f;
-    --ink-soft:     #5c6b57;
-    --error:        #b3543f;
-    --shadow:       0 20px 45px -20px rgba(47,74,53,.35);
+    --cream: #faf5e8; --cream-deep: #f2e9d6; --paper: #fffdf8;
+    --sage: #6f9273; --sage-deep: #4f7355; --sage-dark: #2f4a35;
+    --sage-line: #a9c2a4; --gold: #c39a4d; --ink: #33422f;
+    --ink-soft: #5c6b57; --error: #b3543f;
+    --shadow: 0 20px 45px -20px rgba(47,74,53,.35);
   }
   *{ margin:0; padding:0; box-sizing:border-box; }
   body{
-    font-family:'Jost', sans-serif;
-    background:var(--cream);
-    color:var(--ink);
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:32px 20px;
-    position:relative;
-    overflow-x:hidden;
-    -webkit-font-smoothing:antialiased;
+    font-family:'Jost', sans-serif; background:var(--cream); color:var(--ink);
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    padding:32px 20px; position:relative; -webkit-font-smoothing:antialiased;
   }
   body::before{
-    content:"";
-    position:fixed; inset:0;
+    content:""; position:fixed; inset:0;
     background-image:radial-gradient(circle at 2px 2px, rgba(111,146,115,.09) 1.4px, transparent 1.4px);
-    background-size:26px 26px;
-    pointer-events:none;
+    background-size:26px 26px; pointer-events:none;
   }
   a{ text-decoration:none; color:inherit; }
-  h1,h2,.serif{ font-family:'Cormorant Garamond', serif; color:var(--sage-dark); font-weight:600; }
-
+  h1{ font-family:'Cormorant Garamond', serif; color:var(--sage-dark); font-weight:600; }
   .top-logo{
-    position:fixed; top:26px; left:28px;
-    display:flex; align-items:center; gap:10px;
-    z-index:5;
+    position:fixed; top:26px; left:28px; display:flex; align-items:center; gap:10px; z-index:5;
   }
-  .top-logo img{ width:36px; height:36px; border-radius:50%; object-fit:cover; }
-  .top-logo span{
-    font-family:'Cormorant Garamond', serif; font-size:1.4rem; font-weight:700; color:var(--sage-dark);
-  }
+  .top-logo svg{ width:36px; height:36px; }
+  .top-logo span{ font-family:'Cormorant Garamond', serif; font-size:1.4rem; font-weight:700; color:var(--sage-dark); }
   .top-logo em{ font-style:italic; color:var(--gold); font-weight:600; }
-
-  .auth-wrap{
-    position:relative;
-    width:100%;
-    max-width:420px;
-  }
-
+  .auth-wrap{ position:relative; width:100%; max-width:420px; }
   .auth-card{
-    background:var(--paper);
-    border:1px solid var(--sage-line);
-    border-radius:26px;
-    padding:44px 38px 38px;
-    box-shadow:var(--shadow);
+    background:var(--paper); border:1px solid var(--sage-line); border-radius:26px;
+    padding:44px 38px 38px; box-shadow:var(--shadow);
   }
-
   .eyebrow{
-    display:flex; align-items:center; gap:10px;
-    font-size:.78rem;
-    letter-spacing:.2em;
-    text-transform:uppercase;
-    color:var(--sage-deep);
-    margin-bottom:14px;
-    justify-content:center;
+    display:flex; align-items:center; gap:10px; font-size:.78rem; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--sage-deep); margin-bottom:14px; justify-content:center;
   }
   .eyebrow::before,.eyebrow::after{ content:""; width:20px; height:1px; background:var(--gold); }
-
-  .auth-card h1{
-    font-size:2rem;
-    text-align:center;
-    margin-bottom:8px;
-  }
-  .auth-card > p.sub{
-    text-align:center;
-    color:var(--ink-soft);
-    font-size:.94rem;
-    margin-bottom:30px;
-  }
-
-  .tabs{
-    display:flex;
-    background:var(--cream-deep);
-    border-radius:999px;
-    padding:4px;
-    margin-bottom:26px;
-  }
+  .auth-card h1{ font-size:2rem; text-align:center; margin-bottom:8px; }
+  .auth-card > p.sub{ text-align:center; color:var(--ink-soft); font-size:.94rem; margin-bottom:30px; }
+  .tabs{ display:flex; background:var(--cream-deep); border-radius:999px; padding:4px; margin-bottom:26px; }
   .tabs button{
-    flex:1;
-    border:none;
-    background:transparent;
-    padding:10px 0;
-    border-radius:999px;
-    font-family:'Jost', sans-serif;
-    font-size:.9rem;
-    font-weight:500;
-    color:var(--ink-soft);
-    cursor:pointer;
-    transition:background .25s ease, color .25s ease, box-shadow .25s ease;
+    flex:1; border:none; background:transparent; padding:10px 0; border-radius:999px;
+    font-family:'Jost', sans-serif; font-size:.9rem; font-weight:500; color:var(--ink-soft); cursor:pointer;
+    transition:background .25s, color .25s, box-shadow .25s;
   }
-  .tabs button.active{
-    background:var(--paper);
-    color:var(--sage-dark);
-    box-shadow:0 6px 14px -8px rgba(47,74,53,.35);
-  }
-
+  .tabs button.active{ background:var(--paper); color:var(--sage-dark); box-shadow:0 6px 14px -8px rgba(47,74,53,.35); }
   form{ display:flex; flex-direction:column; gap:16px; }
   .field{ display:flex; flex-direction:column; gap:6px; }
-  .field label{ font-size:.82rem; color:var(--ink-soft); letter-spacing:.02em; }
+  .field label{ font-size:.82rem; color:var(--ink-soft); }
   .field input{
-    font-family:'Jost', sans-serif;
-    font-size:.95rem;
-    padding:13px 16px;
-    border-radius:12px;
-    border:1.4px solid var(--sage-line);
-    background:var(--cream);
-    color:var(--ink);
-    outline:none;
-    transition:border-color .2s ease, box-shadow .2s ease;
+    font-family:'Jost', sans-serif; font-size:.95rem; padding:13px 16px; border-radius:12px;
+    border:1.4px solid var(--sage-line); background:var(--cream); color:var(--ink); outline:none;
   }
-  .field input:focus{
-    border-color:var(--sage);
-    box-shadow:0 0 0 3px rgba(111,146,115,.18);
-  }
-
-  .row-between{ display:flex; align-items:center; justify-content:space-between; font-size:.84rem; }
-  .row-between a{ color:var(--sage-deep); }
-  .row-between a:hover{ text-decoration:underline; }
-  .checkbox-line{ display:flex; align-items:center; gap:8px; color:var(--ink-soft); }
-  .checkbox-line input{ accent-color:var(--sage); }
-
+  .field input:focus{ border-color:var(--sage); box-shadow:0 0 0 3px rgba(111,146,115,.18); }
   .btn{
     display:inline-flex; align-items:center; justify-content:center; gap:8px;
-    font-family:'Jost', sans-serif;
-    font-size:.95rem;
-    font-weight:500;
-    padding:13px 22px;
-    border-radius:999px;
-    cursor:pointer;
-    border:none;
-    width:100%;
-    transition:transform .2s ease, box-shadow .2s ease, background .2s ease, opacity .2s ease;
+    font-family:'Jost', sans-serif; font-size:.95rem; font-weight:500; padding:13px 22px;
+    border-radius:999px; cursor:pointer; border:none; width:100%;
+    transition:transform .2s, box-shadow .2s, opacity .2s;
   }
   .btn-primary{
-    background:linear-gradient(135deg, var(--sage) 0%, var(--sage-deep) 100%);
-    color:#fbf8ef;
-    box-shadow:0 12px 24px -10px rgba(79,115,85,.55);
-    margin-top:4px;
+    background:linear-gradient(135deg, var(--sage), var(--sage-deep)); color:#fbf8ef;
+    box-shadow:0 12px 24px -10px rgba(79,115,85,.55); margin-top:4px;
   }
-  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 16px 30px -10px rgba(79,115,85,.65); }
+  .btn-primary:hover{ transform:translateY(-2px); }
   .btn-primary:disabled{ opacity:.65; cursor:not-allowed; transform:none; }
-
-  .btn-google{
-    background:var(--paper);
-    color:var(--ink);
-    border:1.4px solid var(--sage-line);
-  }
-  .btn-google:hover{ background:var(--cream-deep); transform:translateY(-2px); }
-  .btn-google svg{ width:18px; height:18px; }
-
-  .divider{
-    display:flex; align-items:center; gap:14px;
-    margin:22px 0;
-    color:var(--ink-soft);
-    font-size:.78rem;
-    letter-spacing:.05em;
-    text-transform:uppercase;
-  }
-  .divider::before,.divider::after{ content:""; flex:1; height:1px; background:var(--sage-line); }
-
-  .switch-line{
-    text-align:center;
-    margin-top:22px;
-    font-size:.88rem;
-    color:var(--ink-soft);
-  }
-  .switch-line a{ color:var(--sage-deep); font-weight:500; }
-  .switch-line a:hover{ text-decoration:underline; }
-
-  .msg{
-    display:none;
-    font-size:.85rem;
-    padding:11px 14px;
-    border-radius:10px;
-    line-height:1.5;
-  }
+  .msg{ display:none; font-size:.85rem; padding:11px 14px; border-radius:10px; line-height:1.5; }
   .msg.error{ display:block; background:#f6e4e0; color:var(--error); border:1px solid #e3bfb5; }
   .msg.success{ display:block; background:#e7f0e6; color:var(--sage-deep); border:1px solid var(--sage-line); }
-
-  .back-home{
-    display:block;
-    text-align:center;
-    margin-top:22px;
-    font-size:.86rem;
-    color:var(--ink-soft);
+  .switch-line{ text-align:center; margin-top:22px; font-size:.88rem; color:var(--ink-soft); }
+  .switch-line a{ color:var(--sage-deep); font-weight:500; }
+  .back-home{ display:block; text-align:center; margin-top:22px; font-size:.86rem; color:var(--ink-soft); }
+  .config-warn{
+    background:#fff3cd; border:1px solid #e6d28a; color:#6b5a1e; font-size:.8rem;
+    padding:10px 12px; border-radius:10px; margin-bottom:16px; line-height:1.45;
   }
-  .back-home:hover{ color:var(--sage-deep); }
-
-  .sparkle{ position:absolute; color:var(--gold); opacity:.6; }
-
   @media (max-width:480px){
     .auth-card{ padding:36px 24px 30px; }
     .top-logo{ position:static; justify-content:center; margin-bottom:26px; }
@@ -223,34 +91,23 @@
 </style>
 </head>
 <body>
-
 <a href="index.html" class="top-logo">
-  <img src="data:image/jpeg;base64,LOGO_BASE64_PLACEHOLDER" alt="Craft Setu logo">
+  <svg viewBox="0 0 60 60" fill="none"><path d="M8 40C8 40 8 26 30 26C52 26 52 40 52 40" stroke="#6f9273" stroke-width="2.5" stroke-linecap="round"/><path d="M14 40V30M22 40V27M30 40V26M38 40V27M46 40V30" stroke="#c39a4d" stroke-width="1.6" stroke-linecap="round"/><circle cx="30" cy="14" r="3" fill="#c39a4d"/><path d="M6 44H54" stroke="#2f4a35" stroke-width="2.5" stroke-linecap="round"/></svg>
   <span>Craft <em>Setu</em></span>
 </a>
-
 <div class="auth-wrap">
   <div class="auth-card">
     <div class="eyebrow">Welcome back</div>
     <h1 id="cardTitle">Log In to Craft Setu</h1>
     <p class="sub" id="cardSub">Continue your craft journey with your community.</p>
-
+    <div id="configWarn" class="config-warn" style="display:none;">
+      Set your <b>Appwrite Project ID</b> in <code>login.html</code> and <code>app.html</code> (search for <code>APPWRITE_PROJECT_ID</code>).
+    </div>
     <div class="tabs">
       <button type="button" class="active" id="tabLogin">Log In</button>
       <button type="button" id="tabSignup">Sign Up</button>
     </div>
-
     <div id="msgBox" class="msg"></div>
-
-    <!-- Google sign-in -->
-    <button type="button" class="btn btn-google" id="googleBtn">
-      <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.6 32.9 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l6-6C34.9 5.5 29.7 3.5 24 3.5 12.7 3.5 3.5 12.7 3.5 24S12.7 44.5 24 44.5 44.5 35.3 44.5 24c0-1.2-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.9 18.9 13 24 13c3.1 0 5.8 1.1 8 3l6-6C34.9 6.5 29.7 4.5 24 4.5c-7.7 0-14.4 4.3-17.7 10.6z"/><path fill="#4CAF50" d="M24 44.5c5.6 0 10.7-1.9 14.6-5.2l-6.7-5.7c-2.1 1.5-4.8 2.4-7.9 2.4-5.2 0-9.6-3.1-11.3-7.6l-6.6 5.1C9.5 40.1 16.2 44.5 24 44.5z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.6l6.7 5.7C41.9 35.9 44.5 30.3 44.5 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
-      Continue with Google
-    </button>
-
-    <div class="divider">or</div>
-
-    <!-- Log In form -->
     <form id="loginForm">
       <div class="field">
         <label for="loginEmail">Email</label>
@@ -258,16 +115,10 @@
       </div>
       <div class="field">
         <label for="loginPassword">Password</label>
-        <input type="password" id="loginPassword" placeholder="••••••••" required>
-      </div>
-      <div class="row-between">
-        <label class="checkbox-line"><input type="checkbox" id="rememberMe"> Remember me</label>
-        <a href="#" id="forgotPasswordLink">Forgot password?</a>
+        <input type="password" id="loginPassword" placeholder="At least 8 characters" required>
       </div>
       <button type="submit" class="btn btn-primary" id="loginSubmitBtn">Log In</button>
     </form>
-
-    <!-- Sign Up form -->
     <form id="signupForm" style="display:none;">
       <div class="field">
         <label for="signupName">Full name</label>
@@ -279,58 +130,39 @@
       </div>
       <div class="field">
         <label for="signupPassword">Password</label>
-        <input type="password" id="signupPassword" placeholder="At least 6 characters" required minlength="6">
+        <input type="password" id="signupPassword" placeholder="At least 8 characters" required minlength="8">
       </div>
       <button type="submit" class="btn btn-primary" id="signupSubmitBtn">Create Account</button>
     </form>
-
     <p class="switch-line" id="switchLine">
       Don't have an account? <a href="#" id="switchToSignup">Sign up</a>
     </p>
-
     <a href="index.html" class="back-home">← Back to home</a>
   </div>
 </div>
+<script>
+  // ========== APPWRITE CONFIG (client-safe — NO secret API key) ==========
+  const APPWRITE_ENDPOINT = 'https://sgp.cloud.appwrite.io/v1';
+  const APPWRITE_PROJECT_ID = '6a75f75400350e8fd788'; // ← paste Project ID from Appwrite Console → Settings
+  // ======================================================================
 
-<!-- =====================================================
-     FIREBASE
-     ---------------------------------------------------
-     1. Create a project at https://console.firebase.google.com
-     2. Enable Authentication → Sign-in method → Email/Password and Google
-     3. Paste your web app config into firebaseConfig below
-     4. That's it — the forms above are already wired up to it
-===================================================== -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    GoogleAuthProvider,
-    signInWithPopup,
-    sendPasswordResetEmail,
-    updateProfile,
-    setPersistence,
-    browserLocalPersistence,
-    browserSessionPersistence
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  const { Client, Account, ID } = Appwrite;
 
-  // ============ PASTE YOUR FIREBASE CONFIG HERE ============
-  const firebaseConfig = {
-    apiKey: "AIzaSyCSZult5A-5ZIgT1WD7ySNjJ_5EacdnPcg",
-    authDomain: "craft-setu.firebaseapp.com",
-    projectId: "craft-setu",
-    storageBucket: "craft-setu.firebasestorage.app",
-    messagingSenderId: "788636646908",
-    appId: "1:788636646908:web:e4eadb74c5ea99a5a14679",
-  };
-  // ===========================================================
+  const client = new Client()
+    .setEndpoint(APPWRITE_ENDPOINT)
+    .setProject(APPWRITE_PROJECT_ID);
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const googleProvider = new GoogleAuthProvider();
+  const account = new Account(client);
 
-  // ---- UI elements ----
+  if (!APPWRITE_PROJECT_ID || APPWRITE_PROJECT_ID === 'YOUR_PROJECT_ID') {
+    document.getElementById('configWarn').style.display = 'block';
+  }
+
+  // Already logged in?
+  account.get().then(() => {
+    window.location.href = 'app.html';
+  }).catch(() => { /* not logged in — stay */ });
+
   const tabLogin = document.getElementById('tabLogin');
   const tabSignup = document.getElementById('tabSignup');
   const loginForm = document.getElementById('loginForm');
@@ -338,23 +170,19 @@
   const cardTitle = document.getElementById('cardTitle');
   const cardSub = document.getElementById('cardSub');
   const switchLine = document.getElementById('switchLine');
-  const switchToSignup = document.getElementById('switchToSignup');
   const msgBox = document.getElementById('msgBox');
-  const googleBtn = document.getElementById('googleBtn');
-  const forgotPasswordLink = document.getElementById('forgotPasswordLink');
   const loginSubmitBtn = document.getElementById('loginSubmitBtn');
   const signupSubmitBtn = document.getElementById('signupSubmitBtn');
 
-  function showMessage(text, type){
+  function showMessage(text, type) {
     msgBox.textContent = text;
     msgBox.className = 'msg ' + type;
   }
-  function clearMessage(){
+  function clearMessage() {
     msgBox.className = 'msg';
     msgBox.textContent = '';
   }
-
-  function showLogin(){
+  function showLogin() {
     tabLogin.classList.add('active');
     tabSignup.classList.remove('active');
     loginForm.style.display = 'flex';
@@ -365,8 +193,7 @@
     document.getElementById('switchToSignup').addEventListener('click', (e) => { e.preventDefault(); showSignup(); });
     clearMessage();
   }
-
-  function showSignup(){
+  function showSignup() {
     tabSignup.classList.add('active');
     tabLogin.classList.remove('active');
     signupForm.style.display = 'flex';
@@ -377,43 +204,36 @@
     document.getElementById('switchToLogin').addEventListener('click', (e) => { e.preventDefault(); showLogin(); });
     clearMessage();
   }
-
   tabLogin.addEventListener('click', showLogin);
   tabSignup.addEventListener('click', showSignup);
-  switchToSignup.addEventListener('click', (e) => { e.preventDefault(); showSignup(); });
+  document.getElementById('switchToSignup').addEventListener('click', (e) => { e.preventDefault(); showSignup(); });
 
-  function friendlyError(err){
-    const code = err && err.code ? err.code : '';
-    const map = {
-      'auth/invalid-email': 'That email address looks invalid.',
-      'auth/user-not-found': 'No account found with that email.',
-      'auth/wrong-password': 'Incorrect password. Please try again.',
-      'auth/invalid-credential': 'Incorrect email or password.',
-      'auth/email-already-in-use': 'An account already exists with that email.',
-      'auth/weak-password': 'Password should be at least 6 characters.',
-      'auth/popup-closed-by-user': 'Google sign-in was closed before finishing.',
-      'auth/network-request-failed': 'Network error — please check your connection.'
-    };
-    return map[code] || (err && err.message ? err.message : 'Something went wrong. Please try again.');
+  function friendlyError(err) {
+    const msg = (err && err.message) ? err.message : 'Something went wrong.';
+    if (/Invalid credentials|user_invalid_credentials/i.test(msg)) return 'Incorrect email or password.';
+    if (/already exists|user_already_exists/i.test(msg)) return 'An account already exists with that email.';
+    if (/password/i.test(msg) && /8/i.test(msg)) return 'Password must be at least 8 characters.';
+    if (/project/i.test(msg) && /not found|invalid/i.test(msg)) return 'Invalid Project ID — update APPWRITE_PROJECT_ID in the code.';
+    return msg;
   }
 
-  // ---- Email/Password Log In ----
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     clearMessage();
+    if (APPWRITE_PROJECT_ID === 'YOUR_PROJECT_ID') {
+      showMessage('Set APPWRITE_PROJECT_ID first (see yellow box).', 'error');
+      return;
+    }
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
-    const remember = document.getElementById('rememberMe').checked;
-
     loginSubmitBtn.disabled = true;
     loginSubmitBtn.textContent = 'Logging in…';
     try {
-      await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
-      await signInWithEmailAndPassword(auth, email, password);
-      showMessage('Logged in successfully! Redirecting…', 'success');
-      // Redirect after login — change to your desired page
-      setTimeout(() => { window.location.href = 'app.html'; }, 900);
+      await account.createEmailPasswordSession(email, password);
+      showMessage('Logged in! Redirecting…', 'success');
+      setTimeout(() => { window.location.href = 'app.html'; }, 500);
     } catch (err) {
+      console.error(err);
       showMessage(friendlyError(err), 'error');
     } finally {
       loginSubmitBtn.disabled = false;
@@ -421,63 +241,31 @@
     }
   });
 
-  // ---- Email/Password Sign Up ----
   signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     clearMessage();
+    if (APPWRITE_PROJECT_ID === 'YOUR_PROJECT_ID') {
+      showMessage('Set APPWRITE_PROJECT_ID first (see yellow box).', 'error');
+      return;
+    }
     const name = document.getElementById('signupName').value.trim();
     const email = document.getElementById('signupEmail').value.trim();
     const password = document.getElementById('signupPassword').value;
-
     signupSubmitBtn.disabled = true;
     signupSubmitBtn.textContent = 'Creating account…';
     try {
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
-      if (name) {
-        await updateProfile(cred.user, { displayName: name });
-      }
+      await account.create(ID.unique(), email, password, name);
+      await account.createEmailPasswordSession(email, password);
       showMessage('Account created! Redirecting…', 'success');
-      setTimeout(() => { window.location.href = 'app.html'; }, 900);
+      setTimeout(() => { window.location.href = 'app.html'; }, 500);
     } catch (err) {
+      console.error(err);
       showMessage(friendlyError(err), 'error');
     } finally {
       signupSubmitBtn.disabled = false;
       signupSubmitBtn.textContent = 'Create Account';
     }
   });
-
-  // ---- Google Sign-In ----
-  googleBtn.addEventListener('click', async () => {
-    clearMessage();
-    googleBtn.disabled = true;
-    try {
-      await signInWithPopup(auth, googleProvider);
-      showMessage('Logged in with Google! Redirecting…', 'success');
-      setTimeout(() => { window.location.href = 'app.html'; }, 900);
-    } catch (err) {
-      showMessage(friendlyError(err), 'error');
-    } finally {
-      googleBtn.disabled = false;
-    }
-  });
-
-  // ---- Forgot Password ----
-  forgotPasswordLink.addEventListener('click', async (e) => {
-    e.preventDefault();
-    clearMessage();
-    const email = document.getElementById('loginEmail').value.trim();
-    if (!email) {
-      showMessage('Enter your email above first, then click "Forgot password?".', 'error');
-      return;
-    }
-    try {
-      await sendPasswordResetEmail(auth, email);
-      showMessage('Password reset email sent — check your inbox.', 'success');
-    } catch (err) {
-      showMessage(friendlyError(err), 'error');
-    }
-  });
 </script>
-
 </body>
 </html>
