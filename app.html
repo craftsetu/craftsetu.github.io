@@ -396,8 +396,9 @@
 </head>
 <body>
 <div id="authGate">
-  <div class="spinner"></div>
-  <p style="color:var(--ink-soft); font-size:.9rem;">Loading Craft Setu…</p>
+  <div class="spinner" id="authSpinner"></div>
+  <p id="authStatus" style="color:var(--ink-soft); font-size:.9rem;">Loading Craft Setu…</p>
+  <a href="login.html" id="authFallback" style="display:none; margin-top:12px; color:var(--sage-deep); font-size:.9rem; text-decoration:underline;">Go to log in</a>
 </div>
 
 <div class="app" id="app" style="display:none;">
@@ -597,22 +598,8 @@
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      window.location.href = 'login.html';
-      return;
-    }
+  function enterApp(user) {
     currentUser = user;
-    const uref = doc(db, 'users', user.uid);
-    const usnap = await getDoc(uref);
-    if (!usnap.exists()) {
-      await setDoc(uref, {
-        displayName: user.displayName || '',
-        email: user.email || '',
-        photoURL: user.photoURL || '',
-        createdAt: serverTimestamp()
-      });
-    }
     document.getElementById('authGate').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
     setAvatar(document.getElementById('composerAv'), user);
@@ -621,6 +608,41 @@
     document.getElementById('profileName').textContent = user.displayName || 'Maker';
     document.getElementById('profileEmail').textContent = user.email || '';
     loadFeed(true);
+  }
+
+  // Safety: if auth never resolves (e.g. blocked network / file:// origin), show fallback
+  const authTimeout = setTimeout(() => {
+    const status = document.getElementById('authStatus');
+    const spinner = document.getElementById('authSpinner');
+    const fallback = document.getElementById('authFallback');
+    if (spinner) spinner.style.display = 'none';
+    if (status) status.textContent = 'Taking too long. Are you online? Try logging in again.';
+    if (fallback) fallback.style.display = 'inline';
+  }, 8000);
+
+  onAuthStateChanged(auth, async (user) => {
+    clearTimeout(authTimeout);
+    if (!user) {
+      window.location.replace('login.html');
+      return;
+    }
+    // Show the app immediately — don't block on Firestore
+    enterApp(user);
+    // Best-effort: ensure user profile doc exists
+    try {
+      const uref = doc(db, 'users', user.uid);
+      const usnap = await getDoc(uref);
+      if (!usnap.exists()) {
+        await setDoc(uref, {
+          displayName: user.displayName || '',
+          email: user.email || '',
+          photoURL: user.photoURL || '',
+          createdAt: serverTimestamp()
+        });
+      }
+    } catch (err) {
+      console.warn('User profile sync skipped:', err);
+    }
   });
 
   async function loadFeed(reset = false) {
