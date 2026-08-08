@@ -108,6 +108,60 @@
   .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
   #authGate{position:fixed;inset:0;z-index:500;background:var(--cream);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
   @media (min-width:640px){.modal-overlay{align-items:center;padding:24px}.modal{border-radius:24px;max-height:85vh}}
+
+  /* Social: user sheet, friends, chat */
+  .name-link{cursor:pointer;color:var(--sage-dark)}
+  .name-link:hover{text-decoration:underline}
+  .user-sheet-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;justify-content:center}
+  .user-sheet-actions .btn{width:auto;padding:10px 18px;font-size:.88rem}
+  .btn-danger{background:#f6e4e0;color:#b3543f;border:1.4px solid #e3bfb5;width:auto;padding:10px 18px;font-size:.88rem}
+  .btn-danger:hover{background:#b3543f;color:#fff}
+  .btn-soft{background:rgba(111,146,115,.12);color:var(--sage-deep);border:none;width:auto;padding:10px 18px;font-size:.88rem}
+  .btn-soft.on{background:var(--sage);color:#fff}
+  .friends-list,.chat-list{display:flex;flex-direction:column;gap:10px}
+  .person-row{
+    display:flex;align-items:center;gap:12px;
+    background:var(--paper);border:1px solid var(--sage-line);
+    border-radius:16px;padding:12px 14px;cursor:pointer;
+    transition:border-color .2s,box-shadow .2s;
+  }
+  .person-row:hover{border-color:var(--gold-soft);box-shadow:0 8px 20px -12px rgba(47,74,53,.3)}
+  .person-row .av{
+    width:44px;height:44px;border-radius:50%;background:var(--sage);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-weight:700;flex:none;
+  }
+  .person-row .meta{flex:1;min-width:0}
+  .person-row .meta b{display:block;font-size:.95rem;color:var(--sage-dark)}
+  .person-row .meta span{font-size:.78rem;color:var(--ink-soft)}
+  .person-row .row-actions{display:flex;gap:6px;flex-wrap:wrap}
+  .chip-btn{
+    border:1px solid var(--sage-line);background:var(--cream);color:var(--sage-dark);
+    border-radius:999px;padding:6px 12px;font-size:.75rem;cursor:pointer;font-family:inherit;
+  }
+  .chip-btn:hover{background:var(--sage);color:#fff;border-color:var(--sage)}
+  .chip-btn.danger:hover{background:#b3543f;border-color:#b3543f}
+  .chat-thread{display:flex;flex-direction:column;gap:8px;max-height:40vh;overflow-y:auto;padding:8px 0 12px}
+  .bubble{
+    max-width:80%;padding:10px 14px;border-radius:16px;font-size:.9rem;line-height:1.45;
+  }
+  .bubble.me{align-self:flex-end;background:var(--sage);color:#fff;border-bottom-right-radius:4px}
+  .bubble.them{align-self:flex-start;background:var(--cream-deep);color:var(--ink);border-bottom-left-radius:4px}
+  .chat-compose{display:flex;gap:8px;margin-top:8px}
+  .chat-compose input{
+    flex:1;font-family:inherit;font-size:.95rem;padding:11px 13px;border-radius:12px;
+    border:1.4px solid var(--sage-line);background:var(--cream);color:var(--ink);outline:none;
+  }
+  .chat-compose input:focus{border-color:var(--sage)}
+  .chat-compose button{width:auto;padding:11px 18px}
+  .view-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;margin:0 4px 14px;color:var(--sage-dark)}
+  .tabs-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+  .tabs-row button{
+    border:1px solid var(--sage-line);background:var(--paper);color:var(--ink-soft);
+    border-radius:999px;padding:8px 16px;font-size:.85rem;cursor:pointer;font-family:inherit;
+  }
+  .tabs-row button.on{background:var(--sage);color:#fff;border-color:var(--sage)}
+
 </style>
 </head>
 <body>
@@ -153,12 +207,31 @@
         <div class="profile-stats">
           <div><b id="statPosts">0</b><span>Posts</span></div>
           <div><b id="statLikes">0</b><span>Likes received</span></div>
+          <div><b id="statFollowing">0</b><span>Following</span></div>
+          <div><b id="statFriends">0</b><span>Friends</span></div>
         </div>
         <button class="btn btn-outline" id="logoutBtn" style="max-width:200px;margin:0 auto;">Log out</button>
       </div>
       <h3 style="margin:0 4px 12px;font-size:1.15rem;">Your crafts</h3>
       <div class="feed" id="myFeed"></div>
       <div class="state-box" id="myEmpty" style="display:none;"><h3>Nothing posted yet</h3><p>Upload your first craft from the + button.</p></div>
+    </div>
+
+    <div id="friendsView" style="display:none;">
+      <h2 class="view-title">Friends &amp; following</h2>
+      <div class="tabs-row">
+        <button type="button" class="on" data-ftab="friends" id="tabFriends">Friends</button>
+        <button type="button" data-ftab="following" id="tabFollowing">Following</button>
+        <button type="button" data-ftab="blocked" id="tabBlocked">Blocked</button>
+      </div>
+      <div class="friends-list" id="friendsList"></div>
+      <div class="state-box" id="friendsEmpty" style="display:none;"><h3>Nothing here yet</h3><p>Follow makers from their posts to grow your circle.</p></div>
+    </div>
+
+    <div id="chatView" style="display:none;">
+      <h2 class="view-title">Messages</h2>
+      <div class="chat-list" id="chatList"></div>
+      <div class="state-box" id="chatEmpty" style="display:none;"><h3>No chats yet</h3><p>Open a profile and tap Message to start talking.</p></div>
     </div>
   </main>
 
@@ -168,8 +241,16 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z"/></svg>
         <span>Home</span>
       </button>
+      <button class="nav-item" data-view="friends" id="navFriends">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 11a3 3 0 10-2.8-4M8 11a3 3 0 110-6 3 3 0 010 6zM4 21c0-3 3-5 6-5M14 16c3 0 6 2 6 5"/><path d="M16 16c-1.5 0-2.5-.5-3-1"/></svg>
+        <span>Friends</span>
+      </button>
       <button class="nav-item upload-fab" id="navUpload" title="Upload">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+      <button class="nav-item" data-view="chat" id="navChat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a8 8 0 01-8 8H7l-4 3V12a8 8 0 018-8h2a8 8 0 018 8z"/></svg>
+        <span>Chat</span>
       </button>
       <button class="nav-item" data-view="profile" id="navProfile">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
@@ -218,15 +299,57 @@
   <button class="lightbox-close" id="lightboxClose">×</button>
   <img id="lightboxImg" alt="">
 </div>
+
+<!-- Other user profile sheet -->
+<div class="modal-overlay" id="userModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="userModalTitle">Maker</h2>
+      <button class="modal-close" id="closeUserModal">×</button>
+    </div>
+    <div class="modal-body" style="text-align:center;">
+      <div class="profile-av" id="userModalAv" style="margin:0 auto 12px;">?</div>
+      <div class="profile-name" id="userModalName">—</div>
+      <p id="userModalSub" style="color:var(--ink-soft);font-size:.88rem;margin:6px 0 0;">Craft Setu maker</p>
+      <div class="user-sheet-actions">
+        <button type="button" class="btn btn-primary" id="btnFollow">Follow</button>
+        <button type="button" class="btn btn-soft" id="btnMessage">Message</button>
+        <button type="button" class="btn btn-danger" id="btnBlock">Block</button>
+      </div>
+      <p id="userModalHint" style="margin-top:14px;font-size:.8rem;color:var(--ink-soft);"></p>
+    </div>
+  </div>
+</div>
+
+<!-- Chat thread modal -->
+<div class="modal-overlay" id="chatModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="chatModalTitle">Chat</h2>
+      <button class="modal-close" id="closeChatModal">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="chat-thread" id="chatThread"></div>
+      <form class="chat-compose" id="chatForm">
+        <input type="text" id="chatInput" placeholder="Write a message…" maxlength="500" required autocomplete="off">
+        <button type="submit" class="btn btn-primary">Send</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
   // ========== APPWRITE CONFIG (NO secret API key in browser) ==========
   const APPWRITE_ENDPOINT = 'https://sgp.cloud.appwrite.io/v1';
   const APPWRITE_PROJECT_ID = '6a75f75400350e8fd788'; // ← from Console → Settings
-  const DATABASE_ID = 'craft_setu';             // ← create this database
-  const COLLECTION_POSTS = 'posts';              // ← create this collection
-  const BUCKET_ID = 'crafts';                    // ← create this storage bucket
+  const DATABASE_ID = 'craft_setu';
+  const COLLECTION_POSTS = 'posts';
+  const COLLECTION_FOLLOWS = 'follows';   // columns: followerId, followingId, followingName, followerName
+  const COLLECTION_BLOCKS = 'blocks';     // columns: blockerId, blockedId, blockedName
+  const COLLECTION_MESSAGES = 'messages'; // columns: fromId, toId, fromName, toName, text
+  const BUCKET_ID = 'crafts';
   // ====================================================================
 
   const { Client, Account, Databases, Storage, ID, Query, Permission, Role } = Appwrite;
@@ -245,6 +368,12 @@
   let allLoaded = false;
   const PAGE = 12;
   let uploadFiles = [];
+  let blockedIds = new Set();
+  let followingIds = new Set();
+  let followingDocs = {}; // followingId -> doc
+  let blockDocs = {};
+  let activeChatUser = null; // { id, name }
+  let friendsTab = 'friends';
 
   function toast(msg) {
     const t = document.getElementById('toast');
@@ -287,7 +416,7 @@
     setAvatar(document.getElementById('profileAv'), user);
     document.getElementById('profileName').textContent = user.name || 'Maker';
     document.getElementById('profileEmail').textContent = user.email || '';
-    loadFeed(true);
+    loadSocialGraph().then(() => loadFeed(true));
   }
 
   const authTimeout = setTimeout(() => {
@@ -362,7 +491,13 @@
         end.style.display = 'block';
       }
 
-      res.documents.forEach(doc => feed.appendChild(renderPost(doc)));
+      res.documents.forEach(doc => {
+        if (doc.userId && blockedIds.has(doc.userId)) return;
+        feed.appendChild(renderPost(doc));
+      });
+      if (!feed.children.length && reset) {
+        empty.style.display = 'block';
+      }
     } catch (err) {
       console.error(err);
       loading.style.display = 'none';
@@ -392,9 +527,9 @@
 
     card.innerHTML = `
       <div class="post-header">
-        <div class="post-av">${initials(author)}</div>
+        <div class="post-av author-hit" style="cursor:pointer">${initials(author)}</div>
         <div class="post-meta">
-          <div class="name">${escapeHtml(author)}</div>
+          <div class="name name-link author-hit">${escapeHtml(author)}</div>
           <div class="time">${timeAgo(doc.$createdAt)}</div>
         </div>
         ${doc.category ? `<span class="post-category">${escapeHtml(doc.category)}</span>` : ''}
@@ -416,6 +551,16 @@
     `;
 
     card.querySelector('.like-btn').addEventListener('click', () => toggleLike(doc, card));
+    card.querySelectorAll('.author-hit').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!doc.userId || doc.userId === currentUser.$id) {
+          showView('profile');
+          return;
+        }
+        openUserSheet({ id: doc.userId, name: author });
+      });
+    });
     const img = card.querySelector('.post-media img');
     if (img) {
       img.addEventListener('click', () => {
@@ -471,14 +616,20 @@
   function showView(name) {
     document.getElementById('feedView').style.display = name === 'feed' ? 'block' : 'none';
     document.getElementById('profileView').style.display = name === 'profile' ? 'block' : 'none';
+    document.getElementById('friendsView').style.display = name === 'friends' ? 'block' : 'none';
+    document.getElementById('chatView').style.display = name === 'chat' ? 'block' : 'none';
     document.querySelectorAll('.nav-item[data-view]').forEach(el => {
       el.classList.toggle('active', el.dataset.view === name);
     });
     if (name === 'profile') loadMyPosts();
+    if (name === 'friends') renderFriendsTab();
+    if (name === 'chat') loadChatInbox();
     window.scrollTo({ top: 0 });
   }
   document.getElementById('navFeed').addEventListener('click', () => showView('feed'));
   document.getElementById('navProfile').addEventListener('click', () => showView('profile'));
+  document.getElementById('navFriends').addEventListener('click', () => showView('friends'));
+  document.getElementById('navChat').addEventListener('click', () => showView('chat'));
   document.getElementById('profileBtn').addEventListener('click', () => showView('profile'));
 
   async function loadMyPosts() {
@@ -515,6 +666,373 @@
     try { await account.deleteSession('current'); } catch (_) {}
     window.location.href = 'login.html';
   });
+
+  // ---------- Social graph (follow / block / friends / chat) ----------
+  async function loadSocialGraph() {
+    followingIds = new Set();
+    followingDocs = {};
+    blockedIds = new Set();
+    blockDocs = {};
+    try {
+      const fol = await databases.listDocuments(DATABASE_ID, COLLECTION_FOLLOWS, [
+        Query.equal('followerId', currentUser.$id),
+        Query.limit(100)
+      ]);
+      fol.documents.forEach(d => {
+        followingIds.add(d.followingId);
+        followingDocs[d.followingId] = d;
+      });
+    } catch (e) { console.warn('follows load', e); }
+
+    try {
+      const blk = await databases.listDocuments(DATABASE_ID, COLLECTION_BLOCKS, [
+        Query.equal('blockerId', currentUser.$id),
+        Query.limit(100)
+      ]);
+      blk.documents.forEach(d => {
+        blockedIds.add(d.blockedId);
+        blockDocs[d.blockedId] = d;
+      });
+    } catch (e) { console.warn('blocks load', e); }
+
+    // mutual friends count for profile stats
+    let friendsCount = 0;
+    try {
+      for (const fid of followingIds) {
+        const back = await databases.listDocuments(DATABASE_ID, COLLECTION_FOLLOWS, [
+          Query.equal('followerId', fid),
+          Query.equal('followingId', currentUser.$id),
+          Query.limit(1)
+        ]);
+        if (back.documents.length) friendsCount++;
+      }
+    } catch (_) {}
+    const elF = document.getElementById('statFollowing');
+    const elFr = document.getElementById('statFriends');
+    if (elF) elF.textContent = followingIds.size;
+    if (elFr) elFr.textContent = friendsCount;
+  }
+
+  let sheetUser = null;
+
+  function openUserSheet(user) {
+    sheetUser = user;
+    document.getElementById('userModalTitle').textContent = user.name || 'Maker';
+    document.getElementById('userModalName').textContent = user.name || 'Maker';
+    document.getElementById('userModalAv').textContent = initials(user.name);
+    const following = followingIds.has(user.id);
+    const blocked = blockedIds.has(user.id);
+    const btnFollow = document.getElementById('btnFollow');
+    const btnBlock = document.getElementById('btnBlock');
+    btnFollow.textContent = following ? 'Following' : 'Follow';
+    btnFollow.className = following ? 'btn btn-soft on' : 'btn btn-primary';
+    btnBlock.textContent = blocked ? 'Unblock' : 'Block';
+    document.getElementById('userModalHint').textContent = blocked
+      ? 'You blocked this maker. Their posts are hidden from your feed.'
+      : (following ? 'You follow this maker.' : 'Follow to see them in your circle.');
+    document.getElementById('userModal').classList.add('show');
+  }
+
+  document.getElementById('closeUserModal').addEventListener('click', () => {
+    document.getElementById('userModal').classList.remove('show');
+  });
+  document.getElementById('userModal').addEventListener('click', e => {
+    if (e.target.id === 'userModal') e.target.classList.remove('show');
+  });
+
+  document.getElementById('btnFollow').addEventListener('click', async () => {
+    if (!sheetUser) return;
+    const id = sheetUser.id;
+    const name = sheetUser.name || 'Maker';
+    try {
+      if (followingIds.has(id)) {
+        const doc = followingDocs[id];
+        if (doc) await databases.deleteDocument(DATABASE_ID, COLLECTION_FOLLOWS, doc.$id);
+        followingIds.delete(id);
+        delete followingDocs[id];
+        toast('Unfollowed ' + name);
+      } else {
+        if (blockedIds.has(id)) { toast('Unblock them first'); return; }
+        const created = await databases.createDocument(
+          DATABASE_ID, COLLECTION_FOLLOWS, ID.unique(),
+          {
+            followerId: currentUser.$id,
+            followingId: id,
+            followingName: name,
+            followerName: currentUser.name || currentUser.email?.split('@')[0] || 'Maker'
+          },
+          [Permission.read(Role.any()), Permission.update(Role.user(currentUser.$id)), Permission.delete(Role.user(currentUser.$id))]
+        );
+        followingIds.add(id);
+        followingDocs[id] = created;
+        toast('Following ' + name);
+      }
+      openUserSheet(sheetUser);
+      await loadSocialGraph();
+    } catch (err) {
+      console.error(err);
+      toast(err.message || 'Follow failed — create the follows table in Appwrite.');
+    }
+  });
+
+  document.getElementById('btnBlock').addEventListener('click', async () => {
+    if (!sheetUser) return;
+    const id = sheetUser.id;
+    const name = sheetUser.name || 'Maker';
+    try {
+      if (blockedIds.has(id)) {
+        const doc = blockDocs[id];
+        if (doc) await databases.deleteDocument(DATABASE_ID, COLLECTION_BLOCKS, doc.$id);
+        blockedIds.delete(id);
+        delete blockDocs[id];
+        toast('Unblocked ' + name);
+      } else {
+        // also unfollow if following
+        if (followingIds.has(id) && followingDocs[id]) {
+          try { await databases.deleteDocument(DATABASE_ID, COLLECTION_FOLLOWS, followingDocs[id].$id); } catch (_) {}
+          followingIds.delete(id);
+          delete followingDocs[id];
+        }
+        const created = await databases.createDocument(
+          DATABASE_ID, COLLECTION_BLOCKS, ID.unique(),
+          { blockerId: currentUser.$id, blockedId: id, blockedName: name },
+          [Permission.read(Role.user(currentUser.$id)), Permission.delete(Role.user(currentUser.$id))]
+        );
+        blockedIds.add(id);
+        blockDocs[id] = created;
+        toast('Blocked ' + name);
+        document.getElementById('userModal').classList.remove('show');
+        loadFeed(true);
+      }
+      if (document.getElementById('userModal').classList.contains('show')) openUserSheet(sheetUser);
+      await loadSocialGraph();
+    } catch (err) {
+      console.error(err);
+      toast(err.message || 'Block failed — create the blocks table in Appwrite.');
+    }
+  });
+
+  document.getElementById('btnMessage').addEventListener('click', () => {
+    if (!sheetUser) return;
+    if (blockedIds.has(sheetUser.id)) { toast('Unblock to message'); return; }
+    document.getElementById('userModal').classList.remove('show');
+    openChat(sheetUser);
+  });
+
+  // Friends tabs
+  document.querySelectorAll('[data-ftab]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      friendsTab = btn.dataset.ftab;
+      document.querySelectorAll('[data-ftab]').forEach(b => b.classList.toggle('on', b.dataset.ftab === friendsTab));
+      renderFriendsTab();
+    });
+  });
+
+  async function renderFriendsTab() {
+    const list = document.getElementById('friendsList');
+    const empty = document.getElementById('friendsEmpty');
+    list.innerHTML = '<div class="state-box"><div class="spinner"></div></div>';
+    empty.style.display = 'none';
+
+    try {
+      if (friendsTab === 'blocked') {
+        const rows = Object.values(blockDocs);
+        list.innerHTML = '';
+        if (!rows.length) { empty.style.display = 'block'; return; }
+        rows.forEach(d => {
+          list.appendChild(personRow(d.blockedId, d.blockedName || 'Maker', 'blocked'));
+        });
+        return;
+      }
+
+      if (friendsTab === 'following') {
+        const rows = Object.values(followingDocs);
+        list.innerHTML = '';
+        if (!rows.length) { empty.style.display = 'block'; return; }
+        rows.forEach(d => {
+          list.appendChild(personRow(d.followingId, d.followingName || 'Maker', 'following'));
+        });
+        return;
+      }
+
+      // friends = mutual follows
+      const mutual = [];
+      for (const d of Object.values(followingDocs)) {
+        try {
+          const back = await databases.listDocuments(DATABASE_ID, COLLECTION_FOLLOWS, [
+            Query.equal('followerId', d.followingId),
+            Query.equal('followingId', currentUser.$id),
+            Query.limit(1)
+          ]);
+          if (back.documents.length) mutual.push(d);
+        } catch (_) {}
+      }
+      list.innerHTML = '';
+      if (!mutual.length) { empty.style.display = 'block'; return; }
+      mutual.forEach(d => {
+        list.appendChild(personRow(d.followingId, d.followingName || 'Maker', 'friend'));
+      });
+    } catch (err) {
+      console.error(err);
+      list.innerHTML = '';
+      empty.style.display = 'block';
+      toast(err.message || 'Could not load list');
+    }
+  }
+
+  function personRow(id, name, kind) {
+    const row = document.createElement('div');
+    row.className = 'person-row';
+    row.innerHTML = `
+      <div class="av">${initials(name)}</div>
+      <div class="meta"><b>${escapeHtml(name)}</b><span>${kind === 'friend' ? 'Friend' : kind === 'blocked' ? 'Blocked' : 'Following'}</span></div>
+      <div class="row-actions">
+        ${kind !== 'blocked' ? `<button type="button" class="chip-btn" data-act="msg">Chat</button>` : ''}
+        <button type="button" class="chip-btn" data-act="profile">Profile</button>
+        ${kind === 'blocked' ? `<button type="button" class="chip-btn danger" data-act="unblock">Unblock</button>` : ''}
+      </div>`;
+    row.querySelector('[data-act="profile"]')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openUserSheet({ id, name });
+    });
+    row.querySelector('[data-act="msg"]')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openChat({ id, name });
+    });
+    row.querySelector('[data-act="unblock"]')?.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      sheetUser = { id, name };
+      document.getElementById('btnBlock').click();
+      setTimeout(renderFriendsTab, 400);
+    });
+    row.addEventListener('click', () => openUserSheet({ id, name }));
+    return row;
+  }
+
+  // Chat
+  function openChat(user) {
+    activeChatUser = user;
+    document.getElementById('chatModalTitle').textContent = user.name || 'Chat';
+    document.getElementById('chatModal').classList.add('show');
+    loadThread();
+  }
+  document.getElementById('closeChatModal').addEventListener('click', () => {
+    document.getElementById('chatModal').classList.remove('show');
+  });
+  document.getElementById('chatModal').addEventListener('click', e => {
+    if (e.target.id === 'chatModal') e.target.classList.remove('show');
+  });
+
+  async function loadThread() {
+    const thread = document.getElementById('chatThread');
+    thread.innerHTML = '<div class="state-box"><div class="spinner"></div></div>';
+    if (!activeChatUser) return;
+    try {
+      const a = currentUser.$id;
+      const b = activeChatUser.id;
+      // fetch both directions
+      const [out, inn] = await Promise.all([
+        databases.listDocuments(DATABASE_ID, COLLECTION_MESSAGES, [
+          Query.equal('fromId', a), Query.equal('toId', b), Query.orderAsc('$createdAt'), Query.limit(100)
+        ]),
+        databases.listDocuments(DATABASE_ID, COLLECTION_MESSAGES, [
+          Query.equal('fromId', b), Query.equal('toId', a), Query.orderAsc('$createdAt'), Query.limit(100)
+        ])
+      ]);
+      const all = [...out.documents, ...inn.documents].sort((x, y) =>
+        new Date(x.$createdAt) - new Date(y.$createdAt)
+      );
+      thread.innerHTML = '';
+      if (!all.length) {
+        thread.innerHTML = '<p style="text-align:center;color:var(--ink-soft);font-size:.88rem;padding:20px;">Say hello 👋</p>';
+        return;
+      }
+      all.forEach(m => {
+        const div = document.createElement('div');
+        div.className = 'bubble ' + (m.fromId === a ? 'me' : 'them');
+        div.textContent = m.text || '';
+        thread.appendChild(div);
+      });
+      thread.scrollTop = thread.scrollHeight;
+    } catch (err) {
+      console.error(err);
+      thread.innerHTML = '<p style="text-align:center;color:var(--ink-soft);font-size:.85rem;">Could not load messages. Create the messages table in Appwrite.</p>';
+    }
+  }
+
+  document.getElementById('chatForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!activeChatUser) return;
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    try {
+      await databases.createDocument(
+        DATABASE_ID, COLLECTION_MESSAGES, ID.unique(),
+        {
+          fromId: currentUser.$id,
+          toId: activeChatUser.id,
+          fromName: currentUser.name || currentUser.email?.split('@')[0] || 'Maker',
+          toName: activeChatUser.name || 'Maker',
+          text
+        },
+        [
+          Permission.read(Role.any()),
+          Permission.update(Role.user(currentUser.$id)),
+          Permission.delete(Role.user(currentUser.$id))
+        ]
+      );
+      input.value = '';
+      await loadThread();
+    } catch (err) {
+      console.error(err);
+      toast(err.message || 'Send failed — create messages table.');
+    }
+  });
+
+  async function loadChatInbox() {
+    const list = document.getElementById('chatList');
+    const empty = document.getElementById('chatEmpty');
+    list.innerHTML = '<div class="state-box"><div class="spinner"></div></div>';
+    empty.style.display = 'none';
+    try {
+      const [sent, recv] = await Promise.all([
+        databases.listDocuments(DATABASE_ID, COLLECTION_MESSAGES, [
+          Query.equal('fromId', currentUser.$id), Query.orderDesc('$createdAt'), Query.limit(50)
+        ]),
+        databases.listDocuments(DATABASE_ID, COLLECTION_MESSAGES, [
+          Query.equal('toId', currentUser.$id), Query.orderDesc('$createdAt'), Query.limit(50)
+        ])
+      ]);
+      const map = new Map();
+      const consider = (m, peerId, peerName) => {
+        if (!peerId || peerId === currentUser.$id) return;
+        if (blockedIds.has(peerId)) return;
+        const prev = map.get(peerId);
+        if (!prev || new Date(m.$createdAt) > new Date(prev.at)) {
+          map.set(peerId, { id: peerId, name: peerName || 'Maker', at: m.$createdAt, preview: m.text });
+        }
+      };
+      sent.documents.forEach(m => consider(m, m.toId, m.toName));
+      recv.documents.forEach(m => consider(m, m.fromId, m.fromName));
+      const rows = [...map.values()].sort((a, b) => new Date(b.at) - new Date(a.at));
+      list.innerHTML = '';
+      if (!rows.length) { empty.style.display = 'block'; return; }
+      rows.forEach(r => {
+        const row = document.createElement('div');
+        row.className = 'person-row';
+        row.innerHTML = `
+          <div class="av">${initials(r.name)}</div>
+          <div class="meta"><b>${escapeHtml(r.name)}</b><span>${escapeHtml((r.preview || '').slice(0, 60))}</span></div>`;
+        row.addEventListener('click', () => openChat({ id: r.id, name: r.name }));
+        list.appendChild(row);
+      });
+    } catch (err) {
+      console.error(err);
+      list.innerHTML = '';
+      empty.style.display = 'block';
+    }
+  }
 
   // Upload
   const uploadModal = document.getElementById('uploadModal');
