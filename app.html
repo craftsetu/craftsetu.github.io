@@ -2,1921 +2,643 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta 
-
-name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Craft Setu — 
-
-Feed</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Craft Setu — Feed</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link 
-
-rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link 
-
-href="https://fonts.googleapis.com/css2?family=Cormorant
-
-+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;5
-
-00;600&display=swap" rel="stylesheet">
-<script 
-
-src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0/dist/iife/sdk.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/appwrite@17.0.0/dist/iife/sdk.js"></script>
 <style>
   :root{
-    --cream:#faf5e8; --cream-deep:#f2e9d6; --paper:#fffdf8;
-    --
-
-sage:#6f9273; --sage-deep:#4f7355; --sage-dark:#2f4a35;
-    --sage-line:#a9c2a4; 
-
---gold:#c39a4d; --ink:#33422f; --ink-soft:#5c6b57;
-    --shadow:0 20px 45px -
-
-20px rgba(47,74,53,.35);
+    --cream:#faf7f0;
+    --cream-deep:#f0ebe0;
+    --paper:#fffdfb;
+    --sage:#6f9273;
+    --sage-deep:#4f7355;
+    --sage-dark:#2f4a35;
+    --sage-line:#e5dece;
+    --gold:#c39a4d;
+    --gold-soft:#dcc084;
+    --ink:#2c3329;
+    --ink-soft:#6a7364;
+    --shadow:0 8px 24px -12px rgba(47,74,53,.25);
+    --feed-w:470px;
   }
   *{margin:0;padding:0;box-sizing:border-box}
-  body
-
-{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);min-
-
-height:100vh;-webkit-font-smoothing:antialiased}
-  body::before
-
-{content:"";position:fixed;inset:0;background-image:radial-gradient(circle at 2px 
-
-2px,rgba(111,146,115,.09) 1.4px,transparent 1.4px);background-size:26px 
-
-26px;pointer-events:none;z-index:0}
-  a{text-decoration:none;color:inherit} button
-
-{font-family:inherit} img{max-width:100%;display:block}
-  h1,h2,h3{font-
-
-family:'Cormorant Garamond',serif;color:var(--sage-dark);font-weight:600}
-  .app
-
-{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
-  
-
-.topbar{position:sticky;top:0;z-index:50;background:rgba
-
-(250,245,232,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba
-
-(111,146,115,.25)}
-  .topbar-inner{max-width:720px;margin:0 auto;padding:12px 
-
-16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .logo
-
-{display:flex;align-items:center;gap:8px}
-  .logo svg{width:32px;height:32px}
-  .logo-
-
-text{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-
-
-weight:700;color:var(--sage-dark)}
-  .logo-text em{font-style:italic;color:var(--
-
-gold);font-weight:600}
-  .top-actions{display:flex;align-items:center;gap:8px}
-  .icon-
-
-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--sage-
-
-line);background:var(--paper);display:flex;align-items:center;justify-
-
-content:center;cursor:pointer;color:var(--sage-dark)}
-  .icon-btn svg
-
-{width:18px;height:18px}
-  .avatar-btn{width:40px;height:40px;border-
-
-radius:50%;border:2px solid var(--sage-
-
-line);overflow:hidden;cursor:pointer;background:var(--sage);display:flex;align-
-
-items:center;justify-content:center;color:#fff;font-family:'Cormorant 
-
-Garamond',serif;font-weight:700}
-  .main{flex:1;max-
-
-width:720px;width:100%;margin:0 auto;padding:16px 12px 100px}
-  .composer-trigger
-
-{background:var(--paper);border:1px solid var(--sage-line);border-
-
-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:12px;margin-
-
-bottom:20px;cursor:pointer}
-  .composer-trigger .av{width:42px;height:42px;border-
-
-radius:50%;background:var(--sage);color:#fff;display:flex;align-
-
-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-
-
-weight:700;flex:none}
-  .composer-trigger span{color:var(--ink-soft);font-size:.95rem}
- 
-
- .feed{display:flex;flex-direction:column;gap:18px}
-  .post-card{background:var(--
-
-paper);border:1px solid var(--sage-line);border-radius:20px;overflow:hidden;box-
-
-shadow:0 10px 28px -16px rgba(47,74,53,.28)}
-  .post-header{display:flex;align-
-
-items:center;gap:12px;padding:14px 16px 10px}
-  .post-av
-
-{width:44px;height:44px;border-radius:50%;background:var(--
-
-sage);color:#fff;display:flex;align-items:center;justify-content:center;font-
-
-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.1rem;flex:none}
-  
-
-.post-meta{flex:1;min-width:0}
-  .post-meta .name{font-weight:500;color:var(--sage-
-
-dark);font-size:.95rem}
-  .post-meta .time{font-size:.78rem;color:var(--ink-
-
-soft);margin-top:2px}
-  .post-category{font-size:.72rem;letter-spacing:.04em;text-
-
-transform:uppercase;color:var(--sage-deep);background:rgba
-
-(111,146,115,.12);padding:4px 10px;border-radius:999px}
-  .post-body{padding:0 16px 
-
-12px}
-  .post-title{font-family:'Cormorant Garamond',serif;font-
-
-size:1.35rem;color:var(--sage-dark);margin-bottom:6px}
-  .post-desc{font-
-
-size:.92rem;color:var(--ink-soft);line-height:1.6;white-space:pre-wrap}
-  .post-tags
-
-{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-  .post-tags span{font-
-
-size:.75rem;color:var(--sage-deep);background:rgba(195,154,77,.12);padding:3px 
-
-9px;border-radius:999px}
-  .post-media{background:var(--cream-deep)}
-  .post-media 
-
-img{width:100%;max-height:480px;object-fit:cover;cursor:pointer}
-  .post-actions
-
-{display:flex;align-items:center;gap:6px;padding:10px 12px 14px;border-top:1px solid 
-
-rgba(111,146,115,.12)}
-  .action-btn{display:inline-flex;align-
-
-items:center;gap:6px;background:none;border:none;cursor:pointer;padding:8px 
-
-12px;border-radius:999px;font-size:.88rem;color:var(--ink-soft)}
-  .action-btn.liked
-
-{color:#c45c4a}
-  .action-btn.liked svg{fill:#c45c4a;stroke:#c45c4a}
-  .action-btn 
-
-svg{width:20px;height:20px}
-  .state-box{text-align:center;padding:48px 
-
-20px;color:var(--ink-soft)}
-  .state-box h3{font-family:'Cormorant 
-
-Garamond',serif;font-size:1.5rem;color:var(--sage-dark);margin:12px 0 8px}
-  .spinner
-
-{width:36px;height:36px;margin:0 auto;border:3px solid var(--sage-line);border-
-
-top-color:var(--sage);border-radius:50%;animation:spin .7s linear infinite}
-  
-
-@keyframes spin{to{transform:rotate(360deg)}}
-  .bottom-nav
-
-{position:fixed;bottom:0;left:0;right:0;z-index:50;background:rgba
-
-(250,245,232,.95);backdrop-filter:blur(12px);border-top:1px solid rgba
-
-(111,146,115,.25);display:flex;justify-content:center;padding:8px 0 env(safe-area-
-
-inset-bottom,8px)}
-  .bottom-nav-inner{max-
-
-width:720px;width:100%;display:flex;justify-content:space-around;align-
-
-items:center}
-  .nav-item{display:flex;flex-direction:column;align-
-
-items:center;gap:2px;background:none;border:none;cursor:pointer;padding:6px 
-
-16px;color:var(--ink-soft);font-size:.7rem}
-  .nav-item.active,.nav-item:hover{color:var
-
-(--sage-dark)}
-  .nav-item svg{width:22px;height:22px}
-  .nav-item.upload-fab
-
-{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var
-
-(--sage),var(--sage-deep));color:#fff;margin-top:-18px;box-shadow:0 10px 22px -8px 
-
-rgba(79,115,85,.55);display:flex;align-items:center;justify-content:center;padding:0}
-  
-
-.nav-item.upload-fab svg{width:24px;height:24px}
-  .nav-item.upload-fab span
-
-{display:none}
-  .modal-overlay{display:none;position:fixed;inset:0;z-
-
-index:100;background:rgba(47,74,53,.4);backdrop-filter:blur(6px);align-items:flex-
-
-end;justify-content:center}
-  .modal-overlay.show{display:flex}
-  .modal{background:var
-
-(--paper);border-radius:24px 24px 0 0;width:100%;max-width:560px;max-
-
-height:92vh;overflow-y:auto;animation:slideUp .3s ease}
-  @keyframes slideUp{from
-
-{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
-  
-
-.modal-head{display:flex;align-items:center;justify-content:space-
-
-between;padding:16px 18px;border-bottom:1px solid var(--sage-
-
-line);position:sticky;top:0;background:var(--paper);z-index:2}
-  .modal-head h2{font-
-
-size:1.25rem}
-  .modal-close{width:36px;height:36px;border-
-
-radius:50%;border:none;background:var(--cream-deep);cursor:pointer;font-
-
-size:1.2rem;color:var(--sage-dark)}
-  .modal-body{padding:18px}
-  .dropzone
-
-{border:2px dashed var(--sage-line);border-radius:16px;padding:28px 16px;text-
-
-align:center;cursor:pointer;background:rgba(250,245,232,.5)}
-  
-
-.dropzone.dragover,.dropzone:hover{border-color:var(--gold);background:rgba
-
-(220,192,132,.1)}
-  .dropzone p{color:var(--ink-soft);font-size:.88rem;margin-top:6px}
- 
-
- .dropzone .hint{font-size:.75rem;color:var(--sage-deep);margin-top:8px}
-  #fileInput
-
-{display:none}
-  .preview-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-  
-
-.preview-thumb{width:72px;height:72px;border-
-
-radius:12px;overflow:hidden;position:relative;border:1px solid var(--sage-line)}
-  
-
-.preview-thumb img{width:100%;height:100%;object-fit:cover}
-  .preview-thumb .rm
-
-{position:absolute;top:2px;right:2px;width:20px;height:20px;border-
-
-radius:50%;background:rgba(47,74,53,.8);color:#fff;border:none;font-
-
-size:12px;cursor:pointer}
-  .field{margin-bottom:14px}
-  .field label
-
-{display:block;font-size:.8rem;color:var(--ink-soft);margin-bottom:5px}
-  .field 
-
-input,.field select,.field textarea{width:100%;font-family:'Jost',sans-serif;font-
-
-size:.95rem;padding:11px 13px;border-radius:12px;border:1.4px solid var(--sage-
-
-line);background:var(--cream);color:var(--ink);outline:none}
-  .field textarea{min-
-
-height:90px;resize:vertical;line-height:1.5}
-  .field select
-
-{appearance:none;cursor:pointer}
-  .btn{display:inline-flex;align-items:center;justify-
-
-content:center;gap:8px;font-family:'Jost',sans-serif;font-size:.95rem;font-
-
-weight:500;padding:12px 22px;border-radius:999px;cursor:pointer;border:none}
-  
-
-.btn:disabled{opacity:.6;cursor:not-allowed}
-  .btn-primary{background:linear-
-
-gradient(135deg,var(--sage),var(--sage-deep));color:#fbf8ef;width:100%}
-  .btn-
-
-outline{background:transparent;color:var(--sage-deep);border:1.4px solid var(--
-
-sage);width:100%}
-  .profile-card{background:var(--paper);border:1px solid var(--
-
-sage-line);border-radius:20px;padding:24px 20px;text-align:center;margin-
-
-bottom:20px}
-  .profile-av{width:80px;height:80px;border-radius:50%;margin:0 auto 
-
-12px;background:var(--sage);color:#fff;display:flex;align-items:center;justify-
-
-content:center;font-family:'Cormorant Garamond',serif;font-size:2rem;font-
-
-weight:700}
-  .profile-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem}
-  
-
-.profile-email{font-size:.85rem;color:var(--ink-soft);margin:4px 0 14px}
-  .profile-
-
-stats{display:flex;justify-content:center;gap:28px;margin-bottom:16px}
-  .profile-
-
-stats b{display:block;font-family:'Cormorant Garamond',serif;font-
-
-size:1.4rem;color:var(--sage-dark)}
-  .profile-stats span{font-size:.75rem;color:var(--
-
-ink-soft)}
-  .lightbox{display:none;position:fixed;inset:0;z-index:200;background:rgba
-
-(0,0,0,.88);align-items:center;justify-content:center;padding:20px}
-  .lightbox.show
-
-{display:flex}
-  .lightbox img{max-width:100%;max-height:90vh;border-
-
-radius:8px;object-fit:contain}
-  .lightbox-close
-
-{position:absolute;top:16px;right:16px;width:40px;height:40px;border-
-
-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-
-
-size:1.4rem;cursor:pointer}
-  .toast
-
-{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY
-
-(60px);background:var(--sage-dark);color:var(--cream);padding:11px 20px;border-
-
-radius:999px;font-size:.88rem;z-index:300;opacity:0;pointer-
-
-events:none;transition:transform .3s,opacity .3s;max-width:90vw}
-  .toast.show
-
-{transform:translateX(-50%) translateY(0);opacity:1}
-  #authGate
-
-{position:fixed;inset:0;z-index:500;background:var(--cream);display:flex;align-
-
-items:center;justify-content:center;flex-direction:column;gap:16px}
-  @media (min-
-
-width:640px){.modal-overlay{align-items:center;padding:24px}.modal{border-
-
-radius:24px;max-height:85vh}}
-
-  /* Social: user sheet, friends, chat */
-  .name-link
-
-{cursor:pointer;color:var(--sage-dark)}
-  .name-link:hover{text-decoration:underline}
-  
-
-.user-sheet-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;justify-
-
-content:center}
-  .user-sheet-actions .btn{width:auto;padding:10px 18px;font-
-
-size:.88rem}
-  .btn-danger{background:#f6e4e0;color:#b3543f;border:1.4px solid 
-
-#e3bfb5;width:auto;padding:10px 18px;font-size:.88rem}
-  .btn-danger:hover
-
-{background:#b3543f;color:#fff}
-  .btn-soft{background:rgba
-
-(111,146,115,.12);color:var(--sage-deep);border:none;width:auto;padding:10px 
-
-18px;font-size:.88rem}
-  .btn-soft.on{background:var(--sage);color:#fff}
-  .friends-
-
-list,.chat-list{display:flex;flex-direction:column;gap:10px}
-  .person-row{
-    
-
-display:flex;align-items:center;gap:12px;
-    background:var(--paper);border:1px solid 
-
-var(--sage-line);
-    border-radius:16px;padding:12px 14px;cursor:pointer;
-    
-
-transition:border-color .2s,box-shadow .2s;
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Jost',sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
   }
-  .person-row:hover{border-color:var(--
+  a{text-decoration:none;color:inherit}
+  button{font-family:inherit}
+  img{max-width:100%;display:block}
+  h1,h2,h3{font-family:'Cormorant Garamond',serif;color:var(--sage-dark);font-weight:600}
 
-gold-soft);box-shadow:0 8px 20px -12px rgba(47,74,53,.3)}
+  /* Shell */
+  .app{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,253,251,.94);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--sage-line);
+  }
+  .topbar-inner{
+    max-width:var(--feed-w);
+    margin:0 auto;
+    padding:10px 14px;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .logo{display:flex;align-items:center;gap:8px}
+  .logo-img{
+    width:36px;height:36px;border-radius:50%;
+    object-fit:cover;border:1px solid var(--sage-line);
+  }
+  .logo-text{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.4rem;font-weight:700;color:var(--sage-dark);
+  }
+  .logo-text em{font-style:italic;color:var(--gold);font-weight:600}
+  .top-actions{display:flex;align-items:center;gap:8px}
+  .icon-btn{
+    width:36px;height:36px;border-radius:50%;
+    border:1px solid var(--sage-line);background:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--sage-dark);
+  }
+  .icon-btn svg{width:18px;height:18px}
+  .avatar-btn{
+    width:36px;height:36px;border-radius:50%;
+    border:2px solid var(--sage-line);overflow:hidden;cursor:pointer;
+    background:var(--sage);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-weight:700;font-size:.95rem;
+  }
+  .avatar-btn img{width:100%;height:100%;object-fit:cover}
+
+  .main{
+    flex:1;
+    width:100%;
+    max-width:var(--feed-w);
+    margin:0 auto;
+    padding:0 0 90px;
+  }
+
+  /* Composer */
+  .composer-trigger{
+    margin:12px 12px 10px;
+    background:var(--paper);
+    border:1px solid var(--sage-line);
+    border-radius:14px;
+    padding:12px 14px;
+    display:flex;align-items:center;gap:12px;
+    cursor:pointer;
+  }
+  .composer-trigger .av{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--sage);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-weight:700;flex:none;
+  }
+  .composer-trigger span{color:var(--ink-soft);font-size:.92rem}
+
+  /* Feed / posts — IG style */
+  .feed{display:flex;flex-direction:column;gap:0}
+  .post-card{
+    background:var(--paper);
+    border:none;
+    border-bottom:10px solid var(--cream-deep);
+    overflow:hidden;
+  }
+  .post-header{
+    display:flex;align-items:center;gap:10px;
+    padding:12px 14px;
+  }
+  .post-av{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--sage);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-weight:700;font-size:.9rem;
+    flex:none;cursor:pointer;
+  }
+  .post-meta{flex:1;min-width:0}
+  .post-meta .name{font-weight:600;color:var(--sage-dark);font-size:.9rem}
+  .post-meta .time{font-size:.72rem;color:var(--ink-soft);margin-top:1px}
+  .post-category{display:none}
+  .name-link{cursor:pointer}
+  .name-link:hover{text-decoration:underline}
+
+  .post-media{
+    width:100%;
+    aspect-ratio:1/1;
+    background:var(--cream-deep);
+    position:relative;
+  }
+  .post-media img{
+    width:100%;height:100%;
+    object-fit:cover;cursor:pointer;
+  }
+
+  .post-actions{
+    display:flex;align-items:center;gap:4px;
+    padding:6px 6px 2px 8px;
+    flex-wrap:wrap;
+  }
+  .action-btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:none;border:none;cursor:pointer;
+    padding:8px;border-radius:10px;color:var(--ink);
+  }
+  .action-btn:hover{background:rgba(111,146,115,.08)}
+  .action-btn svg{width:24px;height:24px}
+  .action-btn.liked{color:#e05c4c}
+  .action-btn.liked svg{fill:#e05c4c;stroke:#e05c4c}
+
+  .buy-btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    margin-left:auto;
+    background:linear-gradient(135deg,#d4a84b,var(--gold));
+    color:#fff !important;border:none;border-radius:999px;
+    padding:8px 14px;font-size:.8rem;font-weight:600;
+    cursor:pointer;font-family:inherit;
+    box-shadow:0 6px 14px -6px rgba(195,154,77,.5);
+  }
+  .buy-btn-wide{
+    width:100%;margin:0;border-radius:12px;padding:12px 16px;font-size:.92rem;
+  }
+
+  .post-body{padding:4px 14px 16px}
+  .post-title{
+    font-family:'Jost',sans-serif;
+    font-size:.95rem;font-weight:600;
+    color:var(--sage-dark);margin:2px 0 4px;
+  }
+  .post-desc{
+    font-size:.88rem;color:var(--ink-soft);
+    line-height:1.5;white-space:pre-wrap;
+  }
+  .post-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+  .post-tags span{font-size:.8rem;color:var(--sage-deep)}
+
+  .sale-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(195,154,77,.15);color:var(--gold);
+    font-size:.75rem;font-weight:600;
+    padding:5px 11px;border-radius:999px;margin-top:8px;
+  }
+  .sale-badge b{color:var(--sage-dark)}
+
+  /* States */
+  .state-box{text-align:center;padding:40px 20px;color:var(--ink-soft)}
+  .state-box h3{font-size:1.35rem;margin:12px 0 8px}
+  .spinner{
+    width:32px;height:32px;margin:0 auto;
+    border:3px solid var(--sage-line);
+    border-top-color:var(--sage);
+    border-radius:50%;
+    animation:spin .7s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* Bottom nav */
+  .bottom-nav{
+    position:fixed;bottom:0;left:0;right:0;z-index:50;
+    background:rgba(255,253,251,.96);
+    backdrop-filter:blur(14px);
+    border-top:1px solid var(--sage-line);
+    display:flex;justify-content:center;
+    padding:4px 0 calc(4px + env(safe-area-inset-bottom,0px));
+  }
+  .bottom-nav-inner{
+    max-width:var(--feed-w);width:100%;
+    display:flex;justify-content:space-around;align-items:center;
+  }
+  .nav-item{
+    display:flex;flex-direction:column;align-items:center;gap:1px;
+    background:none;border:none;cursor:pointer;
+    padding:6px 8px;color:var(--ink-soft);
+    font-size:.62rem;letter-spacing:.02em;
+  }
+  .nav-item.active,.nav-item:hover{color:var(--sage-dark)}
+  .nav-item svg{width:24px;height:24px}
+  .nav-item.upload-fab{
+    width:46px;height:46px;border-radius:50%;
+    background:linear-gradient(135deg,var(--sage),var(--sage-deep));
+    color:#fff;margin-top:-14px;
+    box-shadow:0 8px 18px -6px rgba(79,115,85,.55);
+    display:flex;align-items:center;justify-content:center;padding:0;
+  }
+  .nav-item.upload-fab span{display:none}
+  .nav-item.upload-fab svg{width:22px;height:22px}
+
+  /* Views */
+  .view-title{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.35rem;margin:16px 16px 12px;color:var(--sage-dark);
+  }
+  .tabs-row{display:flex;gap:8px;margin:0 12px 14px;flex-wrap:wrap}
+  .tabs-row button{
+    border:1px solid var(--sage-line);background:var(--paper);color:var(--ink-soft);
+    border-radius:999px;padding:7px 14px;font-size:.82rem;cursor:pointer;font-family:inherit;
+  }
+  .tabs-row button.on{background:var(--sage);color:#fff;border-color:var(--sage)}
+  .friends-list,.chat-list{display:flex;flex-direction:column;gap:8px;padding:0 12px}
+
+  .person-row{
+    display:flex;align-items:center;gap:12px;
+    background:var(--paper);border:1px solid var(--sage-line);
+    border-radius:14px;padding:12px;cursor:pointer;
+  }
   .person-row .av{
-    
-
-width:44px;height:44px;border-radius:50%;background:var(--sage);color:#fff;
-    
-
-display:flex;align-items:center;justify-content:center;
-    font-family:'Cormorant 
-
-Garamond',serif;font-weight:700;flex:none;
+    width:42px;height:42px;border-radius:50%;background:var(--sage);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-weight:700;flex:none;
   }
   .person-row .meta{flex:1;min-width:0}
-  
-
-.person-row .meta b{display:block;font-size:.95rem;color:var(--sage-dark)}
-  .person-
-
-row .meta span{font-size:.78rem;color:var(--ink-soft)}
-  .person-row .row-actions
-
-{display:flex;gap:6px;flex-wrap:wrap}
+  .person-row .meta b{display:block;font-size:.92rem;color:var(--sage-dark)}
+  .person-row .meta span{font-size:.75rem;color:var(--ink-soft)}
+  .person-row .row-actions{display:flex;gap:6px;flex-wrap:wrap}
   .chip-btn{
-    border:1px solid var(--sage-
-
-line);background:var(--cream);color:var(--sage-dark);
-    border-
-
-radius:999px;padding:6px 12px;font-size:.75rem;cursor:pointer;font-family:inherit;
-  
-
-}
+    border:1px solid var(--sage-line);background:var(--cream);color:var(--sage-dark);
+    border-radius:999px;padding:6px 11px;font-size:.72rem;cursor:pointer;font-family:inherit;
+  }
   .chip-btn:hover{background:var(--sage);color:#fff;border-color:var(--sage)}
-  
+  .chip-btn.danger:hover{background:#b3543f;border-color:#b3543f}
 
-.chip-btn.danger:hover{background:#b3543f;border-color:#b3543f}
-  .chat-thread
-
-{display:flex;flex-direction:column;gap:8px;max-height:40vh;overflow-
-
-y:auto;padding:8px 0 12px}
-  .bubble{
-    max-width:80%;padding:10px 14px;border-
-
-radius:16px;font-size:.9rem;line-height:1.45;
-  }
-  .bubble.me{align-self:flex-
-
-end;background:var(--sage);color:#fff;border-bottom-right-radius:4px}
-  
-
-.bubble.them{align-self:flex-start;background:var(--cream-deep);color:var(--
-
-ink);border-bottom-left-radius:4px}
-  .chat-compose{display:flex;gap:8px;margin-
-
-top:8px}
-  .chat-compose input{
-    flex:1;font-family:inherit;font-
-
-size:.95rem;padding:11px 13px;border-radius:12px;
-    border:1.4px solid var(--sage-
-
-line);background:var(--cream);color:var(--ink);outline:none;
-  }
-  .chat-compose 
-
-input:focus{border-color:var(--sage)}
-  .chat-compose button{width:auto;padding:11px 
-
-18px}
-  .view-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;margin:0 
-
-4px 14px;color:var(--sage-dark)}
-  .tabs-row{display:flex;gap:8px;margin-
-
-bottom:16px;flex-wrap:wrap}
-  .tabs-row button{
-    border:1px solid var(--sage-
-
-line);background:var(--paper);color:var(--ink-soft);
-    border-
-
-radius:999px;padding:8px 16px;font-size:.85rem;cursor:pointer;font-family:inherit;
-  
-
-}
-  .tabs-row button.on{background:var(--sage);color:#fff;border-color:var(--sage)}
-
-
-  
-
-.sale-badge{
-    display:inline-flex;align-items:center;gap:6px;
-    background:rgba
-
-(195,154,77,.18);color:var(--gold);
-    font-size:.78rem;font-weight:600;letter-
-
-spacing:.03em;
-    padding:5px 12px;border-radius:999px;margin-top:10px;
-  }
-  .sale-
-
-badge b{color:var(--sage-dark);font-size:.95rem}
-  .buy-btn{
-    display:inline-
-
-flex;align-items:center;gap:6px;
-    margin-left:auto;background:linear-gradient
-
-(135deg,#d4a84b,var(--gold));
-    color:#fff !important;border:none;border-
-
-radius:999px;padding:10px 18px;
-    font-size:.88rem;font-
-
-weight:600;cursor:pointer;font-family:inherit;
-    box-shadow:0 8px 18px -8px rgba
-
-(195,154,77,.55);
-  }
-  .buy-btn:hover{filter:brightness(1.08);transform:translateY(-
-
-1px)}
-  .post-actions{flex-wrap:wrap}
-  .sale-toggle{
-    display:flex;align-
-
-items:center;gap:10px;
-    padding:12px 14px;border:1.4px solid var(--sage-line);
-    
-
-border-radius:12px;background:var(--cream);margin-bottom:14px;
-  }
-  .sale-toggle 
-
-input{width:18px;height:18px;accent-color:var(--sage)}
-  .sale-toggle label{font-
-
-size:.92rem;color:var(--sage-dark);cursor:pointer}
-  #priceField{display:none}
-  
-
-.order-card{
+  .profile-card{
+    margin:12px;
     background:var(--paper);border:1px solid var(--sage-line);
-    border-
-
-radius:16px;padding:14px 16px;margin-bottom:10px;text-align:left;
+    border-radius:18px;padding:22px 18px;text-align:center;
   }
-  .order-card h4
+  .profile-av{
+    width:76px;height:76px;border-radius:50%;margin:0 auto 10px;
+    background:var(--sage);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;
+  }
+  .profile-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem}
+  .profile-email{font-size:.82rem;color:var(--ink-soft);margin:4px 0 12px}
+  .profile-stats{display:flex;justify-content:center;gap:22px;margin-bottom:14px;flex-wrap:wrap}
+  .profile-stats b{display:block;font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--sage-dark)}
+  .profile-stats span{font-size:.7rem;color:var(--ink-soft)}
 
-{font-family:'Cormorant Garamond',serif;font-size:1.1rem;margin-bottom:6px}
-  
+  .order-card{
+    margin:0 12px 10px;
+    background:var(--paper);border:1px solid var(--sage-line);
+    border-radius:14px;padding:14px;text-align:left;
+  }
+  .order-card h4{font-family:'Cormorant Garamond',serif;font-size:1.05rem;margin-bottom:6px}
+  .order-card p{font-size:.84rem;color:var(--ink-soft);line-height:1.45;margin:2px 0}
+  .order-card .cod{color:var(--gold);font-weight:500;font-size:.78rem;margin-top:6px}
 
-.order-card p{font-size:.85rem;color:var(--ink-soft);line-height:1.5;margin:2px 0}
-  
+  /* Modals */
+  .modal-overlay{
+    display:none;position:fixed;inset:0;z-index:100;
+    background:rgba(40,50,40,.45);backdrop-filter:blur(6px);
+    align-items:flex-end;justify-content:center;
+  }
+  .modal-overlay.show{display:flex}
+  .modal{
+    background:var(--paper);
+    border-radius:20px 20px 0 0;
+    width:100%;max-width:var(--feed-w);
+    max-height:92vh;overflow-y:auto;
+    animation:slideUp .28s ease;
+  }
+  @keyframes slideUp{from{transform:translateY(24px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .modal-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 16px;border-bottom:1px solid var(--sage-line);
+    position:sticky;top:0;background:var(--paper);z-index:2;
+  }
+  .modal-head h2{font-size:1.15rem}
+  .modal-close{
+    width:34px;height:34px;border-radius:50%;
+    border:none;background:var(--cream-deep);cursor:pointer;
+    font-size:1.15rem;color:var(--sage-dark);
+  }
+  .modal-body{padding:16px}
 
-.order-card .cod{color:var(--gold);font-weight:500;font-size:.8rem;margin-top:6px}
-
-
-  
-
-.logo-img{
-    width:40px;height:40px;border-radius:50%;
-    object-
-
-fit:cover;display:block;
-    border:1.5px solid var(--sage-line);
-    box-shadow:0 4px 
-
-12px -6px rgba(47,74,53,.35);
+  .dropzone{
+    border:2px dashed var(--sage-line);border-radius:14px;
+    padding:24px 14px;text-align:center;cursor:pointer;background:rgba(250,247,240,.7);
+  }
+  .dropzone.dragover,.dropzone:hover{border-color:var(--gold);background:rgba(220,192,132,.1)}
+  .dropzone p{color:var(--ink-soft);font-size:.86rem;margin-top:6px}
+  .dropzone .hint{font-size:.72rem;color:var(--sage-deep);margin-top:6px}
+  #fileInput{display:none}
+  .preview-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .preview-thumb{
+    width:68px;height:68px;border-radius:10px;overflow:hidden;
+    position:relative;border:1px solid var(--sage-line);
+  }
+  .preview-thumb img{width:100%;height:100%;object-fit:cover}
+  .preview-thumb .rm{
+    position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;
+    background:rgba(47,74,53,.85);color:#fff;border:none;font-size:12px;cursor:pointer;
   }
 
+  .field{margin-bottom:12px}
+  .field label{display:block;font-size:.78rem;color:var(--ink-soft);margin-bottom:5px}
+  .field input,.field select,.field textarea{
+    width:100%;font-family:'Jost',sans-serif;font-size:.92rem;
+    padding:11px 12px;border-radius:12px;
+    border:1.4px solid var(--sage-line);background:var(--cream);color:var(--ink);outline:none;
+  }
+  .field textarea{min-height:88px;resize:vertical;line-height:1.45}
+  .field select{appearance:none;cursor:pointer}
+
+  .sale-toggle{
+    display:flex;align-items:center;gap:10px;
+    padding:12px;border:1.4px solid var(--sage-line);
+    border-radius:12px;background:var(--cream);margin-bottom:12px;
+  }
+  .sale-toggle input{width:18px;height:18px;accent-color:var(--sage)}
+  .sale-toggle label{font-size:.9rem;color:var(--sage-dark);cursor:pointer}
+  #priceField{display:none}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    font-family:'Jost',sans-serif;font-size:.92rem;font-weight:500;
+    padding:12px 20px;border-radius:999px;cursor:pointer;border:none;
+  }
+  .btn:disabled{opacity:.6;cursor:not-allowed}
+  .btn-primary{
+    background:linear-gradient(135deg,var(--sage),var(--sage-deep));
+    color:#fbf8ef;width:100%;
+  }
+  .btn-outline{
+    background:transparent;color:var(--sage-deep);
+    border:1.4px solid var(--sage);width:100%;
+  }
+  .btn-soft{
+    background:rgba(111,146,115,.12);color:var(--sage-deep);
+    border:none;width:auto;padding:10px 16px;font-size:.86rem;
+  }
+  .btn-soft.on{background:var(--sage);color:#fff}
+  .btn-danger{
+    background:#f6e4e0;color:#b3543f;border:1.4px solid #e3bfb5;
+    width:auto;padding:10px 16px;font-size:.86rem;
+  }
+  .user-sheet-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;justify-content:center}
+  .user-sheet-actions .btn{width:auto;padding:10px 16px;font-size:.86rem}
+
+  .chat-thread{display:flex;flex-direction:column;gap:8px;max-height:42vh;overflow-y:auto;padding:6px 0 10px}
+  .bubble{max-width:78%;padding:10px 13px;border-radius:16px;font-size:.88rem;line-height:1.4}
+  .bubble.me{align-self:flex-end;background:var(--sage);color:#fff;border-bottom-right-radius:4px}
+  .bubble.them{align-self:flex-start;background:var(--cream-deep);color:var(--ink);border-bottom-left-radius:4px}
+  .chat-compose{display:flex;gap:8px;margin-top:6px}
+  .chat-compose input{
+    flex:1;font-family:inherit;font-size:.92rem;padding:11px 12px;border-radius:12px;
+    border:1.4px solid var(--sage-line);background:var(--cream);color:var(--ink);outline:none;
+  }
+  .chat-compose button{width:auto;padding:11px 16px}
+
+  .lightbox{
+    display:none;position:fixed;inset:0;z-index:200;
+    background:rgba(0,0,0,.9);align-items:center;justify-content:center;padding:16px;
+  }
+  .lightbox.show{display:flex}
+  .lightbox img{max-width:100%;max-height:90vh;border-radius:6px;object-fit:contain}
+  .lightbox-close{
+    position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;
+    background:rgba(255,255,255,.15);border:none;color:#fff;font-size:1.3rem;cursor:pointer;
+  }
+
+  .toast{
+    position:fixed;bottom:78px;left:50%;
+    transform:translateX(-50%) translateY(50px);
+    background:var(--sage-dark);color:#f5f0e6;
+    padding:11px 18px;border-radius:999px;font-size:.86rem;
+    z-index:300;opacity:0;pointer-events:none;
+    transition:transform .28s,opacity .28s;max-width:90vw;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+  #authGate{
+    position:fixed;inset:0;z-index:500;background:var(--cream);
+    display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;
+  }
+
+  @media (min-width:520px){
+    .modal-overlay{align-items:center;padding:20px}
+    .modal{border-radius:18px;max-height:85vh}
+    .post-card{
+      border:1px solid var(--sage-line);
+      border-radius:14px;
+      margin:10px 0 0;
+      border-bottom:1px solid var(--sage-line);
+    }
+    .feed{gap:12px;padding:0 0 8px}
+    .main{padding:8px 0 90px}
+  }
 </style>
 </head>
 <body>
 <div id="authGate">
-  <div 
-
-class="spinner" id="authSpinner"></div>
-  <p id="authStatus" style="color:var(--ink-
-
-soft);font-size:.9rem;">Loading Craft Setu…</p>
-  <a href="login.html" 
-
-id="authFallback" style="display:none;margin-top:12px;color:var(--sage-deep);font-
-
-size:.9rem;text-decoration:underline;">Go to log in</a>
+  <div class="spinner" id="authSpinner"></div>
+  <p id="authStatus" style="color:var(--ink-soft);font-size:.9rem;">Loading Craft Setu…</p>
+  <a href="login.html" id="authFallback" style="display:none;margin-top:12px;color:var(--sage-deep);font-size:.9rem;text-decoration:underline;">Go to log in</a>
 </div>
 
-<div class="app" id="app" 
-
-style="display:none;">
+<div class="app" id="app" style="display:none;">
   <header class="topbar">
     <div class="topbar-inner">
-      <a 
-
-href="app.html" class="logo">
-        <img 
-
-src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEB
-
-AUEBAYFBQUGBgYHCQ4JCQgICRINDQoOFRIWFhUSFBQXGiEcFxgfGRQUHScd
-
-HyIjJSUlFhwpLCgkKyEkJST/2wBDAQYGBgkICREJCREkGBQYJCQkJCQkJCQkJ
-
-CQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCQkJCT/wA
-
-ARCAEAAPwDASIAAhEBAxEB/8QAHAAAAQUBAQEAAAAAAAAAAAAABQABA
-
-gQGBwMI/8QARBAAAQMDAwIDBQUFBQcFAQEAAQIDBAAFEQYSITFBE1FhBx
-
-QicYEyQpGhsRUjUsHRFjNicqIkQ0RTgpLhJWOz8PFkdP/EABkBAAMBAQEAAAA
-
-AAAAAAAAAAAABAgMEBf/EACgRAAICAgICAgICAgMAAAAAAAABAhEDIRIx
-
-QVEEYSIyE3EUoUKBwf/aAAwDAQACEQMRAD8A7+SVHJOT6044NNUgK887qH
-
-zSpuRUqdgNTg4pUsUASBpyaiOKfGaYhwaem4FKmFCOaQpwCTU9mBk8AdSaLERGc
-
-U+KpP3y3sLLQf8AGdH
-
-+7ZBWr8BXgb8pSwEQHUpJ6uqSg/hnP5Vn/IvZXBhPp1pwtG7YFDdjO3POKBQLtcJ
-
-d1lMOwy3FbUfDdzwpOBj13Z3Z7YxWXYf1jbtQ3xuM0p9m4OJ8BSkDY2nAHKs8Y
-
-HlQ56FT8I6PjNLBoJeLlc7cmAiHEVN3L2vlJAONvB54HxYJ9KsvXh9h0IMRLgwN2
-
-10JOe
-
-+ArH60+VAo2EsGlVNu/QsD3kPQyf8AnoKU/wDd0/OiCQh5AW0tLiTyFJOQaakmD
-
-VdnlmnGakUYpBNUA2aVORTUBQxpxSpwKVkj04pUqAFmlSputMaQ9SS44kYC1Aeh
-
-qNKgboH1IVHpUhzUDJCnxTCn60wHpEU1PmgBqkKQFOKYCAzUwAlJUogAcknoKrT
-
-Z0e2x1SJLgQhP5+goD/6hqRz99ujwgeGASCoeaz/L8cdKznkp0uyoxvb6L0rUqVOKZt
-
-bIlLB2qeUcNJPlnufQVXRa5tyV4lxfce8myShsf9IPP1P0orDtzENAS2gcDAOOg9PKv
-
-K66ht1jLaZinytwEpbYYW6sgdThIOB6mp4XubHyrUSEG2ltbza2EtsJIDew4C
-
-+OSUjir6YzTf2EJHyFZid7RbbLdt8Owy463ZjikOyJSVITECRkhSFYJcPRKOM9eg
-
-rVtIKWkguF04+2cfF68cVca8Ett9kNgHQYqnFucSRJks
-
-+Js8BZbKiknKh1FECOK5xO0gxddTuXABIY96kCWgOuJLhCQEY2qAGCOeOapsxyyc
-
-UqOiJwoAjkHkUlNIWMKSD8xUWU4aQAONo6fKvRI5os1R4+4tAHwwW89dhwPwo
-
-cm1Law8wlUV08kx1BJz6j7Kvwqq7rCJZdRJtVymRVxHmnHBI3BLkVSBkpdA
-
-+6R0VgcjB6iiMDUtquziUwn3lBfKC5HcaDn
-
-+UqSM1DpjTaHZvMmMSmc147aer7KSFJ9Vo6/UZHyoq041JaS9HcQ62oZCknINeD
-
-jKHeSMEdFDgihi4ki3PGRCWltSjlaTw29/mH3Vf4h9Qae0FJ9BoiogV5Qbgzcm1YSpp
-
-5s7XWV8KbPr/I9D2qwU4q07J
-
-+mNSpUqCRClSpUwFTU9KgLFSpUqAKAqQGDTVKpLHHFOKVIHNADU4pxT7TTE2
-
-LBxnHFeUqW1BjrkPqCW2xkmotRiy644XXFBZzsJ4HyoE8pWobmUDmDFVj0dc8/U
-
-D/AO9aznJpfZUYpv6IxIsi/wAtM+YChpPLLJ+4OxP+I/l
-
-+mgQWmClpAA44AqTLaW0BKRwKdDJBGSCBnHpUqDS0U5JnqnkZBzUgkcnAyaqwL
-
-e3A8Tw1OK3qKjvWVY5zgZ6Dk0KXrW3265P227lEV5KA40ptRdDwKgnaEgbgvJHG
-
-Oe3Q1Vutk/0KJoi0RNUStRoj5uElISpxSiQBjHAJwDgAZFG1SsTURfAdO5BX4oT8
-
-AwehPnTxpCJbKXmw4Eq6BxBQfwNeN2u0WywnJktwIbQM
-
-+ZPkAO59KF9Ck/ZWv12ascNyQQ4884QhmOg5U64eEoQPMn
-
-+vasxo8TmLTLFz8MzhMlF3wvs7t5OB546Z74zV21w7hLv7d5vA8NSmFmJDPJipJA
-
-3K/wDcI6+Q486eCo77h/8A7H/1ppnPl2rZa0ldpj8VFsvASi6x2UrUscJktkfC6n9FDs
-
-R6ijrRSg+CFLUpABJVySPnQC62r9rrtJZkrhy4za3I76OdqtiRhQ
-
-+8k909/nVyy39u4vyLdJCGLpDIEmOFZAyMhaT3QeoP0PNC2ap1pnlqXSNs1U5EVc
-
-WA57q4HG1AlKgfLI5x6dKNIaQhISlIAFM2oqTkoKD5E1WjXiFKnvQWn21vMgbgF
-
-A89x8xxn5iikmaW2i6KcgEYIobdri7BXHCI7y0OOBKltgHb5DBI6nAz2zV
-
-+OtbzKFutFpZGSgkEpPlkVV+BV5Bs6G4y6iVEUlD7YwhR
-
-+yR/Ar/CfP7p5HcUSgTm7jHDqEqQoEocbV9ptQ6pPrU1N5SQRkGg8hRs8z3wZ8I4
-
-TIHmjoF/NPQ/4flU9Ox/sGymmxSa3lPxKCskkEDtUiKtEEcUqfGKbFMBUqXSlQIVKl
-
-SoApACnqA61MVJY4pxS60hQDJpHcVASA20lRH7wkk57c9K85SX1oHgKSk992aom
-
-NP/AIo/
-
-+qpbY0l5JaguBRCQwwsJmST4TYA8+pz2wK9LXARAioZQMBIxnz9fr1oPAYdm3x95
-
-9aVIiDwkbRxuPX
-
-+dG5Lz7fwtMl0EdQoAg1nF2+TLapcUW/dCFB4o5xtz6VFDqVlYSTlB2nI71UYn3FK8
-
-rilQPUFY5qjqrUidPWtua42Wg4+lpRI37AcnPAPlj61qmjGT4q2ErW1MjsLTOkpkOKd
-
-UpKgjaEpJ4H0FQmWC33CfFnyorTsiISphak5LZPUg0LtOuLJeo8h/xkstRdpcU9lIBO
-
-em4DyqnM1hPu6G0abiFUd51LIuUhJDIJOMpHVf049aToSypq0H7zqCHY2kB5RcfdV
-
-sZjtjc46rslKRyTWcRbn71GRfb4D429Biws/BFwsDcf4nOOvQdvOrljsTVsvMiQ6+7P
-
-nKZb3Sn8bhkqyEDohJ44HlzmrIBFibVnPxp/8AkqWxNN7kWn1E3Rsn/kr/AFFA4T
-
-mHZ4//ALHv1o0+cXZpP/sLP
-
-+oVmGHtsmcOeZr447c96IkZ3o0qciTBx18FX6Jqq/bI9zdmOKUuPLZe8RmU1wttXhj
-
-8QccpPBq4gf7bAHmwv9E0mEZXc/RZ/wDjFBrp9lSx6jkLREiXyOmJMkNhTTqTlmR
-
-kfcV2V5pPPlkUXj2uJGmvzWmG0yHwlLjgSMqCc45+poJOiR7hYbbDmsJfjrdj7kKzzj
-
-ntXm1IvFiuKocZt28W5LQd2qWPemQVEbQT/eAY74V86u0yE3E1e1KsZAODmq9xl
-
-+6ttAK2l51DQV5ZNZy6+0O0xrR
-
-+0IkpDoD6GHE4O9oqVg5RjORzxirVvvls1tEfjRS6C0lKlKwoFKs/CQSBzxmlJ60VGce
-
-SRp4wDv7oYGBkZPWvCdGCkKSpAJHY9D6H5ig7J1C0fCIgu44D5KgfmU
-
-+fyNFGG3WGNpcDrqjuUtf3ifl0qYu1TRo407TKdpUkpMB5SiqKoFsk4Km
-
-+qT68ZB9UmijEhp4lJVtV2FZye1IYuTUguJCV/uVYHACuUn5Agj/qogzb30vhPvbQcx
-
-uCQnnHnjPSnGT6HKK9hYio06EuhOHVhavPbinCdxwO1amRDrSqZBFQNACpUqVIdA8
-
-da9BUAfSpA0iyW4IGSQAOcmklQVyCCD3FDZEth4SPDcy5HCkqScgZI6etKBdIjko
-
-wm1AyA2hbqQOE5SMflUOasfF0EZD4ix3XiMhtBUR54GapNXaPJtZuDTqHGggqK0
-
-9DgZNU7lqCPFkzIchSU+GyFpSeNwI65+eBQ
-
-+c9Ea0sYkNTakBtDZ8LG0blAdumcmiU6CMbdBLTrKm7a0pf947l1fzUc0VB3dCD8qr
-
-sJTGjJLiktpSByo4AGKBXPWcSEsxLZHVMkJ7D4GkZ81Hj8OaUFSROSaT2aNbrcR
-
-tx157Y2PiKlq4T/wCK57fdRytRXCCq3J/9CZkraefVx7y74asBHfankk9OR1qjc9QW9
-
-2fGVqG7NzlAqJtTCD4JOOOPtLwfMAelV5Oppt5u0Jlm1yYduEp5bi3mggFzwzhIBO
-
-7gemKq10jmyTbTNLZLTbXbih
-
-+THYX7pGSiOl3lLXxq5APGegz6VaTeLfbrNb23Xm2hGUhSmycbACePzrOuWR+
-
-+3JtBu0i3xWo
-
-+VhhCStw7zwFKzt48hU41qscK2wXXY7cmY3seXIfJWpwjnkk4AP4VL70EG1BPpBga/
-
-gKuTht8aTPWttA2stlW0Ankkcc/PtVM6pu7kEMx7OEs5+BMh1KFHCs5I5I59Ky949
-
-oPiPOs2lgSl4CFOA7GUAdBkfaxk8ChJ/bt3H7x98pI5S3+7bH4cn6mlaQ1HJk/Xr7N
-
-pO1JfAvxnZ1njOBJSVqUolIJ6D7PFBdK6iY90SmRPiPPOyZCluh5KQf3h5AJyc0B/s
-
-ZIcGV7Ek
-
-+mTQlvScJmZKQ7cXUqWE5DUUqSkpOTg8Z9dv50nkpdF/4bfcjptt1LeHQ0ti9WC
-
-WtKcJyVJKQew5V5UQa1NqGMt5K7LGfQ78TjkeWklZ24yAoJ7Vz13RC1MNvx3W
-
-nmnE7kLSnhQ/l8jyKqiJfLJ8UZ6Sykf8tWU/VJ4oWT2hy
-
-+LNfrI6d/beMiJBTPt1ztzTTjW1b8c4VjoMjIyaLW7UVpuNyckxZzJQWkt8K5yFE9
-
-PrXMLT7SpcJaWbswHGQoK8dhPKSOhU36eafwraxGtO6qfFx8CHK8dlLSVJ4yQonI
-
-UMEHnp1qrvaM05RfGWn9nnqCNHTFsDzkdpMtFzbDbmAFhJUskZ64PXFF4lyf0+n
-
-3hqH4tsaSpUsNn42QSCHEp
-
-+8BzkDnnIzWFkWV63OWCWm7y5CFXJCFxpACwnPiYKVfaGMAYOc1qpd7k2plwt2
-
-2ROjLZX7wpkp3NJ45wSCe/TNNdESvmrN0xNZuMISYEhp1DictuJO5NeqllKNy
-
-+oGTgfpXOk6nsz12begT3dPTnUqLsd9ghEhXGCptWOevKcHnvWmiasShSGrqylgqUEp
-
-kMEuMrJ6c4yn5KA+dNUzdZPDLt3T71blrbyCpG5GRg5HxDj5gV7QYEF
-
-+UxqB50pd8ENpUpeEgHjp9a9nSiSyFNKS4nI5ByOtD7Gy1cLGYMjC2dy2lDr0PB
-
-+hGfpUpLns1e4aNDIdS3lO4A4zny8qpNyy1sCVcgcnzPnVK0ymtSW1melxxK9u1aUkdR
-
-x5dKsfs1A48Z78R/StJXZMHFqwilxDqdyVgnuKiarMwwyoFLrufmP6VZ5xzz6019hQ
-
-1NT02aBlAU9NVC83JNsguyFFI2JyApWMmkxntL8FSVNuBJSoc5obblIgWdyalHjv
-
-o3b1gZUoBWOvf4RWfteo1uutOxmlJYcU54mVjxArOSAnqfStDa51vdLiIYUlDhK9qw
-
-QVHHJwaxjLkzfLi4Irbbbqa5szwhDsVhvhShwtRPAPyx08zXlq9p0WyPDtkRlwqfQfA
-
-B8NKwDnGU4I7HI54oZFbnSNSyoFv2MwmnlmQs9WyoDG0ee3OPLNR1rFuzt5tkmx
-
-XBhl
-
-+EtSQyp8IJBSBk56jin2nZhtdA7UdmnXW4l2RPuEfchIKI7xDW4AAkJOcDPag0rT
-
-zkAblX
-
-+7EBJKULkJQknyKinCc10+A83DtDKJS/fJhTtWsowXFnk49MmqFx0+m5xVMvDAV
-
-zwOnyqJLwiowi9yRzsRbza3EOwL7IkJH2RMaSoqH
-
-+ZIBHzFJvUL9wvsCJJYSzI8R1x1BOcnwzhST3B/lW2MINp91kNjcBgHoF
-
-+o8j6VzrUzzWmdQQ7i8h12OnxEp2JypJUnB
-
-+nTNEW12RnxLjcNGteun7PkKyoJQqNkqJ4T8Z5rKOOTdXPlpkOIt
-
-+cBA4Lw/iUeyfId6hGnf2+nsx4LL6YraNsoup2heFZA9c55+VdOtVjYtcbCEbikZ46mr
-
-bvoyw4r3Px0Z60aMYjISVoCiOnHA
-
-+QrRs2lDacBIAojb3UTY6HRHdZyOUuAA579Caslv0pxSo6W9mZusdKXGIqUpJfKk
-
-4Jxu+EnHz60IMRCJfhJaUlCzjcUHB442nOBz1z1FFNYsqdft7DK1odW
-
-+nBQraUjON2cHoSPn5ih7rt3YllhdtZecAxlBKULA7kAED8s1hl7KiuWkErHbw2uWyh
-
-OGVqS4kHzxg8dvu/hVyTZkLSfgH4V56URIE
-
-+SiQoEFpBAScIByoYSnHGMdc81pHGM9q0xbiTPTo5retGsyyShAQ4ASCng1hlou2ibi
-
-ZMTlCj
-
-+8aPDb49fJXka7RcbZNXNbdjTVsNbVIcQEpOQcdMg4PFB75p9uey4haArI5BFVT
-
-TFJKaqRnH9TR7+zYHoxKt1ybKt3CkEJXlKh5g0Xu96Ra2k+KCtDiFJ2J
-
-+04cjCR865fPjv6HvrEhxp92B7wl5aW0lR3AEA488Gt3p15jXLyJHucxtqHkBx9G0LK
-
-scDzxirdNaOFQmsnFjuXG/XpYW5MXDaxw1FQFKSPVagfyFGoWhH5tnTcUai1AreS
-
-NgfSMEH/AC1oYltYTFCmmyElOQCnB/ChemdZM211MKQoAFa2lNq79wfxz
-
-+NZSpVZ1NKPgr2HS06JdGpDl2vS2m1blNrlYQv0UABkVanXibp3R0hyT7uiTOkKZ
-
-YVHUTnfuKnOeBx0A4GB51rr1GXItrzcb4VvNkDHBwR/5rjes7HctP2azqn3N6Yy2pb
-
-KGXDwyjaCMHv0NWlxZORvj+KNvoC9e5Wzw1He82oNpQRjKM5Uc
-
-+RBz9K6IopUAtBykjcD6V896P1AWpb7al/vPsbu3h4Bz8/513C0SC1YYJUefARgKPJ
-
-44Gfwq0/ZjgfgtISuQ63IQ66hsp/uynGfmD0q3QhufcJfuC2I7bSVrUJSHjlTaQCM
-
-DHfNFgc0Rrs6mh6bFPSpiBqjQ66W
-
-+NcAgyGUOlsko3DO00RUKryFpZbW4s/CkEn5UMaMc3o2MxNVKyrduKkjPCSfKq9
-
-yIt8sbokxbGPgciHC21/xY71clalZusNuZZlGT4asuMnLawcdDkdRxnrR2E6fcRMnIS0
-
-doUoE5CePOudNOVI2mm4/kwHpC5qdnXFMhtaHlht5RWjYVHG0nHbOAfrQG
-
-+e1WPp++S4km2GQ2Fo2OpTkhJ25wex
-
-+1+VafU4Ift8+O0UutvJYd2jJLbgxg48iUn0xWF1dpRLqnpZzuIzRNNqkxYqXZqXfax
-
-YmmZk0WSWWYbhadeIJSlfGE57ZzwPQ1Zl
-
-+2OxW3wTMtMtCX0lbZUnaFJBxkZIyD1B9azFsZiwbpfGZrXvEUynC
-
-+OSlhte3BWnPxJUoJ7HBT60fcairZMO9sRZUN1wuQ5TZSkLzkkdwkgYG4nB6cnFT
-
-UvY24eV/tic9rGmp1uk3BVjkuQmSQpwpOARt43eZKuPkaH6i1vpVyK8henHVyTGEhK
-
-VIV9ncAF49c9fKiEpUOPEShLEZmysIKEoLe8vnuAngjBGSPtHGfWqMmwpuc9wYW0t
-
-cBwKQc7kkvpUSonJJVjNDUurHHj3X
-
-+2FdE3O3amYXPg2kW1CD4ZQG9oURnkD5YrVphNpdLuwbykJKsc48qDwLXIt1jdjW
-
-5SUSighorPG/tn
-
-+te2irq9d7C3IklZcC1IPilPiDBP2tvAPb5CtIaqLIlu5I97hebbaJUSLNkoYcllQZ3nAVt
-
-xnn6ir4SlaQtJBSoZBHIIrOaks7GpL9bYstqNIhwwqQ4083uyo8JxzxwD59a06AkIC
-
-UgJSBgADAAq022/RMkkl7MBra5PWfUNskIjrfbcSpkJSM4XkKTx8xTx3HVXdx9
-
-xsqXBaUypRPQltJ/Mk4rayrYxMcbccQlSmzuSSOhrJOaUuDus1ykLWm3OpSp5HPx
-
-LT0qJwszScW5R7Z46EuUuRdJFsdjqSqG6suOkcKRlRSM/NX5Vu33URy2FocV4itv
-
-wJzg
-
-+tNCtrMIuLbb2qcOVHHU1aOKuMaVAlRVcZSevSqy7SgqWpKPiWcqPnQXXFygOwD
-
-bXQ8866oFtqPnxCpJBG3Hl68edeUSFra4soDb8SzRwPha2+ItKfpgfrSc7dJWaqNK2
-
-yzctMQ1tqemBtLSOVKX0Aq9a4dvTCSIDjTjaeDs7H1HUUOf0jqp1opXqGPMSeFNSI
-
-gKT
-
-+BFeNtlTdLyFNXq1Fhp0JbTKjuKcYwnOM55R9eOBzU207a0NVJaez3uOoEWS4Me
-
-OlJjuZbXuPAJ+yfToRn1oPeLNp26ly7wy4p
-
-+OfH8LOFAoIUUnHUFOf5Vf1PChzfDEhQLDxDZIGev/mhkT2cuWMuXSDcJEtIbW
-
-0hpTmW1ZBBQrIyk8nHkafbMJqmeiNVXfUGpZdqt0d73UPltcgjCENj178dh1J9Kf2o
-
-Q13G1uMAJwR8CiM7FfdP8vkTVaHqqFYmLUyltK3DDbKW1HgrIPKvQYJNFbtOFz0
-
-5IuTnxoXkNf48YSMfNVEuicLXKvZxv2aafnagu3grStqEw9h5WeVYP2Aa7rP1JDhX9
-
-NjnoSGnmGnI528Be4p2n04GPKqOl41t0Xb4jcpLSZD25ZHA9Vn8T9SRTa9t9ul3i2y
-
-1Nt+LHd8ZpxbmxLaQMkqP8Gdp
-
-+YFHLVlRxqOohVqaULkGVKEJhLpWlwOfEpOegHXnmilmu/7ZSqTHaIg9GnVcKeOeS
-
-B2T696wcayaZvE8XKZf25ypJCQwqVsaX2ASgYyPTJzXSIzKGGktoSlKEAJSlIwAB
-
-2ApY1K7ZbafRYCqlUBT5rcQOKq8H0B1JSeQa9jzXk4tLYUpRwAMmkxgtNuiMHwd
-
-zDCVAq+NQSnjk1m9SNSn7c/DhSdq3kNlhYUSlQCs8+fUc
-
-+Xyo1FuFg1m037s4mWDykbSD6ihd6je7OLbhRHm1MqStKiMtHHPTsc8VhNGmOSlqy
-
-xFddsUeLFfdRIdUCt9S85JPA2Ad+MAeQrwvbipdpUt6IIzm3Ckhzfk
-
-+dQgvovVwkXEDxPDaQhLWc7VYJUPnnirF5IXblHaWwU5wvgp
-
-+dEetFPWgKX/AHXU9wb8bwzIeSGEKyEKdwo4KgQcEJAIzhWMHtXvIbaisJb1D4K
-
-tMhtIDRR4AYdB4BA
-
-+75EDgY7k1W1HFRKVcQy6lW9adrjS89UnBSofqK84lwbuUOSmXBblz2U4mwWU5
-
-XKbI3IWnJA3ZIPUgEqGORQSw1EZuQ
-
-+FqTFNt3pTAKiFBLZBJWpYI24TwnByD3POStp8OXL94aUVNuR1bSU4+/g49CQT
-
-zzzWcKkuSBav9n952j3xcdKm0toIUpCEeaTtzgk4BwDg1qbU4y06wzvQlS2XAkFQG
-
-TvJ4z1+Qpp7CtWFFo3N4QoZScHB5BoVpxlMKbeYKEpQBL94SEjHDiQrP47qKqdiR
-
-VuEqbS6vlQH2j8x1rM3S+woV3lLZfCnXoaW1JTkFKwvanP0c/KnJ1tkxkm
-
-+K8ha2K94fkzMcOrwk/4RwPyA/Gie/APOOKpQkpjwmkjA+EHA9eao3q
-
-+RrVEckynktNIHKlHHPYD1NVDUQk7ZzHXftCu8S8OWl3UEmwPNYBCI4dacHZaV
-
-JKVYPXBzismuVcb25tHtWbaHXKoz4/Sg3tDem621IqWB7qAkNoQRuOwdz08+e3N
-
-W9NezORNW2FzEYXhWQFDcn+IcdOg
-
-+ZHnTUI92cmTPkTpI02mp7tiuUdxPtLvd4dK0hMOHDKEPEkYSVOqI56fZrtV41CqB
-
-AK1hIkFOShHOD5Dz8qwsL2TwrII1xgrdcktFDiTt
-
-+8CMA9cdu3nXt76bhfUNSiEuoebKmgrO0BJX06jJxweeKzkmujowZOepeDbaWsCYS
-
-Pf5yQ5cZABcUrnYOuxPoPzPNEI13kK1C7bzGKWENhQcIPI884xz069qriaXYa0pX4
-
-alIKQrPQkcGsnJ1Nfrdar3MnQywIyG2w6SCpzJ
-
-+0kJ7BJPPmfSrVKkipS7lLZ0B6/RGLxGtW5KpDwKinP2U4OD9SKHJnwNSXFyI6W
-
-34yAUpZGVBZPCvEGMcYOOfWsa0hi7alZ1CmNcZTi2m46ozQ
-
-+BCwj4ipX3Rzg5PY1sbRqSyz7gI1vWlySkFLqWU4S2B13dBwenz9apu2YxfG778GP1
-
-JaXbIh6zoWtURTZehFXJbSPtN57lPBHpx2rO2DWF9i3FuI5GcXEcWlEiRjKU9gpX
-
-l2BPyrpevWUqt8WSR8bEpvHoFZSr8lVkbTLgT7XOdCEILClpUe6kAFKs/UE1g4pTo
-
-2nUoKT7BVt0zCuvuUyYyuStILLaN5DewLJBIHUkk8eWK6PMtcExYS5qixGhr3obBC
-
-UqIGANvU4zwPOuVSNSXCywrbGtsaQ+WYoK3m2ysNuKz3A
-
-+0Bjj1orpVd2nOi73sLiQYafF2Of3jykjjg84789T0FU3TMYt9RQY1tbIl1v9tXJfcbb
-
-hZcLCCAX84w2c9ORknsAaMoaaW/4khtMmVIQf3ob8RtCR0bTnoPXqepoPMNvtxau
-
-978JdzmZUGlHIjNjHw488Yye5PkKuD2hRUwVrhNxIyEpw2lSN7i/UgdP/ADUXuy5
-
-ZIx15CFi0nabbLEuLZ4EWRjIW22ApIPl5fTFadIIFDdOxpbcPx7g8Xpj
-
-+FuqxgI8kAdgB
-
-+eaLlGAD/ENw9RW8egIVIUxGKVUAPJ4qhcdymFpHcYq/Xg83uyDSZSPnmcxe9E6h
-
-fcgNOOQHXC8ENg5QonPGORXRdEaout4hy13aG80klJYW
-
-+nwws90k9j0wTxWpl2JiSrK20q57ivGDbVht1t
-
-+Ohkb1JRtVkLRngkfLrWdOyVjinyRVgRWrVeZSWgEsy0JeT5BQ4Vz8iKnd0olRFbF
-
-BSFp6jvQefcVsWli423MiAhZ2qA5a6gpI/hPPy47UYStpCGYyWisKb3FQP2eOp
-
-+tRdaOiNS2Zi3yI4cdt5ad8ZIS4ggDZtSMY
-
-+fOarSYCmtQ2yS1tDrkgMrCkhQKFoaSQQeDx51cvjDlpmNTUvrjNpI8ZSQclBxkEd
-
-x6VeKG1Tra6g7wZLakKxjcMN4NJMpoH6aK2o7cl9ZcecYS44e6lFb5P61Qu
-
-+r1m5+7xmvCTEUtp2SD9k7j0Vj4TzgmmlyhBtBUVfGmApfh91geKD
-
-+ahWF09f/dLcoPqT4inEnKvsj4hyaiNtnN8zI4RpeTsNuU4mMl6M
-
-+p14kKX4nJx655/6vlnzrKXGW3I1jETJWpPvLLkVxCRhW8J34/JI
-
-+te9u1Em1MLdhtlyEltPiNKHxoUc5WjvjAJI79R6gbglb0hu7ukBdrdZcO491qCnAD6I
-
-KR9Kqe1SOL4zSlzfj/3R0q732Pb4O
-
-+I6yhaAHHATnIx9kDy7DyrkmrNZDWcxmM0HmrchKg4vYVt
-
-+JgcKxnoeB2xyTzivL2hT24Nufihx9Tzrm3cokDAOMBI4xjGMUCsGiZeqlQjb7xHTB
-
-VITBdf+IOQQEpWpxGCMk4KfqK1jvyGGck3GiFmtwbLtsjTSw8g
-
-+BlublKFqKi3lBJCirACgBtSCO546RY5E2AtUUT7omR46C4t1bWGHiMojrVs/vFJCvi
-
-+6SkHvXO7HfLezALci5lx9tZUqTIZZkuNIbWsK8JK8bwpOzqc5BxWgtzt1To5zW
-
-D0GzrjvzhGZU5b2g899oleAMdufXPzrVKxydI7ELx/sJivOlKljwSHnsFtSgSGyARgg
-
-Y5wBu4NYmYtOnrmp9tkeAlxSkkILbaSVFJCSRlS9oBwkEKz2Oa8WtZsJt62o8tcl5
-
-8KcbfYjtMSXFKSAlsoGcAOEkqzkgcdaH3qx+FaLFeJ11kiVKS
-
-+qch1suPMusKK0hG74kHgA4qWrQK000b0yBeLWtll/BeQC24O3cGqdvucqI1KtOoJb
-
-Lz7hRucaJ4a7DceijnGT2554rDac11bLMhLc16Q7FafWyXkHcT3Cj5gkmtmjUyxHV/
-
-Ze0QblvVuK3ZyAVk91BSknNYSmkz0oRbjyYXuj0y+29+0W
-
-+6W2M4leUsRXMObU8hrJ6dsnBp/Z
-
-+3LVNcXKh3W3lA5ZU2lLClDjlQAKvrmg8O2OS5b131bZIdodQAptcS4Fxx5Q820E
-
-jPrn0rb2mU7Ct59/lh0glYWoYKUdcHJ7VcJpujOeJ/szz17MSza2UOKASp9KyT2Sg
-
-FRP5D8a5Q1DlWZx9DzxAuiTtZwQW1KIKyfTBJ+tHtX3xepbuLbEcAHh71FY
-
-+FLIIJ3DsVnAHoKGXQXDUEmQuI26sNo8Jt1tsrJP3ikD8MnpQvyk5Cy6ioeTUwmtP
-
-26M3GnSJDy2WwrwWF7UoB/iPmep/nUXbhDlNw0RmgzFdcL5CllW5pvnJJ81Y/Cs
-
-HZ9NXWTJDV0kvBrOVNpa2LV8yea1sy1y3bgl0NtotkdkNYSoYcI
-
-+LZjsOmfPGKzmnWh4FK7kZ/V0G7aqu0edGfVHbjgholBO7Jzu68elHtNab/Z6k3S
-
-+zXZi2SCgK
-
-+FtKs8HHfnz6US98hSX2VeGtp0NhQaAy4CQCRjpjzz0zTaiTImWl5BZWlGCQEeXk
-
-fOlHRpwhKSk0ba1aht17ZcZt8tCnE5ScEfDgc/nV60QP2bG8EPOOJB+HeonA8hmuL
-
-+z2LOt96bDeySAos7HWigoRyoLVj7XJ6nmu5Nk7Bk5OOa3hLltmnycaxuovTJHrSpU
-
-q1OQH1B1YSnNT7V4Sc7cUijkevtTXDTGrUS2X3W4k1tLa9qiAhaeArHyxn5VoLFrxq
-
-4pTDlENSVJV4agrcl7HRST68/WqntF0wL9CUjBC08pI6g1yFti/afX4C2HZDTawtB
-
-bxlJHcdwaE10znyRnGXKJ0LTUWfar6/DkzWxZZIccT4gJOFEkIA6HlRoy6t3TQca
-
-nvlyGllIiPNE4WgrxjJ+8ncAQegx8659Fu0u
-
-+QpEF5iRHea/2hnegp3DooA/XtWx0vc4ntC0rIslydW3IQAha0/baXjCXkjyPcfMVh
-
-JUzWM6imtGtm24TbU2sr8dC04ClEEkjqD8qDWqQpS4ceVKbdmxpSAUAYKW8p2n
-
-AGO2POhVs/tTo2SLfem4nuqWhskJXuaePABT0IyDnnyNaVtu1IeZuj0hxKFL3ENNF
-
-W7A4yQQfwzWbVOkdGKblH8uznOv3J8XTLjbSwXHtxaS1gKLIUNyc9+5PpXNbT
-
-Ob3p8ZSSlJyAeeM8f/ALXVNX6avD0Jq5acaZvsdpS1ue5L8RSQoYKVNn4xx2Ke1c
-
-zfscWep1y1ve5Sg5tct8oBotk8gJUTwD5EfWj9Xsz
-
-+RjWaNx7RqIOpWnf3TjiQ3u8Rw5/3aE5P4gEfWtVpbRuoNaWtzw1sRo88KdU5JJ
-
-4Uo5ygDkjn05HFcqtEWS1fWYN0iuMoUcOoc4C2hhRAPQg/D07V9F6a1IxHiJdYUg
-
-KbyAongBR6j5Up1ysfxPh8sTtbsxftB9iOpnGvfYlxhS3mwk
-
-+Grc2pRSBuIznuCfrWGsMd63+9wI9pdalwpviPNeKGw+lQ4SsHnAJPxAcpOOa
-
-+qod/iT07WFjxE4UcfzPfiuL
-
-+3S1sNW1jUaQ6wGv3D3u6tq3GisgZIHIBxj5kVbpfq9GkMK3yVMyOmrZA1dcLvqG
-
-WuPH1DY54eahM7fdnmmgMNgY4B2KAV3JGRzWxtmqrLMs90eF5hafschlTkdrwguQ
-
-2HQStLbZICc5UAevJAwOa5fCYQmI5LekXaA1HQrwFw2Eb1pVyS4OVL588cVb0r
-
-JsMbR+o5LjDL8i4Mpixy6nlkJSnCQDyn4xk
-
-+g64rZSs4/4+OkarSXuDMj3fWFmnuouURMm2TW2lB5lpHwJUfDztGAMEgjI8jmq
-
-modeX+RYr5ISiHNEmOIzl3S6EgsE7U4Gf71Y
-
-+0B5DI4qmvVp1BtvLE6fIvcdgx48O3PbUsozkJXgErJ6kDgAADpmgBtM64QY8nUDy
-
-LYwzKUpxkqCXH
-
-+pKlN5wg57nueAaJyQsULVIz0kNPLUY6UiGgllKSrg7cYUO/UmtvoWwoffaBlSAMj4
-
-W1lCcnzORWJlzG5kxAjx2o0dltLLaU5x1JJ55OSep5roeiZaWykKkhSlDPhgdfQkfzr
-
-Nr2ZZ5tT/FmyvVnj2Z5iY425ujlKwVvKcSVDnjdyMY64rPT/abJ1DJRAtDZdU4ch1
-
-SSllsfxc8qNF75JbaiFCEPMpeGMZyDnr5gZ9PxqvpjS93NnTFl2iLDI
-
-+D3yUQxub45yPj6eQ5xU0jb4s3T3v7BUVEeyOS99w8SVK2pkylqKsqOcgJHVWO3b
-
-9Slti3tbpkWm5NPQ
-
-+EhIzlseqeMfUUVlyNHFbVmhQX7/ICsERSY8ZrHffyo48xiiw0Swm8xn7UmWy2Gt3
-
-u7khSkNnJycnnGOeSarvRo1e
-
-+x2IMt5TAbnBLjILkqS6vIabwQoqP3R6evShEOWu7IVCsz8iYuW6tKHnUeE2Uj7Tg
-
-GSQhIyMq5/Gquq725eHVaS0mgzELWFzJKDj3hzoAD/AO3maMwre37P8ATavfFod
-
-nrQEO+Edwzu
-
-+Bhvz5PPmfQUSSSBZWnS6CbFmNsioRa7hBdn7wXFPNKUF9yCc5wfP8q0TxMKzLkz
-
-0odW0grWGEEA+iQcmgOl0s21hSpriFz3j47/PCCe2T0A4A
-
-+Va1qWyvCSQONxGQcDzPlVRWh81e3sayMRHWETGGxhzkKxjcOmRkA48qNJOBQ
-
-t27QoaW1PPhHiLDaBgkrUTwAO5okOK0iguyYzT5qIpzTAo15ODOa9agRzQxg2VES
-
-7kEVm7/AAIVshuTZDC3EIxlLTe5R
-
-+lbNSARQi7pb8EqeTlsfa/wjualsErOQquqdQzTEttsW1EB3GQsLSpsjuOOv0rOSv2n
-
-pq
-
-+pnMbWJaDlOMht9P3kkevXHY8iuxRnoO5TcWKsKxuJUjajGeDu9fLrWK1i81cLjHtL
-
-RS++64A42hABQg/eB56defKsnIfBVTNLYNWWbW9mVbbkFgffZ3APRl
-
-+aSeo/I1DU2jH/AOyyYFmuziktJSW5SSQrck5wtPXB5zXPLhoe4WsNXCK6+EgqCH
-
-Ekb0kEdcduRwetEbP7Rrhaj4NzbVgcF5scH/Mnt+lCSZk
-
-+UNPoy6LpebLdmhLedts8HAkglIc8snooHzrZsa2t95X7lrC0sPSPslx5oKJ9Qr7Q
-
-+ho0zctNX+GplTTCmnOSgAKQCe+w8D6YoPcNKIkN+7tqiy4/
-
-+7UXPDdYHYDPCh9ciqa+jNcX/wAqDLejLDcmFKsl5nW0uI2EIX47OO3wq+IY+Z
-
-+VAr7Z75omO3LkWlu5wW
-
-+FSbeVeGrJ6qGdyD6EY8qo2qFdrG66HA4lDagG3UqBDg9QD2rc6c1mttQbeUlKyNp
-
-BGUuA9QQe3oal4osvH8vJCXdmDt3tUgWh7Y4/IZbdByWVFSm/IbVJ/nio6q1zYtT
-
-2eRarhcn48F3alLram3HCAQeUfdPHmRRD2kezb3sC
-
-+6WRHYjuKxJhlGfd3D0Ug/wK8ux47iudr0NqFLRSW4LaQMqcWk8D1JrOOFo9H/
-
-KUo99jpg6ViOeJIu13lwuAhhqUjcf8wCePkK9jM0nGC1w7Oq6Nr5bjSlvKSkjuo5AV
-
-+Qqdn0HfrutESJMgqU5kpSwjxHF46kADJFah32Mqs6E/2o1F7hGJG6OlaUuYJ67R
-
-n+tW4Tq2zBPEnVbM3I1i/EjN/siFHsRT8JW2Up3f9CAM
-
-+XOar2+x3bV0hDzzbpbSchx1AR9EpA/OuixI/sw0ukC3WeReJgGA7IUVBR9BVly8a
-
-vuzRTabRHs8QjAWUBJA/WohXhWbSVd6OfP
-
-+zO7e/KMiLHjwsjYt53Yok9gBlRP0rp2l/ZaxakokXee60E4UmMnBdSfMk8I
-
-+oJ9KjZbadOuqm3KcufdyOX3D8MUH7qB2V5q6joO9Vbpf5c5RahqUlJPKx1NbcW3
-
-bPOzZsd1Ff9h
-
-+9arsOl8mNFaEnH3RvePqVHp9MVj1StSe0KUUJ3RYRPxKyeR6nv8ApTw9Lvy5ba3m
-
-FOMnKlrKhnPYcn863TaWI8MR1qisMgYU2Vj4vnjkj0xQ4GcZRq2YqRDaskJ0QVqi2
-
-6MnMqdnl9Xkj
-
-+LngY6n0pot81Lr6IixaZYdhWVpIbkT31crSP8AmOd/8ia0Vz/s9KU07dkouCGOWo5
-
-JSwk
-
-+ZH3j8wKG3P2gKfbTCtTSC238KGmEhDTf0HFFpFW2w5amLD7M7OtCZKX5PPizV
-
-JwpZ7JQPy8/lWOuGqXbhKcvMphakxMiHASMltR48Rw9M/oOBV61aVuV6d/aNxS5
-
-JWhW1LCR8ZPklHr5/pRlq0xHIXuCZcJEoqUt5oJ8TCj1B
-
-+XTPpWfJPaOhYmv2Oa2/VE6bLIk3DwSFFTgQjcpfPB5POP17UdRqO2QkfFJnTyTl
-
-LininJ8igDk/j8qNO+yWLL2qCt+PvpOCT9K02lfZjarQ
-
-+mV4CXH0nhazuKT6Z6VqpHO/jO
-
-+yxoCwT5MhOoL2Fh/aREjL/4dJ6qI7KI/AeproielVEKZi
-
-+G2taUFw7UA/ePlVscVaZtGKiqRMUjzUc1IUxlGokVKmxQM81dKzuoDPKFCOBsSARg
-
-4UVeXyrSEV5rZSscgGpasadGOtsGSuGHJfxv45XsCFL9SBxntxVZNmQouS0RVtPuD
-
-CyrG449R2rbGMMYArzMUHtUPGX/I7MNGhXd
-
-+KqHKWVR9oGVOKUtRB6ntjGBj0FArrpRC5aWFR3ty0FSXUIyng8gntWkuftCiN3p
-
-dg0/bnL5c2v78NrCGWB0+Nzn8ADVp
-
-+6ahYYLr2noT2Bnw2JS0qPoCpOM/PFJQSVJg5uRya56JVEltht73ZxzdtUCUbiBnH
-
-A6noKrKt2qIHCHVOJHQOpP6iuyaQu1u1tEkTY0KTGMV8x3GpSAFocABUMDyJx9K
-
-OOWFlXVArTiYcIvbPnxd3vkcf7RCUr1bX/I4rx/tGCsB3ewvsHUlP59K73I0vHdBCm
-
-kH5igFx9n8KRke7pGfIdaKZEsEX0VPZ9qFEtKmJB3pWjw3E5zkHofxxWb9rlg1fdJb
-
-cSyxWXbY38SmkgpU6rzUehA7DgfOtBE9l7bDvjQZr1rc6rW3y2Ug5OUnpwOoIrT
-
-O+0/SrTSZTi5Rt65BjJuHgfuFLGc4OclPB
-
-+IDHFESsacNM5bpXRGuHUMXC9TWbJDtra1JUlR3pQQd32cYGM5rWQ9C6Zdg
-
-KuF3ukpxteCfEISpzP2RtHxEnsCc1ttbxVT9LTokZXElgpCk
-
-+RHBrmenNTJuET3aUQ3OjAJfaVxgj7w9OM57UpaJzTaakdK0/pXTsaMl23wmG1H
-
-I
-
-+LBWMefWqmqJAhBtpsDco/CPM9qHaGnO3a5OSmgfcY6VJDvQOrIxx6AZ586q62l
-
-xpt2YjxC/MmsAq93ZXtbG4Yy6vqB6Dk049D/kbjb7M/JiSJ63Nh/ctnLrziwlAPqo8
-
-VVN3slvw2yqRdXRxiKnY0D/AJ1DJ
-
-+go0zoqZdS2u8SFPIR9iM2NjLfySP1OTR5nTtrta46HUssl5WxBXgDOCcZPyqr9GUf
-
-j1ubMMvUt1fG2PY4iG/JzxXD+oFRT71fPEg
-
-+4/s6YGlOtPMbvDcKeqFIUTjI6EHr2rpE92w2dv/aJTK3Twlhohbij5ADJptP2h65zv
-
-2hIi+7MJGGWT9sjzV5fL/8AKN
-
-+Snjg9ROdQfZzcJqgZTjjnmFnj8KPSNKwNNRWZEll5wBYBU0Pib/xAAduK6q3b0o6
-
-N4+lDrs4x70xbgwZD75x4Y42p7qPoOtZzx8lR0Y5Rx7OdQxd4F/iz3HVORJai80tL
-
-mHVoCRwUdMjIz3o3ri3om25qbEgLfSV7nWyva44gg5wodFAkEeoo7H0Bb2AAY
-
-+8JWXE7snafTNHTbwGwgo+EDGMVz4fjuF2dGbMpmK0NLfutsfakNyU
-
-+7qDbbzySh1Scdz3IxjPNGolxQttK4odQkPlt4NtAqChwdwx34OR2Ioy3DQykpQgAe
-
-Qr0ZYQ1nakDJzXQoUc/g9QkEglIJHI46V6jmopFTGK0QhwKfFN0pbqAKGOKQ4p
-
-Us0DHpUwp6BCKax3tU1C7prRsyRFWUSn8Rmljqgq4Kh6gZrZZrnHtwgOz9HOraSp
-
-RiOokFKRklKftfkT
-
-+FJvQdkPYPYGIOi0XLYDJuDy3FuHqUpUUpGfoT9TXR1tBaSCAc1hfYfc2Z
-
-+hI0dpQK4S1tLAPYkqSfkQa33NKNUMDWyzxdMi6zty9kt4SVoSjdtIQE8AcknArP
-
-p9selXodwlMme6IKghTaYx8Rw4JO1PXAwck4ArUyLjDly5VrCwuQwyh5xGOEpWSE
-
-/U7TxXHfY9ao07UOqkvNJVhwoHHYuuZH5CndEu7Okse0bTEjTTOo/fVogvOFlAU2
-
-fEU6OqAkdT8uK81+0Gyx5sOJco862marYw7KbT4alfwqKVHaT68etA/aDbNG2XTk
-
-CJeI6hCYeKosOInC3HO4SBjrnn51kvbHcLhOsVrel2tm3tF7CGi4VuowhWNxGB9Bn50
-
-nIN0dC9ql1Fn0ZcUtNvl6QwtpKmkZCAcAlRzwMGs3oBFivehbXarrZpstiIHZBWuMk
-
-slSVqPBKsk9hxyaN+0olz2bzFq5V7og5/7aseypCD7Prd8I6O//IqnYV
-
-+RnrV7R/21rC7pdt1zMFiKiPHisshTiSlZ3KWncAM9Op6UQuPs0t1/mR7itp5jcApSfs
-
-KII
-
-+yrH5ig/spbSv2h6r3JBwV9R/7xrrakgdKdWKPWzJXfNmhxLPa0NsuySWmh0SMJz
-
-j/75USsWkWLTGCAC46o73HVcqcWeqifM156j061fWkoczlCgtCgSClQ6EEdDQpFl1
-
-XHQG2L/MKB08QIWQPmU5pBTTtGwTBSjomvCbaWZzfhvICk
-
-+RFY924Xy2ODx9WR21D7jyGlgn1SMK/Cjtl1rDuNuZekpWJCgQtMZpbiMgkZBx0
-
-OOM81VCWTdMtQtM2+GrLUdtJ9EgVduVrROgqiL3obWQfhJSeDkcisnfNYJnTf2d
-
-Enm2x0j9+
-
-+pB8brjahOCcnz7cmrumkt21Eu4O74cApCUCQo73MEkuLySdxzgd6KDnfXRG62SHa
-
-IDsp19/CRwPGXlR7DrXlZdHuSo7cqZIleIR8KS6rKUnnB55P/wCdq9I8lOr7whxLbqb
-
-fBOcL48Vfbj8/w86u3q4vzp7NjtrhQtRzJdbV8TKBjj0PI/EUNCtftX9Hs3pGODkqd
-
-Uf8S1H+dXWLE1HVlBUP
-
-+o/1obPvLs66M2G0vKSpsj3l5J5bSAMgHz6fU/Oj65iBLREbG9wDcvn
-
-+7T2z6nsPrSopST8HrjAApwmnIpUFjgYqQqANPmgRIqps0s02aLApil0pAUqQxU9N
-
-Uk80CGIqlcISJkdbLicpUMVf21XuEti2wX5skkMsIK1kDJwPSh9bGjkzGgr7om
-
-+O3XR85phLv97BlIK47gznHHKfpnHatO5qTXU1gNM2iyQniMKfU668E+oRtT
-
-+ZrStXu1S2kvNSN6FjKVBtWCPQ45HrT/tO3jnxv9Cv6Vmq8MqvoymmNK3HTSLzcn
-
-ri7dLpc/DWtckYTuTkcbeicHgDpihPs40rf9K3i4yJBgPNXBzcsBtaVIG9SuDkj7x610E
-
-3SB3f/wBCv6UwulvHR/8A0K/pVWvYuP0Yj2paOuWp37bMtkhtqTAWVIDqCpCskH
-
-kDnqkc0O1ppLVWuLUwZ0i3xpLCwpEeO0ssq4IUVEncc54xjHrXSf2nbz/xA/7Vf0pf
-
-tO3/APP/ANCv6UnT8jr6Mlqi16gvmjv2Ri3pkyEBt1SW17G0jGAkZyTx1NEfZ7a7rYr
-
-A1aLgIikR0q2OMpUkqJUTyCSO/aj6bnbyeHwf
-
-+hX9K8peoLbB8EOPH98sNpAQc5+vXqOlNNexNeaMBb9Kao01rK43OxO25yNciS4i
-
-Y0slrJzlJSRnnnBrpcBp9iE03IfXIeSnDjygAVq7nA4Hy7VKU81BYckO5CUDJwM
-
-+lZtVydeeZd96UHyhRThvsM5OMHp8XTIPw88UOSiT/QRv9/NnS0zHjGVNkEhlkc
-
-DjqpR7AUFVZLzfCVXee54av
-
-+HZJQ2PTA5P1r0lxpN8EW5Qpio8xhJbU42Bgk4Khg5BB4/8UK3z7m
-
-+9FlajkBLSy242ykIIIOOdqcj06Z61XJVZLTvqxry3abA0IcFpMi4ucNMtAFQPmfL5
-
-nitHpi0qtNnQ06lBfWS45gZAUew9BwPz71Ws1qslpyppSfEVypZSoqV8yRk0cTcoOM
-
-B//Sr
-
-+lHJFKDu2ZSBCu1oflttwYUvxn1OtyHtwUgKOdpA4IHOOlSvMWRHhCXcpBmXBxQ
-
-ZiMgbW0OK4+FPoO5ya1X7Qg/8AO/0K/pQPUDDFylwJEe5KivRHFLQoIz1Tg8EEd
-
-PwoUl7E8bqkj2ioNmhsWK3HdM2bn38ZDWeqz5qJ6D
-
-+Qqha7JdIkq4MtrbaalO7zKTnx9n8GenXPxdf1ozak2y2MeG3IKlKJUtxYUpS1HqScc
-
-miAucAf7/8A0K/pRyXsOHtGctNqvVsmz24YioakuBSJCkkuMox9kDoeeQT
-
-+dau1W1u3MbUlSlqO5bizlS1HqSe5qDdygjo+P
-
-+xX9KZeoba3Njwi/wDvpGfDG0jJBAxz35/U0uS9jUK6QRNKkTUSfKmMfIpZzUTT
-
-0APT5FRzTYoArU9NTimAhUhSHNPjFIBUzjbbiChwJUlXBCuhp68J8FNwjpZW642
-
-A4hzc2rar4VBWAR06daYHsENhKUjYEgDAHYdqiUM7tu5vdjOMjOPP5UDGjY6gtLk
-
-yQtC4zcRSCBgtIKVAeedwJzn7xpJ0W0E7VzXHctKbUtbSfEVnxOSryw6cjvgUgDnh
-
-Iz93rj61H9wcYcaO47U/EOT5DzNCGNGsRXWFsTpaQxI96AUQsqc2pR8RPJG1JT
-
-24VTxdItRX4b4lblRl7toZCUq
-
-+FKegPXCeTzk0AF/DbHXYO3UUw8BWdq2iRwcKBx86GTNJMTLs7cFSnkl1BSWgB
-
-tGUFOfnnCvmKlL0lFlIcSHnGi4tSypoBJJLQb5I6jjOD1zQATUhtAJUUpA6kkDFMp
-
-EdSUvqUyUoG5KyRgeuf51RummGbo8+8uU8hTzXhFIOUD4Fpztzgn4zz6VWe0Y1Idd
-
-W5cJADrDcdTaEpCAhCkqGAckHcCckn7RooNBR9KXgpCHEKWBykKBIHqKzybHOb
-
-cDHi721JJW4QB2xynHxHhOCTxg
-
-+daC2WSPbFqW0ElSmWmSQgAkIBAOevOfyqyxBDMyRI8eQvx9n7pa8tt7Rj4R2z3
-
-pON9ispQ2G2WEMFxtSk4bPIBKvLHn6da90RWGyralsFXKsYyfU0OXpJsstsiSkJb
-
-Kxu93TuKVEEknP94McL6jnivB3QsVbbqETpTfiKKwoYy2shwEp
-
-+ZdJIPH4mmhhkhhO7K2hswFZUPhJ6Z8qQMYnAcZznbjeM58vn6UOb0o20V7JCVb
-
-pJkgOshaclJSQQTg9eDxg16u6XjrmJlIWEKEpUogNjkqQE44x5Zzz1oEX0pZLZc3t
-
-FsdV7hgfWpBltR42H5YoUzpVtuySLX7xlL/h5WloJA2bQPhB6naMnOTmrNt0/Gto
-
-WULWpa46I5X0OEpwSPInjP8AlHlQBcSI5IAW0SSQAFDkjqPnTgsFO8ONFPPxB
-
-Qxx15oR/ZNlQgb30gwT
-
-+7DTKUBf2ftAdT8A58/wqEfR7bKLehU1xaILamkIDadqwoEK3A5zkY79qADqVNKA
-
-UlbZGM5Cgair3ZT6NymS6n7IKgVDPl3oSdKxv3GH1pS0pnKUpAC0IRtKD6KwCflTr
-
-0vEcYdbUs
-
-+I5GEfxQgBacLUsKBHOQVfkKADBIUMggg9CKbtTIbS0hLaEhKEAJSkDAAHQU9A
-
-x6WaYDNKgBZpU1PToCvSFN1pCgRIGpVCpJNAxx504ps09AD9qcGoikOKBE6VMD
-
-SJoADajvVytBj+4Wk3BLhIcKXAko8uO
-
-+aB3rVs9tcJUcNQ5iQpxUN90FLqehBI8uxrZkBXUZodMsNvmykSn4rTjzYwhakglI9
-
-KiUW
-
-+mFGbvWt57KIc2DBlktgqkRQjduBHYjPQ9OlNP9pbcdmBcW0KDDiD48ZaCFpJxj6j
-
-B/GiTmkEuXJ2WqZJLa8fuAvCOBjt
-
-+leA0lLeubjrswCGSNrKEAEDHQmo4z8CYXTq63P2r36M8hxSmC8hn7xO3O350Ci
-
-+0CRJgNrQlhSnNqw6B90jkYrS/sphLPhobSBjFYYeziazeFiJMLNteJWtvHLZzzs8s1
-
-UlImcW+jbxNSQ3oDcqS61G3kp
-
-+InBIxnFZ67e0Rj9sN2m2EPEp3uPpBKR6ceQ5NaeLa40SG3EbbCWm07Up8qzuoND
-
-/ALRlImwJTkCWgbQ611I8jVU6G4uqKtz147JvjNntfifCgOPPeGQo5PRIOCaa966dT
-
-embc2+i2sJQHHXZRCFueieo
-
-+dXpegot1jRk3F5x6UynBko/drUe54oqrS1seQ0mRGRI8JISkvDeePMnqaKYuL2UJGr
-
-ru1cRHY065JjqA2OofHOfPI4rUJJKQSMHHTyqCGUI
-
-+ykDHTAr0qikhqWaRPFRzzQMlxUSaRNRJoGPSNKmzSAcGlmlTZoAenxUc0s
-
-+tMD/2Q==" alt="Craft Setu" class="logo-img" width="40" height="40">
-        <span 
-
-class="logo-text">Craft <em>Setu</em></span>
+      <a href="app.html" class="logo">
+        <img src="data:image/jpeg;base64,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" alt="Craft Setu" class="logo-img" width="40" height="40">
+        <span class="logo-text">Craft <em>Setu</em></span>
       </a>
       <div class="top-actions">
-     
-
-   <button class="icon-btn" id="refreshBtn" title="Refresh" aria-label="Refresh">
-       
-
-   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
-
-width="2"><path d="M21 12a9 9 0 11-2.5-6.2M21 3v6h-6"/></svg>
+        <button class="icon-btn" id="refreshBtn" title="Refresh" aria-label="Refresh">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 11-2.5-6.2M21 3v6h-6"/></svg>
         </button>
-       
-
- <button class="avatar-btn" id="profileBtn" title="Profile">?</button>
+        <button class="avatar-btn" id="profileBtn" title="Profile">?</button>
       </div>
-    
-
-</div>
+    </div>
   </header>
 
   <main class="main">
     <div id="feedView">
-      <div 
-
-class="composer-trigger" id="openUpload">
-        <div class="av" id="composerAv">?
-
-</div>
+      <div class="composer-trigger" id="openUpload">
+        <div class="av" id="composerAv">?</div>
         <span>Share your latest craft…</span>
       </div>
-      <div class="feed" 
-
-id="feed"></div>
-      <div class="state-box" id="feedLoading" 
-
-style="display:none;"><div class="spinner"></div><p style="margin-top:12px;">Loading 
-
-crafts…</p></div>
-      <div class="state-box" id="feedEmpty" 
-
-style="display:none;"><h3>No crafts yet</h3><p>Be the first to share something 
-
-handmade.</p></div>
-      <div id="feedEnd" style="text-
-
-align:center;padding:20px;color:var(--ink-soft);font-
-
-size:.85rem;display:none;">You're all caught up ✨</div>
+      <div class="feed" id="feed"></div>
+      <div class="state-box" id="feedLoading" style="display:none;"><div class="spinner"></div><p style="margin-top:12px;">Loading crafts…</p></div>
+      <div class="state-box" id="feedEmpty" style="display:none;"><h3>No crafts yet</h3><p>Be the first to share something handmade.</p></div>
+      <div id="feedEnd" style="text-align:center;padding:20px;color:var(--ink-soft);font-size:.85rem;display:none;">You're all caught up ✨</div>
     </div>
 
-    <div 
-
-id="profileView" style="display:none;">
+    <div id="profileView" style="display:none;">
       <div class="profile-card">
-        <div 
-
-class="profile-av" id="profileAv">?</div>
-        <div class="profile-name" 
-
-id="profileName">—</div>
+        <div class="profile-av" id="profileAv">?</div>
+        <div class="profile-name" id="profileName">—</div>
         <div class="profile-email" id="profileEmail">—</div>
-   
-
-     <div class="profile-stats">
-          <div><b 
-
-id="statPosts">0</b><span>Posts</span></div>
-          <div><b 
-
-id="statLikes">0</b><span>Likes received</span></div>
-          <div><b 
-
-id="statFollowing">0</b><span>Following</span></div>
-          <div><b 
-
-id="statFriends">0</b><span>Friends</span></div>
+        <div class="profile-stats">
+          <div><b id="statPosts">0</b><span>Posts</span></div>
+          <div><b id="statLikes">0</b><span>Likes received</span></div>
+          <div><b id="statFollowing">0</b><span>Following</span></div>
+          <div><b id="statFriends">0</b><span>Friends</span></div>
         </div>
-        <button class="btn 
-
-btn-outline" id="logoutBtn" style="max-width:200px;margin:0 auto;">Log 
-
-out</button>
+        <button class="btn btn-outline" id="logoutBtn" style="max-width:200px;margin:0 auto;">Log out</button>
       </div>
-      <h3 style="margin:18px 4px 12px;font-
-
-size:1.15rem;">Orders for your crafts (COD)</h3>
+      <h3 style="margin:18px 4px 12px;font-size:1.15rem;">Orders for your crafts (COD)</h3>
       <div id="sellerOrders"></div>
-   
-
-   <div class="state-box" id="ordersEmpty" style="display:none;"><p style="font-
-
-size:.9rem;">No buy requests yet.</p></div>
-      <h3 style="margin:24px 4px 
-
-12px;font-size:1.15rem;">Your crafts</h3>
+      <div class="state-box" id="ordersEmpty" style="display:none;"><p style="font-size:.9rem;">No buy requests yet.</p></div>
+      <h3 style="margin:24px 4px 12px;font-size:1.15rem;">Your crafts</h3>
       <div class="feed" id="myFeed"></div>
-    
-
-  <div class="state-box" id="myEmpty" style="display:none;"><h3>Nothing posted 
-
-yet</h3><p>Upload your first craft from the + button.</p></div>
+      <div class="state-box" id="myEmpty" style="display:none;"><h3>Nothing posted yet</h3><p>Upload your first craft from the + button.</p></div>
     </div>
 
-    <div 
-
-id="friendsView" style="display:none;">
-      <h2 class="view-title">Friends &amp; 
-
-following</h2>
+    <div id="friendsView" style="display:none;">
+      <h2 class="view-title">Friends &amp; following</h2>
       <div class="tabs-row">
-        <button type="button" class="on" 
-
-data-ftab="friends" id="tabFriends">Friends</button>
-        <button type="button" 
-
-data-ftab="following" id="tabFollowing">Following</button>
-        <button 
-
-type="button" data-ftab="blocked" id="tabBlocked">Blocked</button>
+        <button type="button" class="on" data-ftab="friends" id="tabFriends">Friends</button>
+        <button type="button" data-ftab="following" id="tabFollowing">Following</button>
+        <button type="button" data-ftab="blocked" id="tabBlocked">Blocked</button>
       </div>
-      
-
-<div class="friends-list" id="friendsList"></div>
-      <div class="state-box" 
-
-id="friendsEmpty" style="display:none;"><h3>Nothing here yet</h3><p>Follow makers 
-
-from their posts to grow your circle.</p></div>
+      <div class="friends-list" id="friendsList"></div>
+      <div class="state-box" id="friendsEmpty" style="display:none;"><h3>Nothing here yet</h3><p>Follow makers from their posts to grow your circle.</p></div>
     </div>
 
-    <div id="chatView" 
-
-style="display:none;">
+    <div id="chatView" style="display:none;">
       <h2 class="view-title">Messages</h2>
-      <div class="chat-
-
-list" id="chatList"></div>
-      <div class="state-box" id="chatEmpty" 
-
-style="display:none;"><h3>No chats yet</h3><p>Open a profile and tap Message to 
-
-start talking.</p></div>
+      <div class="chat-list" id="chatList"></div>
+      <div class="state-box" id="chatEmpty" style="display:none;"><h3>No chats yet</h3><p>Open a profile and tap Message to start talking.</p></div>
     </div>
   </main>
 
   <nav class="bottom-nav">
-    <div 
-
-class="bottom-nav-inner">
-      <button class="nav-item active" data-view="feed" 
-
-id="navFeed">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" 
-
-stroke-width="1.8"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 
-
-0 01-1-1v-9.5z"/></svg>
+    <div class="bottom-nav-inner">
+      <button class="nav-item active" data-view="feed" id="navFeed">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 10.5L12 3l9 7.5V20a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1v-9.5z"/></svg>
         <span>Home</span>
       </button>
-      <button class="nav-
-
-item" data-view="friends" id="navFriends">
-        <svg viewBox="0 0 24 24" 
-
-fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 11a3 3 0 10-2.8
-
--4M8 11a3 3 0 110-6 3 3 0 010 6zM4 21c0-3 3-5 6-5M14 16c3 0 6 2 6 5"/><path 
-
-d="M16 16c-1.5 0-2.5-.5-3-1"/></svg>
+      <button class="nav-item" data-view="friends" id="navFriends">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 11a3 3 0 10-2.8-4M8 11a3 3 0 110-6 3 3 0 010 6zM4 21c0-3 3-5 6-5M14 16c3 0 6 2 6 5"/><path d="M16 16c-1.5 0-2.5-.5-3-1"/></svg>
         <span>Friends</span>
       </button>
-      
-
-<button class="nav-item upload-fab" id="navUpload" title="Upload">
-        <svg 
-
-viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path 
-
-d="M12 5v14M5 12h14"/></svg>
+      <button class="nav-item upload-fab" id="navUpload" title="Upload">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
       </button>
-      <button class="nav-item" data-
-
-view="chat" id="navChat">
-        <svg viewBox="0 0 24 24" fill="none" 
-
-stroke="currentColor" stroke-width="1.8"><path d="M21 12a8 8 0 01-8 8H7l-4 
-
-3V12a8 8 0 018-8h2a8 8 0 018 8z"/></svg>
+      <button class="nav-item" data-view="chat" id="navChat">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a8 8 0 01-8 8H7l-4 3V12a8 8 0 018-8h2a8 8 0 018 8z"/></svg>
         <span>Chat</span>
       </button>
-      
-
-<button class="nav-item" data-view="profile" id="navProfile">
-        <svg viewBox="0 0 
-
-24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" 
-
-r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+      <button class="nav-item" data-view="profile" id="navProfile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
         <span>You</span>
-      
-
-</button>
+      </button>
     </div>
   </nav>
 </div>
 
 <div class="modal-overlay" id="uploadModal">
-  <div 
-
-class="modal">
+  <div class="modal">
     <div class="modal-head">
       <h2>Share a craft</h2>
-      <button 
-
-class="modal-close" id="closeUpload">×</button>
+      <button class="modal-close" id="closeUpload">×</button>
     </div>
     <div class="modal-body">
-  
-
-    <div class="dropzone" id="dropzone">
-        <svg width="32" height="32" 
-
-viewBox="0 0 24 24" fill="none" stroke="#4f7355" stroke-width="1.8"><path 
-
-d="M12 3v12M7 8l5-5 5 5M5 21h14"/></svg>
-        <p>Drop photos or click to 
-
-browse</p>
+      <div class="dropzone" id="dropzone">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4f7355" stroke-width="1.8"><path d="M12 3v12M7 8l5-5 5 5M5 21h14"/></svg>
+        <p>Drop photos or click to browse</p>
         <p class="hint">JPG · PNG · WEBP · up to 6 · 5 MB each</p>
-        
-
-<input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" 
-
-multiple>
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple>
       </div>
       <div class="preview-row" id="previewRow"></div>
-      <form 
-
-id="uploadForm" style="margin-top:16px;">
-        <div class="field"><label 
-
-for="upTitle">Title *</label><input type="text" id="upTitle" maxlength="80" 
-
-required></div>
+      <form id="uploadForm" style="margin-top:16px;">
+        <div class="field"><label for="upTitle">Title *</label><input type="text" id="upTitle" maxlength="80" required></div>
         <div class="field">
-          <label for="upCategory">Category 
-
-*</label>
+          <label for="upCategory">Category *</label>
           <select id="upCategory" required>
-            <option value="">Select 
-
-craft type</option>
-            
-
-<option>Crochet</option><option>Knitting</option><option>Macramé</option>
-            
-
-<option>Embroidery</option><option>Pottery</option><option>Painting</option>
-            
-
-<option>Paper Crafts</option><option>Home Décor</option><option>Resin Art</option>
- 
-
-           <option>Clay Art</option><option>Jewelry Making</option><option>Candle 
-
-Making</option>
+            <option value="">Select craft type</option>
+            <option>Crochet</option><option>Knitting</option><option>Macramé</option>
+            <option>Embroidery</option><option>Pottery</option><option>Painting</option>
+            <option>Paper Crafts</option><option>Home Décor</option><option>Resin Art</option>
+            <option>Clay Art</option><option>Jewelry Making</option><option>Candle Making</option>
             <option>Other</option>
           </select>
         </div>
-        <div 
-
-class="field"><label for="upDesc">Story *</label><textarea id="upDesc" 
-
-maxlength="600" required></textarea></div>
-        <div class="field"><label 
-
-for="upTags">Tags (comma separated)</label><input type="text" id="upTags" 
-
-placeholder="handmade, gift"></div>
+        <div class="field"><label for="upDesc">Story *</label><textarea id="upDesc" maxlength="600" required></textarea></div>
+        <div class="field"><label for="upTags">Tags (comma separated)</label><input type="text" id="upTags" placeholder="handmade, gift"></div>
         <div class="sale-toggle">
-          <input 
-
-type="checkbox" id="upForSale">
-          <label for="upForSale">This craft is for sale 
-
-(Pay on delivery)</label>
+          <input type="checkbox" id="upForSale">
+          <label for="upForSale">This craft is for sale (Pay on delivery)</label>
         </div>
         <div class="field" id="priceField">
-          
-
-<label for="upPrice">Price (₹) *</label>
-          <input type="number" id="upPrice" 
-
-min="1" step="1" placeholder="e.g. 299">
+          <label for="upPrice">Price (₹) *</label>
+          <input type="number" id="upPrice" min="1" step="1" placeholder="e.g. 299">
         </div>
-        <button type="submit" 
-
-class="btn btn-primary" id="publishBtn">Publish craft</button>
+        <button type="submit" class="btn btn-primary" id="publishBtn">Publish craft</button>
       </form>
     </div>
-  
-
-</div>
+  </div>
 </div>
 
 
 <!-- Buy / COD order modal -->
-<div class="modal-overlay" 
-
-id="buyModal">
+<div class="modal-overlay" id="buyModal">
   <div class="modal">
     <div class="modal-head">
-      <h2>Buy this 
-
-craft</h2>
+      <h2>Buy this craft</h2>
       <button class="modal-close" id="closeBuyModal">×</button>
     </div>
-    
-
-<div class="modal-body">
-      <p id="buyItemLine" style="font-size:.92rem;color:var
-
-(--ink-soft);margin-bottom:14px;line-height:1.5;"></p>
-      <p style="font-
-
-size:.82rem;color:var(--gold);margin-bottom:14px;font-weight:500;">Pay on delivery 
-
-— cash when you receive it.</p>
+    <div class="modal-body">
+      <p id="buyItemLine" style="font-size:.92rem;color:var(--ink-soft);margin-bottom:14px;line-height:1.5;"></p>
+      <p style="font-size:.82rem;color:var(--gold);margin-bottom:14px;font-weight:500;">Pay on delivery — cash when you receive it.</p>
       <form id="buyForm">
-        <div class="field"><label 
-
-for="buyName">Your full name *</label><input type="text" id="buyName" required 
-
-maxlength="80"></div>
-        <div class="field"><label for="buyPhone">Phone number 
-
-*</label><input type="tel" id="buyPhone" required maxlength="15" placeholder="10-
-
-digit mobile"></div>
-        <div class="field"><label for="buyAddress">Delivery address 
-
-*</label><textarea id="buyAddress" required maxlength="400" placeholder="House / 
-
-street, area, city, PIN code"></textarea></div>
-        <div class="field"><label 
-
-for="buyNote">Note to seller (optional)</label><input type="text" id="buyNote" 
-
-maxlength="200" placeholder="Size, colour, preferred time…"></div>
-        <button 
-
-type="submit" class="btn btn-primary" id="buySubmitBtn">Place order (COD)
-
-</button>
+        <div class="field"><label for="buyName">Your full name *</label><input type="text" id="buyName" required maxlength="80"></div>
+        <div class="field"><label for="buyPhone">Phone number *</label><input type="tel" id="buyPhone" required maxlength="15" placeholder="10-digit mobile"></div>
+        <div class="field"><label for="buyAddress">Delivery address *</label><textarea id="buyAddress" required maxlength="400" placeholder="House / street, area, city, PIN code"></textarea></div>
+        <div class="field"><label for="buyNote">Note to seller (optional)</label><input type="text" id="buyNote" maxlength="200" placeholder="Size, colour, preferred time…"></div>
+        <button type="submit" class="btn btn-primary" id="buySubmitBtn">Place order (COD)</button>
       </form>
     </div>
   </div>
 </div>
 
 <div class="lightbox" id="lightbox">
-  
-
-<button class="lightbox-close" id="lightboxClose">×</button>
-  <img id="lightboxImg" 
-
-alt="">
+  <button class="lightbox-close" id="lightboxClose">×</button>
+  <img id="lightboxImg" alt="">
 </div>
 
 <!-- Other user profile sheet -->
-<div class="modal-overlay" 
-
-id="userModal">
+<div class="modal-overlay" id="userModal">
   <div class="modal">
     <div class="modal-head">
-      <h2 
-
-id="userModalTitle">Maker</h2>
-      <button class="modal-close" 
-
-id="closeUserModal">×</button>
+      <h2 id="userModalTitle">Maker</h2>
+      <button class="modal-close" id="closeUserModal">×</button>
     </div>
-    <div class="modal-body" style="text-
-
-align:center;">
-      <div class="profile-av" id="userModalAv" style="margin:0 auto 
-
-12px;">?</div>
+    <div class="modal-body" style="text-align:center;">
+      <div class="profile-av" id="userModalAv" style="margin:0 auto 12px;">?</div>
       <div class="profile-name" id="userModalName">—</div>
-      <p 
-
-id="userModalSub" style="color:var(--ink-soft);font-size:.88rem;margin:6px 0 
-
-0;">Craft Setu maker</p>
+      <p id="userModalSub" style="color:var(--ink-soft);font-size:.88rem;margin:6px 0 0;">Craft Setu maker</p>
       <div class="user-sheet-actions">
-        <button 
-
-type="button" class="btn btn-primary" id="btnFollow">Follow</button>
-        <button 
-
-type="button" class="btn btn-soft" id="btnMessage">Message</button>
-        <button 
-
-type="button" class="btn btn-danger" id="btnBlock">Block</button>
+        <button type="button" class="btn btn-primary" id="btnFollow">Follow</button>
+        <button type="button" class="btn btn-soft" id="btnMessage">Message</button>
+        <button type="button" class="btn btn-danger" id="btnBlock">Block</button>
       </div>
-      <p 
-
-id="userModalHint" style="margin-top:14px;font-size:.8rem;color:var(--ink-
-
-soft);"></p>
+      <p id="userModalHint" style="margin-top:14px;font-size:.8rem;color:var(--ink-soft);"></p>
     </div>
   </div>
 </div>
 
 <!-- Chat thread modal -->
-<div class="modal-overlay" 
-
-id="chatModal">
+<div class="modal-overlay" id="chatModal">
   <div class="modal">
     <div class="modal-head">
-      <h2 
-
-id="chatModalTitle">Chat</h2>
-      <button class="modal-close" 
-
-id="closeChatModal">×</button>
+      <h2 id="chatModalTitle">Chat</h2>
+      <button class="modal-close" id="closeChatModal">×</button>
     </div>
     <div class="modal-body">
-      <div 
-
-class="chat-thread" id="chatThread"></div>
-      <form class="chat-compose" 
-
-id="chatForm">
-        <input type="text" id="chatInput" placeholder="Write a 
-
-message…" maxlength="500" required autocomplete="off">
-        <button 
-
-type="submit" class="btn btn-primary">Send</button>
+      <div class="chat-thread" id="chatThread"></div>
+      <form class="chat-compose" id="chatForm">
+        <input type="text" id="chatInput" placeholder="Write a message…" maxlength="500" required autocomplete="off">
+        <button type="submit" class="btn btn-primary">Send</button>
       </form>
     </div>
   </div>
@@ -1925,1489 +647,773 @@ type="submit" class="btn btn-primary">Send</button>
 <div class="toast" id="toast"></div>
 
 <script>
-  // ========== APPWRITE 
-
-CONFIG (NO secret API key in browser) ==========
-  const APPWRITE_ENDPOINT 
-
-= 'https://sgp.cloud.appwrite.io/v1';
-  const APPWRITE_PROJECT_ID = 
-
-'6a75f75400350e8fd788'; // ← from Console → Settings
-  const DATABASE_ID = 
-
-'craft_setu';
+  // ========== APPWRITE CONFIG (NO secret API key in browser) ==========
+  const APPWRITE_ENDPOINT = 'https://sgp.cloud.appwrite.io/v1';
+  const APPWRITE_PROJECT_ID = '6a75f75400350e8fd788'; // ← from Console → Settings
+  const DATABASE_ID = 'craft_setu';
   const COLLECTION_POSTS = 'posts';
-  const 
+  const COLLECTION_FOLLOWS = 'follows';   // columns: followerId, followingId, followingName, followerName
+  const COLLECTION_BLOCKS = 'blocks';     // columns: blockerId, blockedId, blockedName
+  const COLLECTION_MESSAGES = 'messages'; // columns: fromId, toId, fromName, toName, text
+  const COLLECTION_ORDERS = 'orders';     // buy requests COD
+  const BUCKET_ID = 'crafts';
+  // ====================================================================
 
-COLLECTION_FOLLOWS = 'follows';   // columns: followerId, followingId, 
+  const { Client, Account, Databases, Storage, ID, Query, Permission, Role } = Appwrite;
 
-followingName, followerName
-  const COLLECTION_BLOCKS = 'blocks';     // 
-
-columns: blockerId, blockedId, blockedName
-  const COLLECTION_MESSAGES = 
-
-'messages'; // columns: fromId, toId, fromName, toName, text
-  const 
-
-COLLECTION_ORDERS = 'orders';     // buy requests COD
-  const BUCKET_ID = 
-
-'crafts';
-  // 
-
-====================================================================
-
-  const { 
-
-Client, Account, Databases, Storage, ID, Query, Permission, Role } = Appwrite;
-
-  const 
-
-client = new Client()
+  const client = new Client()
     .setEndpoint(APPWRITE_ENDPOINT)
-    .setProject
-
-(APPWRITE_PROJECT_ID);
+    .setProject(APPWRITE_PROJECT_ID);
 
   const account = new Account(client);
-  const databases = 
-
-new Databases(client);
+  const databases = new Databases(client);
   const storage = new Storage(client);
 
   let currentUser = null;
-  
-
-let lastId = null;
+  let lastId = null;
   let loadingMore = false;
   let allLoaded = false;
   const PAGE = 12;
-  let 
-
-uploadFiles = [];
+  let uploadFiles = [];
   let blockedIds = new Set();
   let followingIds = new Set();
-  let 
-
-followingDocs = {}; // followingId -> doc
+  let followingDocs = {}; // followingId -> doc
   let blockDocs = {};
-  let activeChatUser = 
-
-null; // { id, name }
+  let activeChatUser = null; // { id, name }
   let friendsTab = 'friends';
 
   function toast(msg) {
-    const t = 
-
-document.getElementById('toast');
+    const t = document.getElementById('toast');
     t.textContent = msg;
     t.classList.add('show');
-    
-
-clearTimeout(t._tm);
+    clearTimeout(t._tm);
     t._tm = setTimeout(() => t.classList.remove('show'), 2800);
   }
-  
-
-function initials(name) {
+  function initials(name) {
     if (!name) return '?';
-    return name.split(/\s+/).map(w => 
-
-w[0]).join('').slice(0, 2).toUpperCase();
+    return name.split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
   }
   function timeAgo(iso) {
     if (!iso) return '';
- 
-
-   const d = new Date(iso);
+    const d = new Date(iso);
     const s = Math.floor((Date.now() - d) / 1000);
-    if (s < 
-
-60) return 'just now';
+    if (s < 60) return 'just now';
     if (s < 3600) return Math.floor(s / 60) + 'm ago';
-    if (s < 
-
-86400) return Math.floor(s / 3600) + 'h ago';
-    if (s < 604800) return Math.floor(s 
-
-/ 86400) + 'd ago';
+    if (s < 86400) return Math.floor(s / 3600) + 'h ago';
+    if (s < 604800) return Math.floor(s / 86400) + 'd ago';
     return d.toLocaleDateString();
   }
   function escapeHtml(s) {
-    
-
-return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace
-
-(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
   function setAvatar(el, user) {
     if (!el) return;
-  
-
-  el.textContent = initials(user?.name || user?.email);
+    el.textContent = initials(user?.name || user?.email);
   }
   function fileViewUrl(fileId) {
-  
-
-  return `${APPWRITE_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/
-
-${fileId}/view?project=${APPWRITE_PROJECT_ID}`;
+    return `${APPWRITE_ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${fileId}/view?project=${APPWRITE_PROJECT_ID}`;
   }
 
   function enterApp(user) {
- 
-
-   currentUser = user;
+    currentUser = user;
     document.getElementById('authGate').style.display = 'none';
-   
-
- document.getElementById('app').style.display = 'flex';
-    setAvatar
-
-(document.getElementById('composerAv'), user);
-    setAvatar
-
-(document.getElementById('profileBtn'), user);
-    setAvatar
-
-(document.getElementById('profileAv'), user);
-    document.getElementById
-
-('profileName').textContent = user.name || 'Maker';
-    document.getElementById
-
-('profileEmail').textContent = user.email || '';
-    loadSocialGraph().then(() => 
-
-loadFeed(true));
+    document.getElementById('app').style.display = 'flex';
+    setAvatar(document.getElementById('composerAv'), user);
+    setAvatar(document.getElementById('profileBtn'), user);
+    setAvatar(document.getElementById('profileAv'), user);
+    document.getElementById('profileName').textContent = user.name || 'Maker';
+    document.getElementById('profileEmail').textContent = user.email || '';
+    loadSocialGraph().then(() => loadFeed(true));
   }
 
   const authTimeout = setTimeout(() => {
-    
-
-document.getElementById('authSpinner').style.display = 'none';
-    
-
-document.getElementById('authStatus').textContent = 'Taking too long. Try logging in 
-
-again.';
+    document.getElementById('authSpinner').style.display = 'none';
+    document.getElementById('authStatus').textContent = 'Taking too long. Try logging in again.';
     document.getElementById('authFallback').style.display = 'inline';
   }, 8000);
 
-  
-
-// Auth check with retries (session can lag on GitHub Pages)
-  async function 
-
-checkAuth(attempt = 1) {
+  // Auth check with retries (session can lag on GitHub Pages)
+  async function checkAuth(attempt = 1) {
     try {
       const user = await account.get();
-      clearTimeout
-
-(authTimeout);
+      clearTimeout(authTimeout);
       enterApp(user);
     } catch (err) {
-      console.warn('Auth attempt', 
-
-attempt, err);
+      console.warn('Auth attempt', attempt, err);
       if (attempt < 4) {
-        setTimeout(() => checkAuth(attempt + 1), 500 
-
-* attempt);
+        setTimeout(() => checkAuth(attempt + 1), 500 * attempt);
         return;
       }
       clearTimeout(authTimeout);
-      const status = 
-
-document.getElementById('authStatus');
-      const spinner = 
-
-document.getElementById('authSpinner');
-      const fallback = 
-
-document.getElementById('authFallback');
-      if (spinner) spinner.style.display = 
-
-'none';
-      if (status) status.textContent = 'Session not found. Log in again (check 
-
-browser is not blocking third-party cookies).';
-      if (fallback) fallback.style.display 
-
-= 'inline';
+      const status = document.getElementById('authStatus');
+      const spinner = document.getElementById('authSpinner');
+      const fallback = document.getElementById('authFallback');
+      if (spinner) spinner.style.display = 'none';
+      if (status) status.textContent = 'Session not found. Log in again (check browser is not blocking third-party cookies).';
+      if (fallback) fallback.style.display = 'inline';
       setTimeout(() => { window.location.replace('login.html'); }, 2800);
     }
   }
-  
-
-checkAuth();
+  checkAuth();
 
   async function loadFeed(reset) {
     if (loadingMore) return;
-    
-
-loadingMore = true;
+    loadingMore = true;
     const feed = document.getElementById('feed');
-    const loading 
-
-= document.getElementById('feedLoading');
-    const empty = 
-
-document.getElementById('feedEmpty');
-    const end = document.getElementById
-
-('feedEnd');
+    const loading = document.getElementById('feedLoading');
+    const empty = document.getElementById('feedEmpty');
+    const end = document.getElementById('feedEnd');
 
     if (reset) {
       feed.innerHTML = '';
       lastId = null;
-      allLoaded = 
-
-false;
+      allLoaded = false;
       end.style.display = 'none';
       empty.style.display = 'none';
     }
-    
-
-loading.style.display = 'block';
+    loading.style.display = 'block';
 
     try {
-      const queries = [Query.orderDesc
+      const queries = [Query.orderDesc('$createdAt'), Query.limit(PAGE)];
+      if (lastId) queries.push(Query.cursorAfter(lastId));
 
-('$createdAt'), Query.limit(PAGE)];
-      if (lastId) queries.push(Query.cursorAfter
-
-(lastId));
-
-      const res = await databases.listDocuments(DATABASE_ID, 
-
-COLLECTION_POSTS, queries);
+      const res = await databases.listDocuments(DATABASE_ID, COLLECTION_POSTS, queries);
       loading.style.display = 'none';
 
-      if 
-
-(res.documents.length === 0 && reset) {
+      if (res.documents.length === 0 && reset) {
         empty.style.display = 'block';
-        
-
-loadingMore = false;
+        loadingMore = false;
         return;
       }
       if (res.documents.length === 0) {
-        
-
-allLoaded = true;
+        allLoaded = true;
         end.style.display = 'block';
         loadingMore = false;
-        
-
-return;
+        return;
       }
 
       lastId = res.documents[res.documents.length - 1].$id;
-      if 
-
-(res.documents.length < PAGE) {
+      if (res.documents.length < PAGE) {
         allLoaded = true;
         end.style.display = 'block';
- 
-
-     }
+      }
 
       res.documents.forEach(doc => {
-        if (doc.userId && blockedIds.has
-
-(doc.userId)) return;
+        if (doc.userId && blockedIds.has(doc.userId)) return;
         feed.appendChild(renderPost(doc));
       });
-      if (!
-
-feed.children.length && reset) {
+      if (!feed.children.length && reset) {
         empty.style.display = 'block';
       }
-    } catch (err) 
-
-{
+    } catch (err) {
       console.error(err);
       loading.style.display = 'none';
-      toast(err.message || 
-
-'Could not load feed. Check Database ID & permissions.');
+      toast(err.message || 'Could not load feed. Check Database ID & permissions.');
     }
     loadingMore = false;
-  
-
-}
+  }
 
   function renderPost(doc) {
     const card = document.createElement('article');
-    
-
-card.className = 'post-card';
+    card.className = 'post-card';
     card.dataset.id = doc.$id;
 
-    const likedBy = 
-
-Array.isArray(doc.likedBy) ? doc.likedBy : [];
-    const liked = likedBy.includes
-
-(currentUser.$id);
+    const likedBy = Array.isArray(doc.likedBy) ? doc.likedBy : [];
+    const liked = likedBy.includes(currentUser.$id);
     const likes = doc.likesCount || likedBy.length || 0;
-    const author 
-
-= doc.authorName || 'Maker';
-    const imageIds = Array.isArray(doc.imageIds) ? 
-
-doc.imageIds : [];
+    const author = doc.authorName || 'Maker';
+    const imageIds = Array.isArray(doc.imageIds) ? doc.imageIds : [];
     // Appwrite may return boolean, 0/1, or string
-    const priceNum 
+    const priceNum = Number(doc.price) || 0;
+    const isSale = doc.forSale === true || doc.forSale === 1 || doc.forSale === 'true' || doc.forSale === 'True' || priceNum > 0;
+    const isOwn = !!(doc.userId && currentUser && doc.userId === currentUser.$id);
 
-= Number(doc.price) || 0;
-    const isSale = doc.forSale === true || doc.forSale === 1 
-
-|| doc.forSale === 'true' || doc.forSale === 'True' || priceNum > 0;
-    const isOwn = 
-
-!!(doc.userId && currentUser && doc.userId === currentUser.$id);
-
-    let mediaHtml = 
-
-'';
+    let mediaHtml = '';
     if (imageIds.length) {
       const url = fileViewUrl(imageIds[0]);
-      mediaHtml = 
-
-`<div class="post-media"><img src="${url}" alt="${escapeHtml(doc.title || '')}" data-
-
-full="${url}"></div>`;
+      mediaHtml = `<div class="post-media"><img src="${url}" alt="${escapeHtml(doc.title || '')}" data-full="${url}"></div>`;
     }
 
-    const tags = (Array.isArray(doc.tags) ? doc.tags : []).map
-
-(t => `<span>#${escapeHtml(t)}</span>`).join('');
+    const tags = (Array.isArray(doc.tags) ? doc.tags : []).map(t => `<span>#${escapeHtml(t)}</span>`).join('');
     const saleBadge = isSale
-      ? 
-
-`<div class="sale-badge">For sale · <b>₹${escapeHtml(String(priceNum || doc.price || 
-
-''))}</b> · Pay on delivery</div>`
+      ? `<div class="sale-badge">For sale · <b>₹${escapeHtml(String(priceNum || doc.price || ''))}</b> · Pay on delivery</div>`
       : '';
-    // Always show Buy for sale items that are 
-
-not yours
-    const buyHtml = (isSale && !isOwn)
-      ? `<button type="button" 
-
-class="buy-btn">Buy · ₹${escapeHtml(String(priceNum || doc.price || ''))}</button>`
-  
-
-    : (isSale && isOwn ? `<span class="sale-badge" style="margin-left:auto;">Your 
-
-listing</span>` : '');
+    // Show Buy on every for-sale post (visible for testing + other buyers)
+    const buyHtml = isSale
+      ? `<button type="button" class="buy-btn" data-own="${isOwn ? '1' : '0'}">Buy · ₹${escapeHtml(String(priceNum || doc.price || ''))}</button>`
+      : '';
 
     card.innerHTML = `
       <div class="post-header">
-        <div 
-
-class="post-av author-hit" style="cursor:pointer">${initials(author)}</div>
-        <div 
-
-class="post-meta">
-          <div class="name name-link author-hit">${escapeHtml
-
-(author)}</div>
-          <div class="time">${timeAgo(doc.$createdAt)}</div>
+        <div class="post-av author-hit" style="cursor:pointer">${initials(author)}</div>
+        <div class="post-meta">
+          <div class="name name-link author-hit">${escapeHtml(author)}</div>
+          <div class="time">${timeAgo(doc.$createdAt)}${doc.category ? ' · ' + escapeHtml(doc.category) : ''}</div>
         </div>
-  
-
-      ${doc.category ? `<span class="post-category">${escapeHtml(doc.category)}
-
-</span>` : ''}
       </div>
-      <div class="post-body">
-        <div class="post-title">
-
-${escapeHtml(doc.title || '')}</div>
-        <div class="post-desc">${escapeHtml
-
-(doc.description || '')}</div>
-        ${tags ? `<div class="post-tags">${tags}</div>` : ''}
- 
-
-       ${saleBadge}
-      </div>
-      ${mediaHtml}
+      ${mediaHtml || '<div class="post-media" style="display:flex;align-items:center;justify-content:center;color:var(--ink-soft);font-size:.9rem;">No photo</div>'}
       <div class="post-actions">
-        
-
-<button class="action-btn like-btn ${liked ? 'liked' : ''}">
-          <svg viewBox="0 0 24 
-
-24" fill="${liked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-
-
-width="1.8">
-            <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 
-
-10-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 000-7.8z"/>
+        <button class="action-btn like-btn ${liked ? 'liked' : ''}" title="Like">
+          <svg viewBox="0 0 24 24" fill="${liked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.8">
+            <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 10-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 000-7.8z"/>
           </svg>
-          <span 
-
-class="likes-count">${likes}</span>
+        </button>
+        <button type="button" class="action-btn msg-hit" title="Message" ${doc.userId && doc.userId !== currentUser.$id ? '' : 'style="display:none"'}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a8 8 0 01-8 8H7l-4 3V12a8 8 0 018-8h2a8 8 0 018 8z"/></svg>
         </button>
         ${buyHtml}
       </div>
+      <div class="post-body">
+        <div style="font-size:.88rem;font-weight:600;color:var(--sage-dark);margin-bottom:4px;"><span class="likes-count">${likes}</span> likes</div>
+        <div class="post-title">${escapeHtml(doc.title || '')}</div>
+        <div class="post-desc"><b style="color:var(--sage-dark);font-weight:600;margin-right:6px;">${escapeHtml(author)}</b>${escapeHtml(doc.description || '')}</div>
+        ${tags ? `<div class="post-tags">${tags}</div>` : ''}
+        ${saleBadge}
+        ${isSale ? `<div style="margin-top:10px;"><button type="button" class="buy-btn buy-btn-wide">Buy now · ₹${escapeHtml(String(priceNum || doc.price || ''))} · COD</button></div>` : ''}
+      </div>
     `;
 
-    
-
-card.querySelector('.like-btn').addEventListener('click', () => toggleLike(doc, card));
-  
-
-  const buyBtn = card.querySelector('.buy-btn');
-    if (buyBtn) 
-
-buyBtn.addEventListener('click', (e) => { e.preventDefault(); openBuyModal(doc); });
-    
-
-card.querySelectorAll('.author-hit').forEach(el => {
-      el.addEventListener('click', 
-
-(e) => {
+    card.querySelector('.like-btn').addEventListener('click', () => toggleLike(doc, card));
+    const msgHit = card.querySelector('.msg-hit');
+    if (msgHit) msgHit.addEventListener('click', () => {
+      if (doc.userId) openChat({ id: doc.userId, name: author });
+    });
+    card.querySelectorAll('.buy-btn').forEach(buyBtn => {
+      buyBtn.addEventListener('click', (e) => {
+        e.preventDefault();
         e.stopPropagation();
-        if (!doc.userId || doc.userId === currentUser.
-
-$id) {
+        if (isOwn) {
+          toast('This is your listing. Orders from buyers appear under You → Orders.');
+          return;
+        }
+        openBuyModal(doc);
+      });
+    });
+    card.querySelectorAll('.author-hit').forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!doc.userId || doc.userId === currentUser.$id) {
           showView('profile');
           return;
         }
-        openUserSheet({ id: 
-
-doc.userId, name: author });
+        openUserSheet({ id: doc.userId, name: author });
       });
     });
-    const img = card.querySelector('.post-media 
-
-img');
+    const img = card.querySelector('.post-media img');
     if (img) {
       img.addEventListener('click', () => {
-        
-
-document.getElementById('lightboxImg').src = img.dataset.full || img.src;
-        
-
-document.getElementById('lightbox').classList.add('show');
+        document.getElementById('lightboxImg').src = img.dataset.full || img.src;
+        document.getElementById('lightbox').classList.add('show');
       });
     }
     return card;
   }
 
- 
-
- async function toggleLike(doc, card) {
+  async function toggleLike(doc, card) {
     const btn = card.querySelector('.like-btn');
-   
+    const countEls = card.querySelectorAll('.likes-count');
+    const wasLiked = btn.classList.contains('liked');
+    let likedBy = Array.isArray(doc.likedBy) ? [...doc.likedBy] : [];
+    let n = parseInt(countEls[0]?.textContent, 10) || 0;
 
- const countEl = btn.querySelector('.likes-count');
-    const wasLiked = 
-
-btn.classList.contains('liked');
-    let likedBy = Array.isArray(doc.likedBy) ? 
-
-[...doc.likedBy] : [];
-    let n = parseInt(countEl.textContent, 10) || 0;
-
-    
-
-btn.classList.toggle('liked', !wasLiked);
-    btn.querySelector('svg').setAttribute('fill', 
-
-!wasLiked ? 'currentColor' : 'none');
+    btn.classList.toggle('liked', !wasLiked);
+    btn.querySelector('svg').setAttribute('fill', !wasLiked ? 'currentColor' : 'none');
     if (wasLiked) {
-      likedBy = likedBy.filter(id 
-
-=> id !== currentUser.$id);
+      likedBy = likedBy.filter(id => id !== currentUser.$id);
       n = Math.max(0, n - 1);
     } else {
-      if (!
-
-likedBy.includes(currentUser.$id)) likedBy.push(currentUser.$id);
+      if (!likedBy.includes(currentUser.$id)) likedBy.push(currentUser.$id);
       n = n + 1;
     }
-    
-
-countEl.textContent = n;
+    countEls.forEach(el => { el.textContent = n; });
     doc.likedBy = likedBy;
     doc.likesCount = n;
 
     try {
-      
-
-await databases.updateDocument(DATABASE_ID, COLLECTION_POSTS, doc.$id, {
-  
-
-      likedBy,
+      await databases.updateDocument(DATABASE_ID, COLLECTION_POSTS, doc.$id, {
+        likedBy,
         likesCount: n
       });
     } catch (err) {
       console.error(err);
-      toast
-
-('Could not update like. Check update permissions.');
+      toast('Could not update like. Check update permissions.');
       // revert
-      
-
-btn.classList.toggle('liked', wasLiked);
-      btn.querySelector('svg').setAttribute
-
-('fill', wasLiked ? 'currentColor' : 'none');
-      countEl.textContent = wasLiked ? n + 1 : 
-
-Math.max(0, n - 1);
+      btn.classList.toggle('liked', wasLiked);
+      btn.querySelector('svg').setAttribute('fill', wasLiked ? 'currentColor' : 'none');
+      countEl.textContent = wasLiked ? n + 1 : Math.max(0, n - 1);
     }
   }
 
   window.addEventListener('scroll', () => {
-    if (allLoaded || 
-
-loadingMore) return;
-    if (document.getElementById('feedView').style.display === 
-
-'none') return;
-    if (window.innerHeight + window.scrollY >= 
-
-document.body.offsetHeight - 400) loadFeed(false);
+    if (allLoaded || loadingMore) return;
+    if (document.getElementById('feedView').style.display === 'none') return;
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 400) loadFeed(false);
   });
-  document.getElementById
+  document.getElementById('refreshBtn').addEventListener('click', () => loadFeed(true));
 
-('refreshBtn').addEventListener('click', () => loadFeed(true));
-
-  function showView
-
-(name) {
-    document.getElementById('feedView').style.display = name === 'feed' ? 
-
-'block' : 'none';
-    document.getElementById('profileView').style.display = name === 
-
-'profile' ? 'block' : 'none';
-    document.getElementById('friendsView').style.display = 
-
-name === 'friends' ? 'block' : 'none';
-    document.getElementById
-
-('chatView').style.display = name === 'chat' ? 'block' : 'none';
-    
-
-document.querySelectorAll('.nav-item[data-view]').forEach(el => {
-      
-
-el.classList.toggle('active', el.dataset.view === name);
+  function showView(name) {
+    document.getElementById('feedView').style.display = name === 'feed' ? 'block' : 'none';
+    document.getElementById('profileView').style.display = name === 'profile' ? 'block' : 'none';
+    document.getElementById('friendsView').style.display = name === 'friends' ? 'block' : 'none';
+    document.getElementById('chatView').style.display = name === 'chat' ? 'block' : 'none';
+    document.querySelectorAll('.nav-item[data-view]').forEach(el => {
+      el.classList.toggle('active', el.dataset.view === name);
     });
-    if (name === 'profile') { 
-
-loadMyPosts(); loadSellerOrders(); }
+    if (name === 'profile') { loadMyPosts(); loadSellerOrders(); }
     if (name === 'friends') renderFriendsTab();
-    
-
-if (name === 'chat') loadChatInbox();
+    if (name === 'chat') loadChatInbox();
     window.scrollTo({ top: 0 });
   }
-  
-
-document.getElementById('navFeed').addEventListener('click', () => showView
-
-('feed'));
-  document.getElementById('navProfile').addEventListener('click', () => 
-
-showView('profile'));
-  document.getElementById('navFriends').addEventListener
-
-('click', () => showView('friends'));
-  document.getElementById
-
-('navChat').addEventListener('click', () => showView('chat'));
-  
-
-document.getElementById('profileBtn').addEventListener('click', () => showView
-
-('profile'));
+  document.getElementById('navFeed').addEventListener('click', () => showView('feed'));
+  document.getElementById('navProfile').addEventListener('click', () => showView('profile'));
+  document.getElementById('navFriends').addEventListener('click', () => showView('friends'));
+  document.getElementById('navChat').addEventListener('click', () => showView('chat'));
+  document.getElementById('profileBtn').addEventListener('click', () => showView('profile'));
 
   async function loadMyPosts() {
-    const myFeed = 
-
-document.getElementById('myFeed');
-    const myEmpty = document.getElementById
-
-('myEmpty');
-    myFeed.innerHTML = '<div class="state-box"><div 
-
-class="spinner"></div></div>';
+    const myFeed = document.getElementById('myFeed');
+    const myEmpty = document.getElementById('myEmpty');
+    myFeed.innerHTML = '<div class="state-box"><div class="spinner"></div></div>';
     try {
-      const res = await databases.listDocuments
-
-(DATABASE_ID, COLLECTION_POSTS, [
-        Query.equal('userId', currentUser.
-
-$id),
+      const res = await databases.listDocuments(DATABASE_ID, COLLECTION_POSTS, [
+        Query.equal('userId', currentUser.$id),
         Query.orderDesc('$createdAt'),
         Query.limit(50)
       ]);
-      
-
-myFeed.innerHTML = '';
+      myFeed.innerHTML = '';
       let totalLikes = 0;
       if (res.documents.length === 0) {
-      
-
-  myEmpty.style.display = 'block';
+        myEmpty.style.display = 'block';
       } else {
         myEmpty.style.display = 'none';
-        
-
-res.documents.forEach(doc => {
+        res.documents.forEach(doc => {
           totalLikes += doc.likesCount || 0;
-          
-
-myFeed.appendChild(renderPost(doc));
+          myFeed.appendChild(renderPost(doc));
         });
       }
-      document.getElementById
-
-('statPosts').textContent = res.documents.length;
-      document.getElementById
-
-('statLikes').textContent = totalLikes;
+      document.getElementById('statPosts').textContent = res.documents.length;
+      document.getElementById('statLikes').textContent = totalLikes;
     } catch (err) {
       console.error(err);
-      
-
-myFeed.innerHTML = '';
-      toast(err.message || 'Could not load your posts. May need 
-
-an index on userId.');
+      myFeed.innerHTML = '';
+      toast(err.message || 'Could not load your posts. May need an index on userId.');
     }
   }
 
-  document.getElementById('logoutBtn').addEventListener
-
-('click', async () => {
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
     try { await account.deleteSession('current'); } catch (_) {}
-    
-
-window.location.href = 'login.html';
+    window.location.href = 'login.html';
   });
 
-  // ---------- Social graph (follow / block / 
-
-friends / chat) ----------
+  // ---------- Social graph (follow / block / friends / chat) ----------
   async function loadSocialGraph() {
-    followingIds = new 
-
-Set();
+    followingIds = new Set();
     followingDocs = {};
     blockedIds = new Set();
     blockDocs = {};
     try {
-      
-
-const fol = await databases.listDocuments(DATABASE_ID, 
-
-COLLECTION_FOLLOWS, [
+      const fol = await databases.listDocuments(DATABASE_ID, COLLECTION_FOLLOWS, [
         Query.equal('followerId', currentUser.$id),
-        
-
-Query.limit(100)
+        Query.limit(100)
       ]);
       fol.documents.forEach(d => {
-        followingIds.add
-
-(d.followingId);
+        followingIds.add(d.followingId);
         followingDocs[d.followingId] = d;
       });
-    } catch (e) { 
-
-console.warn('follows load', e); }
+    } catch (e) { console.warn('follows load', e); }
 
     try {
-      const blk = await databases.listDocuments
-
-(DATABASE_ID, COLLECTION_BLOCKS, [
-        Query.equal('blockerId', 
-
-currentUser.$id),
+      const blk = await databases.listDocuments(DATABASE_ID, COLLECTION_BLOCKS, [
+        Query.equal('blockerId', currentUser.$id),
         Query.limit(100)
       ]);
       blk.documents.forEach(d => {
-        
-
-blockedIds.add(d.blockedId);
+        blockedIds.add(d.blockedId);
         blockDocs[d.blockedId] = d;
       });
-    } catch (e) { 
-
-console.warn('blocks load', e); }
+    } catch (e) { console.warn('blocks load', e); }
 
     // mutual friends count for profile stats
-    let 
-
-friendsCount = 0;
+    let friendsCount = 0;
     try {
       for (const fid of followingIds) {
-        const back = await 
-
-databases.listDocuments(DATABASE_ID, COLLECTION_FOLLOWS, [
-          
-
-Query.equal('followerId', fid),
+        const back = await databases.listDocuments(DATABASE_ID, COLLECTION_FOLLOWS, [
+          Query.equal('followerId', fid),
           Query.equal('followingId', currentUser.$id),
-      
-
-    Query.limit(1)
+          Query.limit(1)
         ]);
         if (back.documents.length) friendsCount++;
       }
-    } 
-
-catch (_) {}
+    } catch (_) {}
     const elF = document.getElementById('statFollowing');
-    const elFr = 
-
-document.getElementById('statFriends');
-    if (elF) elF.textContent = 
-
-followingIds.size;
+    const elFr = document.getElementById('statFriends');
+    if (elF) elF.textContent = followingIds.size;
     if (elFr) elFr.textContent = friendsCount;
   }
 
   let sheetUser = null;
 
-  
-
-function openUserSheet(user) {
+  function openUserSheet(user) {
     sheetUser = user;
-    document.getElementById
-
-('userModalTitle').textContent = user.name || 'Maker';
-    document.getElementById
-
-('userModalName').textContent = user.name || 'Maker';
-    document.getElementById
-
-('userModalAv').textContent = initials(user.name);
-    const following = 
-
-followingIds.has(user.id);
+    document.getElementById('userModalTitle').textContent = user.name || 'Maker';
+    document.getElementById('userModalName').textContent = user.name || 'Maker';
+    document.getElementById('userModalAv').textContent = initials(user.name);
+    const following = followingIds.has(user.id);
     const blocked = blockedIds.has(user.id);
-    const btnFollow 
-
-= document.getElementById('btnFollow');
-    const btnBlock = 
-
-document.getElementById('btnBlock');
-    btnFollow.textContent = following ? 
-
-'Following' : 'Follow';
-    btnFollow.className = following ? 'btn btn-soft on' : 'btn 
-
-btn-primary';
+    const btnFollow = document.getElementById('btnFollow');
+    const btnBlock = document.getElementById('btnBlock');
+    btnFollow.textContent = following ? 'Following' : 'Follow';
+    btnFollow.className = following ? 'btn btn-soft on' : 'btn btn-primary';
     btnBlock.textContent = blocked ? 'Unblock' : 'Block';
-    
-
-document.getElementById('userModalHint').textContent = blocked
-      ? 'You blocked 
-
-this maker. Their posts are hidden from your feed.'
-      : (following ? 'You follow this 
-
-maker.' : 'Follow to see them in your circle.');
-    document.getElementById
-
-('userModal').classList.add('show');
+    document.getElementById('userModalHint').textContent = blocked
+      ? 'You blocked this maker. Their posts are hidden from your feed.'
+      : (following ? 'You follow this maker.' : 'Follow to see them in your circle.');
+    document.getElementById('userModal').classList.add('show');
   }
 
-  document.getElementById
-
-('closeUserModal').addEventListener('click', () => {
-    document.getElementById
-
-('userModal').classList.remove('show');
+  document.getElementById('closeUserModal').addEventListener('click', () => {
+    document.getElementById('userModal').classList.remove('show');
   });
-  document.getElementById
-
-('userModal').addEventListener('click', e => {
-    if (e.target.id === 'userModal') 
-
-e.target.classList.remove('show');
+  document.getElementById('userModal').addEventListener('click', e => {
+    if (e.target.id === 'userModal') e.target.classList.remove('show');
   });
 
-  document.getElementById
-
-('btnFollow').addEventListener('click', async () => {
+  document.getElementById('btnFollow').addEventListener('click', async () => {
     if (!sheetUser) return;
-    const 
-
-id = sheetUser.id;
+    const id = sheetUser.id;
     const name = sheetUser.name || 'Maker';
     try {
-      if 
-
-(followingIds.has(id)) {
+      if (followingIds.has(id)) {
         const doc = followingDocs[id];
-        if (doc) await 
-
-databases.deleteDocument(DATABASE_ID, COLLECTION_FOLLOWS, doc.$id);
-       
-
- followingIds.delete(id);
+        if (doc) await databases.deleteDocument(DATABASE_ID, COLLECTION_FOLLOWS, doc.$id);
+        followingIds.delete(id);
         delete followingDocs[id];
-        toast('Unfollowed ' + 
-
-name);
+        toast('Unfollowed ' + name);
       } else {
         if (blockedIds.has(id)) { toast('Unblock them first'); return; }
-   
-
-     const created = await databases.createDocument(
-          DATABASE_ID, 
-
-COLLECTION_FOLLOWS, ID.unique(),
+        const created = await databases.createDocument(
+          DATABASE_ID, COLLECTION_FOLLOWS, ID.unique(),
           {
             followerId: currentUser.$id,
-   
-
-         followingId: id,
+            followingId: id,
             followingName: name,
-            followerName: 
-
-currentUser.name || currentUser.email?.split('@')[0] || 'Maker'
+            followerName: currentUser.name || currentUser.email?.split('@')[0] || 'Maker'
           },
-          
-
-[Permission.read(Role.any()), Permission.update(Role.user(currentUser.$id)), 
-
-Permission.delete(Role.user(currentUser.$id))]
+          [Permission.read(Role.any()), Permission.update(Role.user(currentUser.$id)), Permission.delete(Role.user(currentUser.$id))]
         );
         followingIds.add(id);
-        
-
-followingDocs[id] = created;
+        followingDocs[id] = created;
         toast('Following ' + name);
       }
-      openUserSheet
-
-(sheetUser);
+      openUserSheet(sheetUser);
       await loadSocialGraph();
     } catch (err) {
       console.error(err);
-      
-
-toast(err.message || 'Follow failed — create the follows table in Appwrite.');
+      toast(err.message || 'Follow failed — create the follows table in Appwrite.');
     }
   });
 
-  
-
-document.getElementById('btnBlock').addEventListener('click', async () => {
-    if (!
-
-sheetUser) return;
+  document.getElementById('btnBlock').addEventListener('click', async () => {
+    if (!sheetUser) return;
     const id = sheetUser.id;
-    const name = sheetUser.name || 
-
-'Maker';
+    const name = sheetUser.name || 'Maker';
     try {
       if (blockedIds.has(id)) {
         const doc = blockDocs[id];
-        if 
-
-(doc) await databases.deleteDocument(DATABASE_ID, COLLECTION_BLOCKS, 
-
-doc.$id);
+        if (doc) await databases.deleteDocument(DATABASE_ID, COLLECTION_BLOCKS, doc.$id);
         blockedIds.delete(id);
         delete blockDocs[id];
-        toast('Unblocked 
-
-' + name);
+        toast('Unblocked ' + name);
       } else {
         // also unfollow if following
-        if (followingIds.has(id) && 
-
-followingDocs[id]) {
-          try { await databases.deleteDocument(DATABASE_ID, 
-
-COLLECTION_FOLLOWS, followingDocs[id].$id); } catch (_) {}
-          
-
-followingIds.delete(id);
+        if (followingIds.has(id) && followingDocs[id]) {
+          try { await databases.deleteDocument(DATABASE_ID, COLLECTION_FOLLOWS, followingDocs[id].$id); } catch (_) {}
+          followingIds.delete(id);
           delete followingDocs[id];
         }
-        const created = 
-
-await databases.createDocument(
-          DATABASE_ID, COLLECTION_BLOCKS, 
-
-ID.unique(),
+        const created = await databases.createDocument(
+          DATABASE_ID, COLLECTION_BLOCKS, ID.unique(),
           { blockerId: currentUser.$id, blockedId: id, blockedName: name },
-  
-
-        [Permission.read(Role.user(currentUser.$id)), Permission.delete(Role.user
-
-(currentUser.$id))]
+          [Permission.read(Role.user(currentUser.$id)), Permission.delete(Role.user(currentUser.$id))]
         );
         blockedIds.add(id);
         blockDocs[id] = created;
-        
-
-toast('Blocked ' + name);
-        document.getElementById
-
-('userModal').classList.remove('show');
+        toast('Blocked ' + name);
+        document.getElementById('userModal').classList.remove('show');
         loadFeed(true);
       }
-      if 
-
-(document.getElementById('userModal').classList.contains('show')) openUserSheet
-
-(sheetUser);
+      if (document.getElementById('userModal').classList.contains('show')) openUserSheet(sheetUser);
       await loadSocialGraph();
     } catch (err) {
       console.error(err);
-      
-
-toast(err.message || 'Block failed — create the blocks table in Appwrite.');
+      toast(err.message || 'Block failed — create the blocks table in Appwrite.');
     }
   });
 
-  
-
-document.getElementById('btnMessage').addEventListener('click', () => {
-    if (!
-
-sheetUser) return;
-    if (blockedIds.has(sheetUser.id)) { toast('Unblock to message'); 
-
-return; }
+  document.getElementById('btnMessage').addEventListener('click', () => {
+    if (!sheetUser) return;
+    if (blockedIds.has(sheetUser.id)) { toast('Unblock to message'); return; }
     document.getElementById('userModal').classList.remove('show');
-    
-
-openChat(sheetUser);
+    openChat(sheetUser);
   });
 
   // Friends tabs
-  document.querySelectorAll('[data-
-
-ftab]').forEach(btn => {
+  document.querySelectorAll('[data-ftab]').forEach(btn => {
     btn.addEventListener('click', () => {
-      friendsTab = 
-
-btn.dataset.ftab;
-      document.querySelectorAll('[data-ftab]').forEach(b => 
-
-b.classList.toggle('on', b.dataset.ftab === friendsTab));
+      friendsTab = btn.dataset.ftab;
+      document.querySelectorAll('[data-ftab]').forEach(b => b.classList.toggle('on', b.dataset.ftab === friendsTab));
       renderFriendsTab();
     });
-  
-
-});
+  });
 
   async function renderFriendsTab() {
-    const list = document.getElementById
-
-('friendsList');
+    const list = document.getElementById('friendsList');
     const empty = document.getElementById('friendsEmpty');
-    
-
-list.innerHTML = '<div class="state-box"><div class="spinner"></div></div>';
-    
-
-empty.style.display = 'none';
+    list.innerHTML = '<div class="state-box"><div class="spinner"></div></div>';
+    empty.style.display = 'none';
 
     try {
       if (friendsTab === 'blocked') {
-        const 
-
-rows = Object.values(blockDocs);
+        const rows = Object.values(blockDocs);
         list.innerHTML = '';
-        if (!rows.length) { 
-
-empty.style.display = 'block'; return; }
+        if (!rows.length) { empty.style.display = 'block'; return; }
         rows.forEach(d => {
-          
-
-list.appendChild(personRow(d.blockedId, d.blockedName || 'Maker', 'blocked'));
-        
-
-});
+          list.appendChild(personRow(d.blockedId, d.blockedName || 'Maker', 'blocked'));
+        });
         return;
       }
 
       if (friendsTab === 'following') {
-        const rows = 
-
-Object.values(followingDocs);
+        const rows = Object.values(followingDocs);
         list.innerHTML = '';
-        if (!rows.length) { 
-
-empty.style.display = 'block'; return; }
+        if (!rows.length) { empty.style.display = 'block'; return; }
         rows.forEach(d => {
-          
-
-list.appendChild(personRow(d.followingId, d.followingName || 'Maker', 'following'));
-   
-
-     });
+          list.appendChild(personRow(d.followingId, d.followingName || 'Maker', 'following'));
+        });
         return;
       }
 
       // friends = mutual follows
       const mutual = [];
-      for 
-
-(const d of Object.values(followingDocs)) {
+      for (const d of Object.values(followingDocs)) {
         try {
-          const back = await 
-
-databases.listDocuments(DATABASE_ID, COLLECTION_FOLLOWS, [
-            
-
-Query.equal('followerId', d.followingId),
-            Query.equal('followingId', 
-
-currentUser.$id),
+          const back = await databases.listDocuments(DATABASE_ID, COLLECTION_FOLLOWS, [
+            Query.equal('followerId', d.followingId),
+            Query.equal('followingId', currentUser.$id),
             Query.limit(1)
           ]);
-          if (back.documents.length) 
-
-mutual.push(d);
+          if (back.documents.length) mutual.push(d);
         } catch (_) {}
       }
       list.innerHTML = '';
-      if (!mutual.length) { 
-
-empty.style.display = 'block'; return; }
+      if (!mutual.length) { empty.style.display = 'block'; return; }
       mutual.forEach(d => {
-        list.appendChild
-
-(personRow(d.followingId, d.followingName || 'Maker', 'friend'));
+        list.appendChild(personRow(d.followingId, d.followingName || 'Maker', 'friend'));
       });
-    } catch 
-
-(err) {
+    } catch (err) {
       console.error(err);
       list.innerHTML = '';
-      empty.style.display = 
-
-'block';
+      empty.style.display = 'block';
       toast(err.message || 'Could not load list');
     }
   }
 
-  function personRow(id, 
-
-name, kind) {
+  function personRow(id, name, kind) {
     const row = document.createElement('div');
-    row.className = 
-
-'person-row';
+    row.className = 'person-row';
     row.innerHTML = `
       <div class="av">${initials(name)}</div>
-      <div 
-
-class="meta"><b>${escapeHtml(name)}</b><span>${kind === 'friend' ? 'Friend' : kind 
-
-=== 'blocked' ? 'Blocked' : 'Following'}</span></div>
+      <div class="meta"><b>${escapeHtml(name)}</b><span>${kind === 'friend' ? 'Friend' : kind === 'blocked' ? 'Blocked' : 'Following'}</span></div>
       <div class="row-actions">
-       
-
- ${kind !== 'blocked' ? `<button type="button" class="chip-btn" data-
-
-act="msg">Chat</button>` : ''}
-        <button type="button" class="chip-btn" data-
-
-act="profile">Profile</button>
-        ${kind === 'blocked' ? `<button type="button" 
-
-class="chip-btn danger" data-act="unblock">Unblock</button>` : ''}
+        ${kind !== 'blocked' ? `<button type="button" class="chip-btn" data-act="msg">Chat</button>` : ''}
+        <button type="button" class="chip-btn" data-act="profile">Profile</button>
+        ${kind === 'blocked' ? `<button type="button" class="chip-btn danger" data-act="unblock">Unblock</button>` : ''}
       </div>`;
-    
-
-row.querySelector('[data-act="profile"]')?.addEventListener('click', (e) => {
-      
-
-e.stopPropagation();
+    row.querySelector('[data-act="profile"]')?.addEventListener('click', (e) => {
+      e.stopPropagation();
       openUserSheet({ id, name });
     });
-    row.querySelector
-
-('[data-act="msg"]')?.addEventListener('click', (e) => {
+    row.querySelector('[data-act="msg"]')?.addEventListener('click', (e) => {
       e.stopPropagation();
-      
-
-openChat({ id, name });
+      openChat({ id, name });
     });
-    row.querySelector('[data-
-
-act="unblock"]')?.addEventListener('click', async (e) => {
+    row.querySelector('[data-act="unblock"]')?.addEventListener('click', async (e) => {
       e.stopPropagation();
-      
-
-sheetUser = { id, name };
+      sheetUser = { id, name };
       document.getElementById('btnBlock').click();
-      
-
-setTimeout(renderFriendsTab, 400);
+      setTimeout(renderFriendsTab, 400);
     });
-    row.addEventListener('click', () => 
-
-openUserSheet({ id, name }));
+    row.addEventListener('click', () => openUserSheet({ id, name }));
     return row;
   }
 
   // Chat
   function openChat(user) {
-    
-
-activeChatUser = user;
-    document.getElementById('chatModalTitle').textContent = 
-
-user.name || 'Chat';
+    activeChatUser = user;
+    document.getElementById('chatModalTitle').textContent = user.name || 'Chat';
     document.getElementById('chatModal').classList.add('show');
-    
-
-loadThread();
+    loadThread();
   }
-  document.getElementById('closeChatModal').addEventListener
-
-('click', () => {
+  document.getElementById('closeChatModal').addEventListener('click', () => {
     document.getElementById('chatModal').classList.remove('show');
   });
-  
-
-document.getElementById('chatModal').addEventListener('click', e => {
-    if 
-
-(e.target.id === 'chatModal') e.target.classList.remove('show');
+  document.getElementById('chatModal').addEventListener('click', e => {
+    if (e.target.id === 'chatModal') e.target.classList.remove('show');
   });
 
-  async function 
-
-loadThread() {
+  async function loadThread() {
     const thread = document.getElementById('chatThread');
-    
-
-thread.innerHTML = '<div class="state-box"><div class="spinner"></div></div>';
-    if 
-
-(!activeChatUser) return;
+    thread.innerHTML = '<div class="state-box"><div class="spinner"></div></div>';
+    if (!activeChatUser) return;
     try {
       const a = currentUser.$id;
-      const b = 
-
-activeChatUser.id;
+      const b = activeChatUser.id;
       // fetch both directions
-      const [out, inn] = await Promise.all
-
-([
+      const [out, inn] = await Promise.all([
         databases.listDocuments(DATABASE_ID, COLLECTION_MESSAGES, [
-         
-
- Query.equal('fromId', a), Query.equal('toId', b), Query.orderAsc('$createdAt'), 
-
-Query.limit(100)
+          Query.equal('fromId', a), Query.equal('toId', b), Query.orderAsc('$createdAt'), Query.limit(100)
         ]),
-        databases.listDocuments(DATABASE_ID, 
-
-COLLECTION_MESSAGES, [
-          Query.equal('fromId', b), Query.equal('toId', a), 
-
-Query.orderAsc('$createdAt'), Query.limit(100)
+        databases.listDocuments(DATABASE_ID, COLLECTION_MESSAGES, [
+          Query.equal('fromId', b), Query.equal('toId', a), Query.orderAsc('$createdAt'), Query.limit(100)
         ])
       ]);
-      const all = 
-
-[...out.documents, ...inn.documents].sort((x, y) =>
-        new Date(x.$createdAt) - new 
-
-Date(y.$createdAt)
+      const all = [...out.documents, ...inn.documents].sort((x, y) =>
+        new Date(x.$createdAt) - new Date(y.$createdAt)
       );
       thread.innerHTML = '';
       if (!all.length) {
-        
-
-thread.innerHTML = '<p style="text-align:center;color:var(--ink-soft);font-
-
-size:.88rem;padding:20px;">Say hello 👋</p>';
+        thread.innerHTML = '<p style="text-align:center;color:var(--ink-soft);font-size:.88rem;padding:20px;">Say hello 👋</p>';
         return;
       }
       all.forEach(m => {
-    
-
-    const div = document.createElement('div');
-        div.className = 'bubble ' + 
-
-(m.fromId === a ? 'me' : 'them');
+        const div = document.createElement('div');
+        div.className = 'bubble ' + (m.fromId === a ? 'me' : 'them');
         div.textContent = m.text || '';
-        
-
-thread.appendChild(div);
+        thread.appendChild(div);
       });
       thread.scrollTop = thread.scrollHeight;
-    } catch 
-
-(err) {
+    } catch (err) {
       console.error(err);
-      thread.innerHTML = '<p style="text-
-
-align:center;color:var(--ink-soft);font-size:.85rem;">Could not load messages. Create 
-
-the messages table in Appwrite.</p>';
+      thread.innerHTML = '<p style="text-align:center;color:var(--ink-soft);font-size:.85rem;">Could not load messages. Create the messages table in Appwrite.</p>';
     }
   }
 
-  document.getElementById
-
-('chatForm').addEventListener('submit', async (e) => {
+  document.getElementById('chatForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!
-
-activeChatUser) return;
+    if (!activeChatUser) return;
     const input = document.getElementById('chatInput');
-    
-
-const text = input.value.trim();
+    const text = input.value.trim();
     if (!text) return;
     try {
-      await 
-
-databases.createDocument(
-        DATABASE_ID, COLLECTION_MESSAGES, 
-
-ID.unique(),
+      await databases.createDocument(
+        DATABASE_ID, COLLECTION_MESSAGES, ID.unique(),
         {
           fromId: currentUser.$id,
           toId: activeChatUser.id,
-        
-
-  fromName: currentUser.name || currentUser.email?.split('@')[0] || 'Maker',
-          
-
-toName: activeChatUser.name || 'Maker',
+          fromName: currentUser.name || currentUser.email?.split('@')[0] || 'Maker',
+          toName: activeChatUser.name || 'Maker',
           text
         },
         [
-          
-
-Permission.read(Role.any()),
+          Permission.read(Role.any()),
           Permission.update(Role.user(currentUser.$id)),
-        
-
-  Permission.delete(Role.user(currentUser.$id))
+          Permission.delete(Role.user(currentUser.$id))
         ]
       );
       input.value = '';
-      
-
-await loadThread();
+      await loadThread();
     } catch (err) {
       console.error(err);
-      toast(err.message || 
-
-'Send failed — create messages table.');
+      toast(err.message || 'Send failed — create messages table.');
     }
   });
 
   async function loadChatInbox() {
-    
-
-const list = document.getElementById('chatList');
-    const empty = 
-
-document.getElementById('chatEmpty');
-    list.innerHTML = '<div class="state-
-
-box"><div class="spinner"></div></div>';
+    const list = document.getElementById('chatList');
+    const empty = document.getElementById('chatEmpty');
+    list.innerHTML = '<div class="state-box"><div class="spinner"></div></div>';
     empty.style.display = 'none';
     try {
-      
-
-const [sent, recv] = await Promise.all([
-        databases.listDocuments(DATABASE_ID, 
-
-COLLECTION_MESSAGES, [
-          Query.equal('fromId', currentUser.$id), 
-
-Query.orderDesc('$createdAt'), Query.limit(50)
+      const [sent, recv] = await Promise.all([
+        databases.listDocuments(DATABASE_ID, COLLECTION_MESSAGES, [
+          Query.equal('fromId', currentUser.$id), Query.orderDesc('$createdAt'), Query.limit(50)
         ]),
-        
-
-databases.listDocuments(DATABASE_ID, COLLECTION_MESSAGES, [
-          
-
-Query.equal('toId', currentUser.$id), Query.orderDesc('$createdAt'), Query.limit
-
-(50)
+        databases.listDocuments(DATABASE_ID, COLLECTION_MESSAGES, [
+          Query.equal('toId', currentUser.$id), Query.orderDesc('$createdAt'), Query.limit(50)
         ])
       ]);
       const map = new Map();
-      const consider = (m, peerId, 
-
-peerName) => {
+      const consider = (m, peerId, peerName) => {
         if (!peerId || peerId === currentUser.$id) return;
-        if 
-
-(blockedIds.has(peerId)) return;
+        if (blockedIds.has(peerId)) return;
         const prev = map.get(peerId);
-        if (!prev || 
-
-new Date(m.$createdAt) > new Date(prev.at)) {
-          map.set(peerId, { id: peerId, 
-
-name: peerName || 'Maker', at: m.$createdAt, preview: m.text });
+        if (!prev || new Date(m.$createdAt) > new Date(prev.at)) {
+          map.set(peerId, { id: peerId, name: peerName || 'Maker', at: m.$createdAt, preview: m.text });
         }
       };
-      
-
-sent.documents.forEach(m => consider(m, m.toId, m.toName));
-      
-
-recv.documents.forEach(m => consider(m, m.fromId, m.fromName));
-      const rows = 
-
-[...map.values()].sort((a, b) => new Date(b.at) - new Date(a.at));
-      list.innerHTML = 
-
-'';
+      sent.documents.forEach(m => consider(m, m.toId, m.toName));
+      recv.documents.forEach(m => consider(m, m.fromId, m.fromName));
+      const rows = [...map.values()].sort((a, b) => new Date(b.at) - new Date(a.at));
+      list.innerHTML = '';
       if (!rows.length) { empty.style.display = 'block'; return; }
-      rows.forEach(r => 
-
-{
+      rows.forEach(r => {
         const row = document.createElement('div');
         row.className = 'person-row';
-  
-
-      row.innerHTML = `
+        row.innerHTML = `
           <div class="av">${initials(r.name)}</div>
-          <div 
-
-class="meta"><b>${escapeHtml(r.name)}</b><span>${escapeHtml((r.preview || '').slice
-
-(0, 60))}</span></div>`;
-        row.addEventListener('click', () => openChat({ id: r.id, 
-
-name: r.name }));
+          <div class="meta"><b>${escapeHtml(r.name)}</b><span>${escapeHtml((r.preview || '').slice(0, 60))}</span></div>`;
+        row.addEventListener('click', () => openChat({ id: r.id, name: r.name }));
         list.appendChild(row);
       });
     } catch (err) {
-      console.error
-
-(err);
+      console.error(err);
       list.innerHTML = '';
       empty.style.display = 'block';
     }
   }
 
   // Upload
-  
-
-const uploadModal = document.getElementById('uploadModal');
-  const dropzone = 
-
-document.getElementById('dropzone');
-  const fileInput = document.getElementById
-
-('fileInput');
+  const uploadModal = document.getElementById('uploadModal');
+  const dropzone = document.getElementById('dropzone');
+  const fileInput = document.getElementById('fileInput');
   const previewRow = document.getElementById('previewRow');
-  const 
-
-MAX = 6;
+  const MAX = 6;
   const MAX_SIZE = 5 * 1024 * 1024;
 
-  function openUpload() { 
-
-uploadModal.classList.add('show'); }
-  function closeUpload() { 
-
-uploadModal.classList.remove('show'); }
-  document.getElementById
-
-('openUpload').addEventListener('click', openUpload);
-  document.getElementById
-
-('navUpload').addEventListener('click', openUpload);
-  document.getElementById
-
-('closeUpload').addEventListener('click', closeUpload);
-  
-
-uploadModal.addEventListener('click', e => { if (e.target === uploadModal) 
-
-closeUpload(); });
+  function openUpload() { uploadModal.classList.add('show'); }
+  function closeUpload() { uploadModal.classList.remove('show'); }
+  document.getElementById('openUpload').addEventListener('click', openUpload);
+  document.getElementById('navUpload').addEventListener('click', openUpload);
+  document.getElementById('closeUpload').addEventListener('click', closeUpload);
+  uploadModal.addEventListener('click', e => { if (e.target === uploadModal) closeUpload(); });
 
   dropzone.addEventListener('click', () => fileInput.click());
-  
+  fileInput.addEventListener('change', () => addFiles(fileInput.files));
+  ['dragenter','dragover'].forEach(ev => dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.add('dragover'); }));
+  ['dragleave','drop'].forEach(ev => dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.remove('dragover'); }));
+  dropzone.addEventListener('drop', e => addFiles(e.dataTransfer.files));
 
-fileInput.addEventListener('change', () => addFiles(fileInput.files));
-  
-
-['dragenter','dragover'].forEach(ev => dropzone.addEventListener(ev, e => { 
-
-e.preventDefault(); dropzone.classList.add('dragover'); }));
-  
-
-['dragleave','drop'].forEach(ev => dropzone.addEventListener(ev, e => { 
-
-e.preventDefault(); dropzone.classList.remove('dragover'); }));
-  
-
-dropzone.addEventListener('drop', e => addFiles(e.dataTransfer.files));
-
-  function 
-
-addFiles(list) {
+  function addFiles(list) {
     for (const file of Array.from(list)) {
-      if (uploadFiles.length >= 
-
-MAX) { toast(`Max ${MAX} photos`); break; }
-      if (!
-
-['image/jpeg','image/png','image/webp'].includes(file.type)) { toast('Only JPG, PNG, 
-
-WEBP'); continue; }
-      if (file.size > MAX_SIZE) { toast('File too large (5 MB 
-
-max)'); continue; }
+      if (uploadFiles.length >= MAX) { toast(`Max ${MAX} photos`); break; }
+      if (!['image/jpeg','image/png','image/webp'].includes(file.type)) { toast('Only JPG, PNG, WEBP'); continue; }
+      if (file.size > MAX_SIZE) { toast('File too large (5 MB max)'); continue; }
       uploadFiles.push({ file, url: URL.createObjectURL(file) });
     }
-    
-
-renderPreviews();
+    renderPreviews();
     fileInput.value = '';
   }
   function renderPreviews() {
-    
-
-previewRow.innerHTML = uploadFiles.map((f, i) => `
+    previewRow.innerHTML = uploadFiles.map((f, i) => `
       <div class="preview-thumb">
-   
-
-     <img src="${f.url}" alt="">
-        <button type="button" class="rm" data-
-
-i="${i}">×</button>
+        <img src="${f.url}" alt="">
+        <button type="button" class="rm" data-i="${i}">×</button>
       </div>`).join('');
-    previewRow.querySelectorAll
-
-('.rm').forEach(btn => {
+    previewRow.querySelectorAll('.rm').forEach(btn => {
       btn.addEventListener('click', () => {
-        const i = 
-
-+btn.dataset.i;
+        const i = +btn.dataset.i;
         URL.revokeObjectURL(uploadFiles[i].url);
-        uploadFiles.splice
-
-(i, 1);
+        uploadFiles.splice(i, 1);
         renderPreviews();
       });
     });
@@ -3415,359 +1421,195 @@ i="${i}">×</button>
 
 
   // ---------- Sale / Buy (COD) ----------
-  
-
-document.getElementById('upForSale').addEventListener('change', (e) => {
-    
-
-document.getElementById('priceField').style.display = e.target.checked ? 'block' : 
-
-'none';
+  document.getElementById('upForSale').addEventListener('change', (e) => {
+    document.getElementById('priceField').style.display = e.target.checked ? 'block' : 'none';
   });
 
   let buyPost = null;
 
   function openBuyModal(doc) {
     buyPost = doc;
-    
-
-document.getElementById('buyItemLine').textContent =
-      `"${doc.title || 'Craft'}" 
-
-by ${doc.authorName || 'Maker'} — ₹${doc.price || 0}`;
-    document.getElementById
-
-('buyForm').reset();
+    document.getElementById('buyItemLine').textContent =
+      `"${doc.title || 'Craft'}" by ${doc.authorName || 'Maker'} — ₹${doc.price || 0}`;
+    document.getElementById('buyForm').reset();
     document.getElementById('buyModal').classList.add('show');
   }
-  
-
-document.getElementById('closeBuyModal').addEventListener('click', () => {
-    
-
-document.getElementById('buyModal').classList.remove('show');
+  document.getElementById('closeBuyModal').addEventListener('click', () => {
+    document.getElementById('buyModal').classList.remove('show');
   });
-  
-
-document.getElementById('buyModal').addEventListener('click', e => {
-    if 
-
-(e.target.id === 'buyModal') e.target.classList.remove('show');
+  document.getElementById('buyModal').addEventListener('click', e => {
+    if (e.target.id === 'buyModal') e.target.classList.remove('show');
   });
 
-  
-
-document.getElementById('buyForm').addEventListener('submit', async (e) => {
-    
-
-e.preventDefault();
+  document.getElementById('buyForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
     if (!buyPost) return;
-    const buyerName = 
-
-document.getElementById('buyName').value.trim();
-    const buyerPhone = 
-
-document.getElementById('buyPhone').value.trim();
-    const buyerAddress = 
-
-document.getElementById('buyAddress').value.trim();
-    const buyerNote = 
-
-document.getElementById('buyNote').value.trim();
-    if (!buyerName || !buyerPhone || 
-
-!buyerAddress) {
+    const buyerName = document.getElementById('buyName').value.trim();
+    const buyerPhone = document.getElementById('buyPhone').value.trim();
+    const buyerAddress = document.getElementById('buyAddress').value.trim();
+    const buyerNote = document.getElementById('buyNote').value.trim();
+    if (!buyerName || !buyerPhone || !buyerAddress) {
       toast('Please fill name, phone and address');
       return;
     }
-    
-
-const btn = document.getElementById('buySubmitBtn');
+    const btn = document.getElementById('buySubmitBtn');
     btn.disabled = true;
-    
-
-btn.textContent = 'Sending…';
+    btn.textContent = 'Sending…';
     try {
       await databases.createDocument(
-        
-
-DATABASE_ID,
+        DATABASE_ID,
         COLLECTION_ORDERS,
         ID.unique(),
         {
-          postId: 
-
-buyPost.$id,
+          postId: buyPost.$id,
           postTitle: buyPost.title || 'Craft',
-          price: Number
-
-(buyPost.price) || 0,
+          price: Number(buyPost.price) || 0,
           sellerId: buyPost.userId,
-          sellerName: 
-
-buyPost.authorName || 'Maker',
+          sellerName: buyPost.authorName || 'Maker',
           buyerId: currentUser.$id,
           buyerName,
-    
-
-      buyerPhone,
+          buyerPhone,
           buyerAddress,
           buyerNote,
           payment: 'COD',
-          
-
-status: 'pending'
+          status: 'pending'
         },
         [
           Permission.read(Role.any()),
-          
-
-Permission.update(Role.any()),
+          Permission.update(Role.any()),
           Permission.delete(Role.user(currentUser.$id))
-       
-
- ]
+        ]
       );
       document.getElementById('buyModal').classList.remove('show');
-      toast
-
-('Order placed! Seller will contact you. Pay on delivery.');
+      toast('Order placed! Seller will contact you. Pay on delivery.');
     } catch (err) {
-      
-
-console.error(err);
-      toast(err.message || 'Order failed — create the orders table 
-
-in Appwrite.');
+      console.error(err);
+      toast(err.message || 'Order failed — create the orders table in Appwrite.');
     } finally {
       btn.disabled = false;
-      btn.textContent = 'Place order 
-
-(COD)';
+      btn.textContent = 'Place order (COD)';
     }
   });
 
   async function loadSellerOrders() {
-    const box = 
-
-document.getElementById('sellerOrders');
-    const empty = document.getElementById
-
-('ordersEmpty');
+    const box = document.getElementById('sellerOrders');
+    const empty = document.getElementById('ordersEmpty');
     if (!box) return;
-    box.innerHTML = '<div class="state-box"><div 
-
-class="spinner"></div></div>';
+    box.innerHTML = '<div class="state-box"><div class="spinner"></div></div>';
     empty.style.display = 'none';
     try {
-      const res = 
-
-await databases.listDocuments(DATABASE_ID, COLLECTION_ORDERS, [
-        
-
-Query.equal('sellerId', currentUser.$id),
+      const res = await databases.listDocuments(DATABASE_ID, COLLECTION_ORDERS, [
+        Query.equal('sellerId', currentUser.$id),
         Query.orderDesc('$createdAt'),
-        
-
-Query.limit(50)
+        Query.limit(50)
       ]);
       box.innerHTML = '';
       if (!res.documents.length) {
-        
-
-empty.style.display = 'block';
+        empty.style.display = 'block';
         return;
       }
       res.documents.forEach(o => {
-        
-
-const el = document.createElement('div');
+        const el = document.createElement('div');
         el.className = 'order-card';
-        
-
-el.innerHTML = `
-          <h4>${escapeHtml(o.postTitle || 'Craft')} — ₹${escapeHtml
-
-(String(o.price ?? 0))}</h4>
-          <p><b>Buyer:</b> ${escapeHtml(o.buyerName || 
-
-'')}</p>
+        el.innerHTML = `
+          <h4>${escapeHtml(o.postTitle || 'Craft')} — ₹${escapeHtml(String(o.price ?? 0))}</h4>
+          <p><b>Buyer:</b> ${escapeHtml(o.buyerName || '')}</p>
           <p><b>Phone:</b> ${escapeHtml(o.buyerPhone || '')}</p>
-          
-
-<p><b>Address:</b> ${escapeHtml(o.buyerAddress || '')}</p>
-          ${o.buyerNote ? 
-
-`<p><b>Note:</b> ${escapeHtml(o.buyerNote)}</p>` : ''}
-          <p class="cod">Pay on 
-
-delivery · ${escapeHtml(o.status || 'pending')}</p>`;
+          <p><b>Address:</b> ${escapeHtml(o.buyerAddress || '')}</p>
+          ${o.buyerNote ? `<p><b>Note:</b> ${escapeHtml(o.buyerNote)}</p>` : ''}
+          <p class="cod">Pay on delivery · ${escapeHtml(o.status || 'pending')}</p>`;
         box.appendChild(el);
       });
-   
-
- } catch (err) {
+    } catch (err) {
       console.error(err);
       box.innerHTML = '';
-      empty.style.display 
-
-= 'block';
+      empty.style.display = 'block';
     }
   }
 
-  document.getElementById('uploadForm').addEventListener('submit', 
-
-async (e) => {
+  document.getElementById('uploadForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (uploadFiles.length === 0) { toast('Add at 
-
-least one photo'); return; }
-    const title = document.getElementById
-
-('upTitle').value.trim();
-    const category = document.getElementById
-
-('upCategory').value;
-    const description = document.getElementById
-
-('upDesc').value.trim();
-    const tagsRaw = document.getElementById
-
-('upTags').value.trim();
-    const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim
-
-().replace(/^#/, '')).filter(Boolean).slice(0, 8) : [];
-    const forSale = 
-
-document.getElementById('upForSale').checked;
-    const priceVal = 
-
-document.getElementById('upPrice').value;
-    const price = forSale ? Number
-
-(priceVal) : 0;
-    if (!title || !category || !description) { toast('Fill required fields'); 
-
-return; }
-    if (forSale && (!price || price < 1)) { toast('Enter a valid price in ₹'); 
-
-return; }
+    if (uploadFiles.length === 0) { toast('Add at least one photo'); return; }
+    const title = document.getElementById('upTitle').value.trim();
+    const category = document.getElementById('upCategory').value;
+    const description = document.getElementById('upDesc').value.trim();
+    const tagsRaw = document.getElementById('upTags').value.trim();
+    const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim().replace(/^#/, '')).filter(Boolean).slice(0, 8) : [];
+    const forSale = document.getElementById('upForSale').checked;
+    const priceVal = document.getElementById('upPrice').value;
+    const price = forSale ? Number(priceVal) : 0;
+    if (!title || !category || !description) { toast('Fill required fields'); return; }
+    if (forSale && (!price || price < 1)) { toast('Enter a valid price in ₹'); return; }
 
     const btn = document.getElementById('publishBtn');
     btn.disabled = true;
-  
-
-  btn.textContent = 'Uploading…';
+    btn.textContent = 'Uploading…';
 
     try {
       const imageIds = [];
-      for (let i = 0; i < 
-
-uploadFiles.length; i++) {
-        btn.textContent = `Uploading photo ${i + 1}/
-
-${uploadFiles.length}…`;
+      for (let i = 0; i < uploadFiles.length; i++) {
+        btn.textContent = `Uploading photo ${i + 1}/${uploadFiles.length}…`;
         const file = uploadFiles[i].file;
-        const result = await 
-
-storage.createFile(
+        const result = await storage.createFile(
           BUCKET_ID,
           ID.unique(),
           file,
           [
-            
-
-Permission.read(Role.any()),
+            Permission.read(Role.any()),
             Permission.update(Role.user(currentUser.$id)),
-      
-
-      Permission.delete(Role.user(currentUser.$id))
+            Permission.delete(Role.user(currentUser.$id))
           ]
         );
-        imageIds.push
-
-(result.$id);
+        imageIds.push(result.$id);
       }
 
       btn.textContent = 'Publishing…';
-      await 
-
-databases.createDocument(
+      await databases.createDocument(
         DATABASE_ID,
         COLLECTION_POSTS,
-        
-
-ID.unique(),
+        ID.unique(),
         {
           userId: currentUser.$id,
-          authorName: 
-
-currentUser.name || currentUser.email?.split('@')[0] || 'Maker',
+          authorName: currentUser.name || currentUser.email?.split('@')[0] || 'Maker',
           title,
-          
-
-category,
+          category,
           description,
           tags,
           imageIds,
           likesCount: 0,
-          
-
-likedBy: [],
+          likedBy: [],
           forSale: !!forSale,
           price: forSale ? price : 0
         },
         [
-        
-
-  Permission.read(Role.any()),
+          Permission.read(Role.any()),
           Permission.update(Role.any()),
-          
-
-Permission.delete(Role.user(currentUser.$id))
+          Permission.delete(Role.user(currentUser.$id))
         ]
       );
 
-      toast('Craft published! 
-
-✨');
+      toast('Craft published! ✨');
       uploadFiles.forEach(f => URL.revokeObjectURL(f.url));
       uploadFiles = [];
-      
-
-renderPreviews();
+      renderPreviews();
       document.getElementById('uploadForm').reset();
-      
-
-closeUpload();
+      closeUpload();
       showView('feed');
       loadFeed(true);
     } catch (err) {
-      
-
-console.error(err);
-      toast(err.message || 'Upload failed. Check bucket/collection 
-
-permissions.');
+      console.error(err);
+      toast(err.message || 'Upload failed. Check bucket/collection permissions.');
     } finally {
       btn.disabled = false;
-      btn.textContent = 'Publish 
-
-craft';
+      btn.textContent = 'Publish craft';
     }
   });
 
-  document.getElementById('lightboxClose').addEventListener('click', () 
-
-=> {
+  document.getElementById('lightboxClose').addEventListener('click', () => {
     document.getElementById('lightbox').classList.remove('show');
   });
-  
-
-document.getElementById('lightbox').addEventListener('click', e => {
-    if (e.target.id 
-
-=== 'lightbox') e.target.classList.remove('show');
+  document.getElementById('lightbox').addEventListener('click', e => {
+    if (e.target.id === 'lightbox') e.target.classList.remove('show');
   });
 </script>
 </body>
