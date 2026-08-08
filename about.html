@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Team — Craft Setu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream: #faf5e8;
+    --cream-deep: #f2e9d6;
+    --paper: #fffdf8;
+    --sage: #6f9273;
+    --sage-deep: #4f7355;
+    --sage-dark: #2f4a35;
+    --sage-line: #a9c2a4;
+    --gold: #c39a4d;
+    --gold-soft: #dcc084;
+    --clay: #d99b7c;
+    --ink: #33422f;
+    --ink-soft: #5c6b57;
+    --shadow: 0 20px 45px -20px rgba(47,74,53,.35);
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    font-family:'Jost', sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:radial-gradient(circle at 2px 2px, rgba(111,146,115,.09) 1.4px, transparent 1.4px);
+    background-size:26px 26px;
+    pointer-events:none;
+    z-index:0;
+  }
+  a{ text-decoration:none; color:inherit; }
+  ul{ list-style:none; }
+  h1,h2,h3,.serif{
+    font-family:'Cormorant Garamond', serif;
+    color:var(--sage-dark);
+    font-weight:600;
+    letter-spacing:.01em;
+  }
+  .container{ max-width:1180px; margin:0 auto; padding:0 28px; position:relative; z-index:1; }
+
+  /* Header */
+  header{
+    position:sticky; top:0; z-index:100;
+    background:rgba(250,245,232,.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(111,146,115,.25);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 28px;
+    max-width:1180px; margin:0 auto;
+  }
+  .logo{ display:flex; align-items:center; gap:10px; }
+  .logo svg{ width:38px; height:38px; }
+  .logo-text{
+    font-family:'Cormorant Garamond', serif;
+    font-size:1.65rem; font-weight:700; color:var(--sage-dark); line-height:1;
+  }
+  .logo-text em{ font-style:italic; color:var(--gold); font-weight:600; }
+  .nav-links{ display:flex; align-items:center; gap:38px; }
+  .nav-links a{
+    font-size:.98rem; color:var(--ink-soft); position:relative; padding:4px 0;
+    transition:color .25s ease;
+  }
+  .nav-links a::after{
+    content:""; position:absolute; left:0; bottom:-2px;
+    width:0; height:1.5px; background:var(--gold); transition:width .3s ease;
+  }
+  .nav-links a:hover, .nav-links a.active{ color:var(--sage-dark); }
+  .nav-links a:hover::after, .nav-links a.active::after{ width:100%; }
+  .nav-actions{ display:flex; align-items:center; gap:14px; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'Jost', sans-serif; font-size:.95rem; font-weight:500;
+    padding:12px 26px; border-radius:999px; cursor:pointer; border:none;
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg, var(--sage) 0%, var(--sage-deep) 100%);
+    color:#fbf8ef;
+    box-shadow:0 12px 24px -10px rgba(79,115,85,.55);
+  }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 16px 30px -10px rgba(79,115,85,.65); }
+  .btn-outline{
+    background:transparent; color:var(--sage-deep); border:1.5px solid var(--sage);
+  }
+  .btn-outline:hover{ background:var(--sage); color:#fff; transform:translateY(-2px); }
+  .btn-small{ padding:9px 20px; font-size:.88rem; }
+  .burger{
+    display:none; flex-direction:column; gap:5px;
+    background:none; border:none; cursor:pointer; padding:6px;
+  }
+  .burger span{ width:24px; height:2px; background:var(--sage-dark); border-radius:2px; }
+
+  /* Hero */
+  .about-hero{
+    position:relative; z-index:1;
+    padding:72px 0 48px; text-align:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:.8rem; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--sage-deep); margin-bottom:16px;
+  }
+  .eyebrow::before, .eyebrow::after{
+    content:""; width:22px; height:1px; background:var(--gold);
+  }
+  .about-hero h1{
+    font-size:clamp(2.4rem, 4.5vw, 3.4rem);
+    line-height:1.1; margin-bottom:16px;
+  }
+  .about-hero h1 em{ font-style:italic; color:var(--sage); }
+  .about-hero .lede{
+    font-size:1.08rem; color:var(--ink-soft); line-height:1.75;
+    max-width:560px; margin:0 auto;
+  }
+
+  /* Story band */
+  .story-band{
+    position:relative; z-index:1;
+    background:var(--cream-deep);
+    border-top:1px solid var(--sage-line);
+    border-bottom:1px solid var(--sage-line);
+    padding:64px 0;
+  }
+  .story-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;
+  }
+  .story-copy h2{ font-size:clamp(1.8rem, 3vw, 2.3rem); margin-bottom:16px; }
+  .story-copy p{ color:var(--ink-soft); line-height:1.75; margin-bottom:14px; font-size:1.02rem; }
+  .story-card{
+    background:var(--paper);
+    border:1px solid var(--sage-line);
+    border-radius:24px;
+    padding:36px 32px;
+    box-shadow:var(--shadow);
+  }
+  .story-card .quote{
+    font-family:'Cormorant Garamond', serif;
+    font-style:italic; font-size:1.45rem;
+    color:var(--sage-dark); line-height:1.4; margin-bottom:18px;
+  }
+  .story-card .quote span{ color:var(--gold); }
+  .story-card .attr{ font-size:.88rem; color:var(--ink-soft); }
+
+  /* Team section */
+  .section{ position:relative; z-index:1; padding:88px 0; }
+  .section-head{ text-align:center; max-width:560px; margin:0 auto 52px; }
+  .section-head h2{ font-size:clamp(2rem, 3.4vw, 2.7rem); margin:12px 0 14px; }
+  .section-head p{ color:var(--ink-soft); font-size:1.02rem; line-height:1.7; }
+
+  .team-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:28px;
+  }
+  .team-card{
+    background:var(--paper);
+    border:1px solid var(--sage-line);
+    border-radius:24px;
+    padding:32px 28px;
+    box-shadow:0 12px 32px -18px rgba(47,74,53,.28);
+    display:flex; gap:22px; align-items:flex-start;
+    transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+  }
+  .team-card:hover{
+    transform:translateY(-4px);
+    border-color:var(--gold-soft);
+    box-shadow:0 18px 40px -16px rgba(195,154,77,.35);
+  }
+  .team-av{
+    flex:none;
+    width:88px; height:88px; border-radius:50%;
+    background:linear-gradient(145deg, var(--sage) 0%, var(--sage-deep) 100%);
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Cormorant Garamond', serif;
+    font-size:1.85rem; font-weight:700;
+    border:3px solid var(--sage-line);
+    box-shadow:0 10px 22px -10px rgba(79,115,85,.45);
+  }
+  .team-av.gold{
+    background:linear-gradient(145deg, var(--gold-soft) 0%, var(--gold) 100%);
+  }
+  .team-av.clay{
+    background:linear-gradient(145deg, #e6b89a 0%, var(--clay) 100%);
+  }
+  .team-av.deep{
+    background:linear-gradient(145deg, #3d5c42 0%, var(--sage-dark) 100%);
+  }
+  .team-info h3{
+    font-size:1.45rem; margin-bottom:4px; line-height:1.2;
+  }
+  .team-role{
+    display:inline-block;
+    font-size:.78rem; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--sage-deep);
+    background:rgba(111,146,115,.12);
+    padding:4px 12px; border-radius:999px;
+    margin-bottom:12px; font-weight:500;
+  }
+  .team-info p{
+    color:var(--ink-soft); font-size:.94rem; line-height:1.65;
+  }
+
+  /* Values */
+  .values-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:24px;
+  }
+  .value-card{
+    background:var(--paper);
+    border:1px solid var(--sage-line);
+    border-radius:20px;
+    padding:28px 24px;
+    text-align:center;
+  }
+  .value-icon{
+    width:52px; height:52px; margin:0 auto 14px;
+    border-radius:14px;
+    background:rgba(111,146,115,.1);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .value-icon svg{ width:24px; height:24px; color:var(--sage-deep); }
+  .value-card h4{
+    font-family:'Cormorant Garamond', serif;
+    font-size:1.25rem; color:var(--sage-dark); margin-bottom:8px;
+  }
+  .value-card p{ font-size:.9rem; color:var(--ink-soft); line-height:1.6; }
+
+  /* CTA */
+  .cta-band{
+    background:var(--paper);
+    border:1px solid var(--sage-line);
+    border-radius:28px;
+    padding:52px 40px;
+    text-align:center;
+    max-width:860px;
+    margin:0 auto;
+    box-shadow:var(--shadow);
+  }
+  .cta-band h2{ margin-bottom:12px; }
+  .cta-band p{ color:var(--ink-soft); margin-bottom:28px; line-height:1.7; }
+  .cta-buttons{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+
+  /* Footer */
+  footer{
+    background:var(--cream-deep);
+    border-top:1px solid var(--sage-line);
+    padding:48px 0 24px;
+    position:relative; z-index:1;
+  }
+  .footer-bottom{
+    display:flex; align-items:center; justify-content:space-between;
+    font-size:.82rem; color:var(--ink-soft); flex-wrap:wrap; gap:12px;
+  }
+  .footer-bottom em{ color:var(--gold); font-style:italic; }
+
+  @media (max-width: 900px){
+    .story-grid, .team-grid{ grid-template-columns:1fr; }
+    .values-grid{ grid-template-columns:1fr; }
+  }
+  @media (max-width: 720px){
+    .nav-links{
+      position:fixed; top:74px; left:0; right:0;
+      background:var(--paper);
+      flex-direction:column; align-items:flex-start; gap:0;
+      padding:10px 28px 20px;
+      border-bottom:1px solid var(--sage-line);
+      transform:translateY(-130%); opacity:0;
+      transition:transform .35s ease, opacity .3s ease;
+      z-index:99;
+    }
+    .nav-links.open{ transform:translateY(0); opacity:1; }
+    .nav-links a{ padding:12px 0; width:100%; border-bottom:1px solid rgba(111,146,115,.15); }
+    .nav-actions .btn-outline{ display:none; }
+    .burger{ display:flex; }
+    .team-card{ flex-direction:column; align-items:center; text-align:center; }
+    .about-hero{ padding:48px 0 36px; }
+    .section{ padding:56px 0; }
+    .cta-band{ padding:36px 22px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 40C8 40 8 26 30 26C52 26 52 40 52 40" stroke="#6f9273" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M14 40V30M22 40V27M30 40V26M38 40V27M46 40V30" stroke="#c39a4d" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="30" cy="14" r="3" fill="#c39a4d"/>
+        <path d="M6 44H54" stroke="#2f4a35" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">Craft <em>Setu</em></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#crafts">Explore Crafts</a></li>
+      <li><a href="app.html">Share Your Art</a></li>
+      <li><a href="index.html#community">Community</a></li>
+      <li><a href="about.html" class="active">Our Team</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="app.html" class="btn btn-outline btn-small">Open App</a>
+      <a href="login.html" class="btn btn-primary btn-small">Log In</a>
+      <button class="burger" id="burgerBtn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<section class="about-hero">
+  <div class="container">
+    <div class="eyebrow" style="justify-content:center;">The people behind Craft Setu</div>
+    <h1>Built by Makers, <em>for Makers</em></h1>
+    <p class="lede">A Class 8 student startup — artisans, organizers, and technologists building the bridge between tradition and today’s creators.</p>
+  </div>
+</section>
+
+<section class="story-band">
+  <div class="container story-grid">
+    <div class="story-copy">
+      <h2>Our story</h2>
+      <p><strong>Craft Setu is a student startup</strong> — built by a group of Class 8 makers who believe every handmade piece carries a story worth sharing. We set out to create a warm, welcoming home where people of every skill level can learn, post their work, and cheer each other on.</p>
+      <p>From pottery and macramé to embroidery and resin art, we’re connecting creativity across communities — one stitch, fold, and glaze at a time. What started as a classroom idea is growing into a platform for makers everywhere.</p>
+    </div>
+    <div class="story-card">
+      <p class="quote">“Every stitch, every fold, every glaze <span>tells a story</span> — we’re here to help those stories find their people.”</p>
+      <p class="attr">— The Craft Setu team</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="team">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow" style="justify-content:center;">Meet the team</div>
+      <h2>Four makers at the helm</h2>
+      <p>Four Class 8 students leading craft, community, production, and technology.</p>
+    </div>
+
+    <div class="team-grid">
+      <!-- Vanshika -->
+      <article class="team-card">
+        <div class="team-av">VT</div>
+        <div class="team-info">
+          <h3>Vanshika Tanwar</h3>
+          <span class="team-role">CEO · Tech Maker</span>
+          <p>Leads Craft Setu’s vision and product direction — weaving strategy with hands-on making so the platform always feels built by a maker, for makers.</p>
+        </div>
+      </article>
+
+      <!-- Pranjul -->
+      <article class="team-card">
+        <div class="team-av gold">PS</div>
+        <div class="team-info">
+          <h3>Pranjul Soni</h3>
+          <span class="team-role">Organizer · CMO</span>
+          <p>Shapes community, brand, and outreach — turning workshops, stories, and campaigns into a movement that celebrates handmade creativity.</p>
+        </div>
+      </article>
+
+      <!-- Princy -->
+      <article class="team-card">
+        <div class="team-av clay">PR</div>
+        <div class="team-info">
+          <h3>Princy Rajput</h3>
+          <span class="team-role">Producer · CFO</span>
+          <p>Keeps production and finances in rhythm — ensuring every project, partnership, and launch is sustainable and thoughtfully resourced.</p>
+        </div>
+      </article>
+
+      <!-- Sandhya -->
+      <article class="team-card">
+        <div class="team-av deep">ST</div>
+        <div class="team-info">
+          <h3>Sandhya</h3>
+          <span class="team-role">CTO · Tech &amp; Reach</span>
+          <p>Builds the tech that powers Craft Setu and extends its reach — from a smooth feed and uploads to the systems that keep makers connected.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow" style="justify-content:center;">What we stand for</div>
+      <h2>Create. Learn. Inspire.</h2>
+    </div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12M7 8l5-5 5 5M5 21h14"/></svg>
+        </div>
+        <h4>Share freely</h4>
+        <p>Every project deserves a stage. We make uploading and discovering crafts simple and joyful.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+        </div>
+        <h4>Grow together</h4>
+        <p>From first stitches to gallery-ready pieces — community feedback and encouragement at every step.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V7l8-4z"/></svg>
+        </div>
+        <h4>Honor the craft</h4>
+        <p>Tradition and modern making side by side — pottery, yarn, resin, and everything in between.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:20px; padding-bottom:80px;">
+  <div class="container">
+    <div class="cta-band">
+      <div class="eyebrow" style="justify-content:center;">Join us</div>
+      <h2>Ready to share your next craft?</h2>
+      <p>Create a free account and become part of the Craft Setu community.</p>
+      <div class="cta-buttons">
+        <a href="login.html" class="btn btn-primary">Get Started — It’s Free</a>
+        <a href="app.html" class="btn btn-outline">Open the App</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-bottom">
+      <span>© 2026 Craft Setu. All rights reserved.</span>
+      <span><em>Create. Learn. Inspire.</em></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const burger = document.getElementById('burgerBtn');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => navLinks.classList.remove('open'));
+  });
+</script>
+</body>
+</html>
