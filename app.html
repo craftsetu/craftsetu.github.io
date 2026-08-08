@@ -162,6 +162,37 @@
   }
   .tabs-row button.on{background:var(--sage);color:#fff;border-color:var(--sage)}
 
+
+  .sale-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    background:rgba(195,154,77,.18);color:var(--gold);
+    font-size:.78rem;font-weight:600;letter-spacing:.03em;
+    padding:5px 12px;border-radius:999px;margin-top:10px;
+  }
+  .sale-badge b{color:var(--sage-dark);font-size:.95rem}
+  .buy-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    margin-left:auto;background:linear-gradient(135deg,var(--gold-soft),var(--gold));
+    color:#fff;border:none;border-radius:999px;padding:8px 16px;
+    font-size:.85rem;font-weight:500;cursor:pointer;font-family:inherit;
+  }
+  .buy-btn:hover{filter:brightness(1.05)}
+  .sale-toggle{
+    display:flex;align-items:center;gap:10px;
+    padding:12px 14px;border:1.4px solid var(--sage-line);
+    border-radius:12px;background:var(--cream);margin-bottom:14px;
+  }
+  .sale-toggle input{width:18px;height:18px;accent-color:var(--sage)}
+  .sale-toggle label{font-size:.92rem;color:var(--sage-dark);cursor:pointer}
+  #priceField{display:none}
+  .order-card{
+    background:var(--paper);border:1px solid var(--sage-line);
+    border-radius:16px;padding:14px 16px;margin-bottom:10px;text-align:left;
+  }
+  .order-card h4{font-family:'Cormorant Garamond',serif;font-size:1.1rem;margin-bottom:6px}
+  .order-card p{font-size:.85rem;color:var(--ink-soft);line-height:1.5;margin:2px 0}
+  .order-card .cod{color:var(--gold);font-weight:500;font-size:.8rem;margin-top:6px}
+
 </style>
 </head>
 <body>
@@ -212,7 +243,10 @@
         </div>
         <button class="btn btn-outline" id="logoutBtn" style="max-width:200px;margin:0 auto;">Log out</button>
       </div>
-      <h3 style="margin:0 4px 12px;font-size:1.15rem;">Your crafts</h3>
+      <h3 style="margin:18px 4px 12px;font-size:1.15rem;">Orders for your crafts (COD)</h3>
+      <div id="sellerOrders"></div>
+      <div class="state-box" id="ordersEmpty" style="display:none;"><p style="font-size:.9rem;">No buy requests yet.</p></div>
+      <h3 style="margin:24px 4px 12px;font-size:1.15rem;">Your crafts</h3>
       <div class="feed" id="myFeed"></div>
       <div class="state-box" id="myEmpty" style="display:none;"><h3>Nothing posted yet</h3><p>Upload your first craft from the + button.</p></div>
     </div>
@@ -289,7 +323,37 @@
         </div>
         <div class="field"><label for="upDesc">Story *</label><textarea id="upDesc" maxlength="600" required></textarea></div>
         <div class="field"><label for="upTags">Tags (comma separated)</label><input type="text" id="upTags" placeholder="handmade, gift"></div>
+        <div class="sale-toggle">
+          <input type="checkbox" id="upForSale">
+          <label for="upForSale">This craft is for sale (Pay on delivery)</label>
+        </div>
+        <div class="field" id="priceField">
+          <label for="upPrice">Price (₹) *</label>
+          <input type="number" id="upPrice" min="1" step="1" placeholder="e.g. 299">
+        </div>
         <button type="submit" class="btn btn-primary" id="publishBtn">Publish craft</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Buy / COD order modal -->
+<div class="modal-overlay" id="buyModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>Buy this craft</h2>
+      <button class="modal-close" id="closeBuyModal">×</button>
+    </div>
+    <div class="modal-body">
+      <p id="buyItemLine" style="font-size:.92rem;color:var(--ink-soft);margin-bottom:14px;line-height:1.5;"></p>
+      <p style="font-size:.82rem;color:var(--gold);margin-bottom:14px;font-weight:500;">Pay on delivery — cash when you receive it.</p>
+      <form id="buyForm">
+        <div class="field"><label for="buyName">Your full name *</label><input type="text" id="buyName" required maxlength="80"></div>
+        <div class="field"><label for="buyPhone">Phone number *</label><input type="tel" id="buyPhone" required maxlength="15" placeholder="10-digit mobile"></div>
+        <div class="field"><label for="buyAddress">Delivery address *</label><textarea id="buyAddress" required maxlength="400" placeholder="House / street, area, city, PIN code"></textarea></div>
+        <div class="field"><label for="buyNote">Note to seller (optional)</label><input type="text" id="buyNote" maxlength="200" placeholder="Size, colour, preferred time…"></div>
+        <button type="submit" class="btn btn-primary" id="buySubmitBtn">Place order (COD)</button>
       </form>
     </div>
   </div>
@@ -349,6 +413,7 @@
   const COLLECTION_FOLLOWS = 'follows';   // columns: followerId, followingId, followingName, followerName
   const COLLECTION_BLOCKS = 'blocks';     // columns: blockerId, blockedId, blockedName
   const COLLECTION_MESSAGES = 'messages'; // columns: fromId, toId, fromName, toName, text
+  const COLLECTION_ORDERS = 'orders';     // buy requests COD
   const BUCKET_ID = 'crafts';
   // ====================================================================
 
@@ -538,6 +603,7 @@
         <div class="post-title">${escapeHtml(doc.title || '')}</div>
         <div class="post-desc">${escapeHtml(doc.description || '')}</div>
         ${tags ? `<div class="post-tags">${tags}</div>` : ''}
+        ${doc.forSale ? `<div class="sale-badge">For sale · <b>₹${escapeHtml(String(doc.price ?? ''))}</b> · Pay on delivery</div>` : ''}
       </div>
       ${mediaHtml}
       <div class="post-actions">
@@ -547,10 +613,13 @@
           </svg>
           <span class="likes-count">${likes}</span>
         </button>
+        ${doc.forSale && doc.userId !== currentUser.$id ? `<button type="button" class="buy-btn">Buy · ₹${escapeHtml(String(doc.price ?? ''))}</button>` : ''}
       </div>
     `;
 
     card.querySelector('.like-btn').addEventListener('click', () => toggleLike(doc, card));
+    const buyBtn = card.querySelector('.buy-btn');
+    if (buyBtn) buyBtn.addEventListener('click', () => openBuyModal(doc));
     card.querySelectorAll('.author-hit').forEach(el => {
       el.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -621,7 +690,7 @@
     document.querySelectorAll('.nav-item[data-view]').forEach(el => {
       el.classList.toggle('active', el.dataset.view === name);
     });
-    if (name === 'profile') loadMyPosts();
+    if (name === 'profile') { loadMyPosts(); loadSellerOrders(); }
     if (name === 'friends') renderFriendsTab();
     if (name === 'chat') loadChatInbox();
     window.scrollTo({ top: 0 });
@@ -1081,6 +1150,114 @@
     });
   }
 
+
+  // ---------- Sale / Buy (COD) ----------
+  document.getElementById('upForSale').addEventListener('change', (e) => {
+    document.getElementById('priceField').style.display = e.target.checked ? 'block' : 'none';
+  });
+
+  let buyPost = null;
+
+  function openBuyModal(doc) {
+    buyPost = doc;
+    document.getElementById('buyItemLine').textContent =
+      `"${doc.title || 'Craft'}" by ${doc.authorName || 'Maker'} — ₹${doc.price || 0}`;
+    document.getElementById('buyForm').reset();
+    document.getElementById('buyModal').classList.add('show');
+  }
+  document.getElementById('closeBuyModal').addEventListener('click', () => {
+    document.getElementById('buyModal').classList.remove('show');
+  });
+  document.getElementById('buyModal').addEventListener('click', e => {
+    if (e.target.id === 'buyModal') e.target.classList.remove('show');
+  });
+
+  document.getElementById('buyForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!buyPost) return;
+    const buyerName = document.getElementById('buyName').value.trim();
+    const buyerPhone = document.getElementById('buyPhone').value.trim();
+    const buyerAddress = document.getElementById('buyAddress').value.trim();
+    const buyerNote = document.getElementById('buyNote').value.trim();
+    if (!buyerName || !buyerPhone || !buyerAddress) {
+      toast('Please fill name, phone and address');
+      return;
+    }
+    const btn = document.getElementById('buySubmitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    try {
+      await databases.createDocument(
+        DATABASE_ID,
+        COLLECTION_ORDERS,
+        ID.unique(),
+        {
+          postId: buyPost.$id,
+          postTitle: buyPost.title || 'Craft',
+          price: Number(buyPost.price) || 0,
+          sellerId: buyPost.userId,
+          sellerName: buyPost.authorName || 'Maker',
+          buyerId: currentUser.$id,
+          buyerName,
+          buyerPhone,
+          buyerAddress,
+          buyerNote,
+          payment: 'COD',
+          status: 'pending'
+        },
+        [
+          Permission.read(Role.any()),
+          Permission.update(Role.any()),
+          Permission.delete(Role.user(currentUser.$id))
+        ]
+      );
+      document.getElementById('buyModal').classList.remove('show');
+      toast('Order placed! Seller will contact you. Pay on delivery.');
+    } catch (err) {
+      console.error(err);
+      toast(err.message || 'Order failed — create the orders table in Appwrite.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Place order (COD)';
+    }
+  });
+
+  async function loadSellerOrders() {
+    const box = document.getElementById('sellerOrders');
+    const empty = document.getElementById('ordersEmpty');
+    if (!box) return;
+    box.innerHTML = '<div class="state-box"><div class="spinner"></div></div>';
+    empty.style.display = 'none';
+    try {
+      const res = await databases.listDocuments(DATABASE_ID, COLLECTION_ORDERS, [
+        Query.equal('sellerId', currentUser.$id),
+        Query.orderDesc('$createdAt'),
+        Query.limit(50)
+      ]);
+      box.innerHTML = '';
+      if (!res.documents.length) {
+        empty.style.display = 'block';
+        return;
+      }
+      res.documents.forEach(o => {
+        const el = document.createElement('div');
+        el.className = 'order-card';
+        el.innerHTML = `
+          <h4>${escapeHtml(o.postTitle || 'Craft')} — ₹${escapeHtml(String(o.price ?? 0))}</h4>
+          <p><b>Buyer:</b> ${escapeHtml(o.buyerName || '')}</p>
+          <p><b>Phone:</b> ${escapeHtml(o.buyerPhone || '')}</p>
+          <p><b>Address:</b> ${escapeHtml(o.buyerAddress || '')}</p>
+          ${o.buyerNote ? `<p><b>Note:</b> ${escapeHtml(o.buyerNote)}</p>` : ''}
+          <p class="cod">Pay on delivery · ${escapeHtml(o.status || 'pending')}</p>`;
+        box.appendChild(el);
+      });
+    } catch (err) {
+      console.error(err);
+      box.innerHTML = '';
+      empty.style.display = 'block';
+    }
+  }
+
   document.getElementById('uploadForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     if (uploadFiles.length === 0) { toast('Add at least one photo'); return; }
@@ -1089,7 +1266,11 @@
     const description = document.getElementById('upDesc').value.trim();
     const tagsRaw = document.getElementById('upTags').value.trim();
     const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim().replace(/^#/, '')).filter(Boolean).slice(0, 8) : [];
+    const forSale = document.getElementById('upForSale').checked;
+    const priceVal = document.getElementById('upPrice').value;
+    const price = forSale ? Number(priceVal) : 0;
     if (!title || !category || !description) { toast('Fill required fields'); return; }
+    if (forSale && (!price || price < 1)) { toast('Enter a valid price in ₹'); return; }
 
     const btn = document.getElementById('publishBtn');
     btn.disabled = true;
@@ -1127,7 +1308,9 @@
           tags,
           imageIds,
           likesCount: 0,
-          likedBy: []
+          likedBy: [],
+          forSale: !!forSale,
+          price: forSale ? price : 0
         },
         [
           Permission.read(Role.any()),
