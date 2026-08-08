@@ -9,21 +9,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --cream:        #faf5e8;
-    --cream-deep:   #f2e9d6;
-    --paper:        #fffdf8;
-    --sage:         #6f9273;
-    --sage-deep:    #4f7355;
-    --sage-dark:    #2f4a35;
-    --sage-line:    #a9c2a4;
-    --gold:         #c39a4d;
-    --gold-soft:    #dcc084;
-    --clay:         #d99b7c;
-    --ink:          #33422f;
-    --ink-soft:     #5c6b57;
-    --shadow:       0 20px 45px -20px rgba(47,74,53,.35);
+    --cream: #faf5e8;
+    --cream-deep: #f2e9d6;
+    --paper: #fffdf8;
+    --sage: #6f9273;
+    --sage-deep: #4f7355;
+    --sage-dark: #2f4a35;
+    --sage-line: #a9c2a4;
+    --gold: #c39a4d;
+    --gold-soft: #dcc084;
+    --clay: #d99b7c;
+    --ink: #33422f;
+    --ink-soft: #5c6b57;
+    --shadow: 0 20px 45px -20px rgba(47,74,53,.35);
   }
-
   *{ margin:0; padding:0; box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
   body{
@@ -36,32 +35,21 @@
   img{ max-width:100%; display:block; }
   a{ text-decoration:none; color:inherit; }
   ul{ list-style:none; }
-
   h1,h2,h3,.serif{
     font-family:'Cormorant Garamond', serif;
     color:var(--sage-dark);
     font-weight:600;
     letter-spacing:.01em;
   }
-
-  .container{
-    max-width:1180px;
-    margin:0 auto;
-    padding:0 28px;
-  }
-
-  /* ---------- background texture ---------- */
+  .container{ max-width:1180px; margin:0 auto; padding:0 28px; }
   body::before{
     content:"";
     position:fixed; inset:0;
-    background-image:
-      radial-gradient(circle at 2px 2px, rgba(111,146,115,.09) 1.4px, transparent 1.4px);
+    background-image:radial-gradient(circle at 2px 2px, rgba(111,146,115,.09) 1.4px, transparent 1.4px);
     background-size:26px 26px;
     pointer-events:none;
     z-index:0;
   }
-
-  /* ---------- sparkles (gold) ---------- */
   .sparkle{
     position:absolute;
     color:var(--gold);
@@ -72,10 +60,6 @@
     0%,100%{ opacity:.25; transform:scale(.8) rotate(0deg); }
     50%{ opacity:.9; transform:scale(1.15) rotate(15deg); }
   }
-
-  /* =====================================================
-     HEADER
-  ===================================================== */
   header{
     position:sticky; top:0; z-index:100;
     background:rgba(250,245,232,.88);
@@ -87,10 +71,13 @@
     padding:18px 28px;
     max-width:1180px; margin:0 auto;
   }
-  .logo{
-    display:flex; align-items:center; gap:10px;
+  .logo{ display:flex; align-items:center; gap:10px; }
+  .logo-img{
+    width:42px; height:42px; border-radius:50%;
+    object-fit:cover;
+    border:1.5px solid var(--sage-line);
+    box-shadow:0 4px 12px -6px rgba(47,74,53,.35);
   }
-  .logo svg{ width:38px; height:38px; }
   .logo-text{
     font-family:'Cormorant Garamond', serif;
     font-size:1.65rem;
@@ -98,42 +85,23 @@
     color:var(--sage-dark);
     line-height:1;
   }
-  .logo-text em{
-    font-style:italic;
-    color:var(--gold);
-    font-weight:600;
-  }
-  .nav-links{
-    display:flex; align-items:center; gap:38px;
-  }
+  .logo-text em{ font-style:italic; color:var(--gold); font-weight:600; }
+  .nav-links{ display:flex; align-items:center; gap:38px; }
   .nav-links a{
-    font-size:.98rem;
-    color:var(--ink-soft);
-    position:relative;
-    padding:4px 0;
+    font-size:.98rem; color:var(--ink-soft); position:relative; padding:4px 0;
     transition:color .25s ease;
   }
   .nav-links a::after{
-    content:"";
-    position:absolute; left:0; bottom:-2px;
-    width:0; height:1.5px;
-    background:var(--gold);
-    transition:width .3s ease;
+    content:""; position:absolute; left:0; bottom:-2px;
+    width:0; height:1.5px; background:var(--gold); transition:width .3s ease;
   }
   .nav-links a:hover{ color:var(--sage-dark); }
   .nav-links a:hover::after{ width:100%; }
-
   .nav-actions{ display:flex; align-items:center; gap:14px; }
-
   .btn{
     display:inline-flex; align-items:center; gap:8px;
-    font-family:'Jost', sans-serif;
-    font-size:.95rem;
-    font-weight:500;
-    padding:12px 26px;
-    border-radius:999px;
-    cursor:pointer;
-    border:none;
+    font-family:'Jost', sans-serif; font-size:.95rem; font-weight:500;
+    padding:12px 26px; border-radius:999px; cursor:pointer; border:none;
     transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
     white-space:nowrap;
   }
@@ -144,216 +112,94 @@
   }
   .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 16px 30px -10px rgba(79,115,85,.65); }
   .btn-outline{
-    background:transparent;
-    color:var(--sage-deep);
-    border:1.5px solid var(--sage);
+    background:transparent; color:var(--sage-deep); border:1.5px solid var(--sage);
   }
   .btn-outline:hover{ background:var(--sage); color:#fff; transform:translateY(-2px); }
   .btn-small{ padding:9px 20px; font-size:.88rem; }
-
   .burger{
-    display:none;
-    flex-direction:column; gap:5px;
-    background:none; border:none; cursor:pointer;
-    padding:6px;
+    display:none; flex-direction:column; gap:5px;
+    background:none; border:none; cursor:pointer; padding:6px;
   }
-  .burger span{
-    width:24px; height:2px; background:var(--sage-dark); border-radius:2px;
-    transition:.3s ease;
-  }
-
-  /* =====================================================
-     HERO
-  ===================================================== */
-  .hero{
-    position:relative;
-    padding:78px 0 60px;
-    overflow:hidden;
-  }
+  .burger span{ width:24px; height:2px; background:var(--sage-dark); border-radius:2px; transition:.3s ease; }
+  .hero{ position:relative; padding:78px 0 60px; overflow:hidden; }
   .hero-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    align-items:center;
-    gap:40px;
+    display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:40px;
   }
   .eyebrow{
     display:inline-flex; align-items:center; gap:10px;
-    font-size:.8rem;
-    letter-spacing:.22em;
-    text-transform:uppercase;
-    color:var(--sage-deep);
-    margin-bottom:20px;
+    font-size:.8rem; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--sage-deep); margin-bottom:20px;
   }
-  .eyebrow::before, .eyebrow::after{
-    content:"";
-    width:22px; height:1px;
-    background:var(--gold);
-  }
-  .hero h1{
-    font-size:clamp(2.6rem, 5vw, 4rem);
-    line-height:1.08;
-    margin-bottom:20px;
-  }
-  .hero h1 .accent{
-    font-style:italic;
-    color:var(--sage);
-  }
+  .eyebrow::before, .eyebrow::after{ content:""; width:22px; height:1px; background:var(--gold); }
+  .hero h1{ font-size:clamp(2.6rem, 5vw, 4rem); line-height:1.08; margin-bottom:20px; }
+  .hero h1 .accent{ font-style:italic; color:var(--sage); }
   .hero p.lede{
-    font-size:1.08rem;
-    color:var(--ink-soft);
-    line-height:1.75;
-    max-width:460px;
-    margin-bottom:32px;
+    font-size:1.08rem; color:var(--ink-soft); line-height:1.75;
+    max-width:460px; margin-bottom:32px;
   }
-  .hero-cta{
-    display:flex; align-items:center; gap:20px;
-    flex-wrap:wrap;
-    margin-bottom:38px;
-  }
+  .hero-cta{ display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-bottom:38px; }
   .hero-stats{
-    display:flex; gap:34px;
-    padding-top:22px;
-    border-top:1px solid var(--sage-line);
-    max-width:460px;
+    display:flex; gap:34px; padding-top:22px;
+    border-top:1px solid var(--sage-line); max-width:460px;
   }
   .hero-stats .stat b{
-    display:block;
-    font-family:'Cormorant Garamond', serif;
-    font-size:1.7rem;
-    color:var(--sage-dark);
+    display:block; font-family:'Cormorant Garamond', serif;
+    font-size:1.7rem; color:var(--sage-dark);
   }
-  .hero-stats .stat span{
-    font-size:.8rem;
-    color:var(--ink-soft);
-    letter-spacing:.03em;
-  }
-
-  /* --- hero illustration (bridge + craft scene, pure CSS/SVG) --- */
+  .hero-stats .stat span{ font-size:.8rem; color:var(--ink-soft); letter-spacing:.03em; }
   .hero-art{
-    position:relative;
-    display:flex; align-items:center; justify-content:center;
-    min-height:460px;
+    position:relative; display:flex; align-items:center; justify-content:center; min-height:460px;
   }
   .art-ring{
-    position:absolute;
-    width:400px; height:400px;
-    border:1px dashed var(--sage-line);
-    border-radius:50%;
+    position:absolute; width:400px; height:400px;
+    border:1px dashed var(--sage-line); border-radius:50%;
   }
-  .bridge-wrap{
-    position:relative;
-    width:100%;
-    max-width:420px;
-  }
-  .leaf-corner{
-    position:absolute;
-    opacity:.9;
-  }
-  .leaf-corner.tl{ top:-18px; left:-30px; width:90px; transform:rotate(-15deg);}
-  .leaf-corner.br{ bottom:-10px; right:-30px; width:90px; transform:rotate(160deg);}
-
-  .craft-badge{
-    position:absolute;
-    background:var(--paper);
-    border:1px solid var(--sage-line);
-    border-radius:16px;
-    padding:10px 16px;
-    display:flex; align-items:center; gap:10px;
+  .hero-logo-main{
+    position:relative; z-index:2;
+    width:min(380px, 88%);
+    border-radius:28px;
     box-shadow:var(--shadow);
-    font-size:.82rem;
-    color:var(--sage-dark);
-    animation:float 5s ease-in-out infinite;
   }
-  .craft-badge.b1{ top:6%; left:-6%; animation-delay:0s; }
-  .craft-badge.b2{ bottom:10%; right:-8%; animation-delay:1.4s; }
-  .craft-badge .dot{
-    width:8px; height:8px; border-radius:50%; background:var(--clay);
+  .craft-badge{
+    position:absolute; background:var(--paper);
+    border:1px solid var(--sage-line); border-radius:16px;
+    padding:10px 16px; display:flex; align-items:center; gap:10px;
+    box-shadow:var(--shadow); font-size:.82rem; color:var(--sage-dark);
+    animation:float 5s ease-in-out infinite; z-index:3;
   }
+  .craft-badge.b1{ top:6%; left:-2%; animation-delay:0s; }
+  .craft-badge.b2{ bottom:10%; right:-4%; animation-delay:1.4s; }
+  .craft-badge .dot{ width:8px; height:8px; border-radius:50%; background:var(--clay); }
   @keyframes float{
     0%,100%{ transform:translateY(0); }
     50%{ transform:translateY(-10px); }
   }
-
-  /* =====================================================
-     MARQUEE STRIP
-  ===================================================== */
-  .marquee-strip{
-    background:var(--sage-dark);
-    padding:16px 0;
-    overflow:hidden;
-    position:relative;
-  }
+  .marquee-strip{ background:var(--sage-dark); padding:16px 0; overflow:hidden; position:relative; }
   .marquee-track{
-    display:flex;
-    gap:52px;
-    white-space:nowrap;
-    animation:scroll-left 26s linear infinite;
-    width:max-content;
+    display:flex; gap:52px; white-space:nowrap;
+    animation:scroll-left 26s linear infinite; width:max-content;
   }
   .marquee-track span{
-    font-family:'Cormorant Garamond', serif;
-    font-style:italic;
-    font-size:1.25rem;
-    color:var(--cream);
-    opacity:.85;
+    font-family:'Cormorant Garamond', serif; font-style:italic;
+    font-size:1.25rem; color:var(--cream); opacity:.85;
     display:flex; align-items:center; gap:14px;
   }
-  .marquee-track span::after{
-    content:"?";
-    color:var(--gold);
-    font-style:normal;
-    opacity:.8;
-  }
-  @keyframes scroll-left{
-    from{ transform:translateX(0); }
-    to{ transform:translateX(-50%); }
-  }
-
-  /* =====================================================
-     SECTION HEADERS (shared)
-  ===================================================== */
+  .marquee-track span::after{ content:"✦"; color:var(--gold); font-style:normal; opacity:.8; }
+  @keyframes scroll-left{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
   .section{ position:relative; padding:100px 0; }
-  .section-head{
-    text-align:center;
-    max-width:600px;
-    margin:0 auto 56px;
-  }
-  .section-head h2{
-    font-size:clamp(2.1rem, 3.6vw, 2.8rem);
-    margin:14px 0 16px;
-  }
-  .section-head p{
-    color:var(--ink-soft);
-    font-size:1.02rem;
-    line-height:1.7;
-  }
-  .divider-heart{
-    display:flex; align-items:center; justify-content:center; gap:12px;
-  }
-  .divider-heart::before, .divider-heart::after{
-    content:"";
-    width:44px; height:1px;
-    background:var(--sage-line);
-  }
-
-  /* =====================================================
-     CRAFT CATEGORIES
-  ===================================================== */
-  .craft-grid{
-    display:grid;
-    grid-template-columns:repeat(6, 1fr);
-    gap:28px 20px;
-  }
+  .section-head{ text-align:center; max-width:600px; margin:0 auto 56px; }
+  .section-head h2{ font-size:clamp(2.1rem, 3.6vw, 2.8rem); margin:14px 0 16px; }
+  .section-head p{ color:var(--ink-soft); font-size:1.02rem; line-height:1.7; }
+  .divider-heart{ display:flex; align-items:center; justify-content:center; gap:12px; }
+  .divider-heart::before, .divider-heart::after{ content:""; width:44px; height:1px; background:var(--sage-line); }
+  .craft-grid{ display:grid; grid-template-columns:repeat(6, 1fr); gap:28px 20px; }
   .craft-item{
     display:flex; flex-direction:column; align-items:center; gap:12px;
-    text-align:center;
-    cursor:default;
+    text-align:center; cursor:default;
   }
   .craft-icon{
-    width:88px; height:88px;
-    border-radius:50%;
-    background:var(--paper);
-    border:1px solid var(--sage-line);
+    width:88px; height:88px; border-radius:50%;
+    background:var(--paper); border:1px solid var(--sage-line);
     display:flex; align-items:center; justify-content:center;
     box-shadow:0 10px 20px -12px rgba(47,74,53,.25);
     transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
@@ -364,263 +210,134 @@
     border-color:var(--gold-soft);
     box-shadow:0 16px 28px -12px rgba(195,154,77,.45);
   }
-  .craft-item span{
-    font-size:.86rem;
-    color:var(--ink-soft);
-    letter-spacing:.02em;
-  }
-
-  /* =====================================================
-     SHARE YOUR ART (phone mock)
-  ===================================================== */
+  .craft-item span{ font-size:.86rem; color:var(--ink-soft); letter-spacing:.02em; }
   .share-section{
     background:var(--cream-deep);
     border-top:1px solid var(--sage-line);
     border-bottom:1px solid var(--sage-line);
   }
-  .share-grid{
-    display:grid;
-    grid-template-columns:1fr .85fr;
-    gap:60px;
-    align-items:center;
-  }
+  .share-grid{ display:grid; grid-template-columns:1fr .85fr; gap:60px; align-items:center; }
   .feature-list{ margin-top:32px; display:flex; flex-direction:column; gap:22px; }
-  .feature-list li{
-    display:flex; gap:16px; align-items:flex-start;
-  }
+  .feature-list li{ display:flex; gap:16px; align-items:flex-start; }
   .feature-list .ic{
-    flex:none;
-    width:44px; height:44px; border-radius:12px;
-    background:var(--paper);
-    border:1px solid var(--sage-line);
+    flex:none; width:44px; height:44px; border-radius:12px;
+    background:var(--paper); border:1px solid var(--sage-line);
     display:flex; align-items:center; justify-content:center;
   }
   .feature-list .ic svg{ width:22px; height:22px; }
-  .feature-list h4{
-    font-family:'Cormorant Garamond', serif;
-    font-size:1.2rem;
-    color:var(--sage-dark);
-    margin-bottom:3px;
-  }
+  .feature-list h4{ font-family:'Cormorant Garamond', serif; font-size:1.2rem; color:var(--sage-dark); margin-bottom:3px; }
   .feature-list p{ font-size:.92rem; color:var(--ink-soft); line-height:1.6; }
-
   .phone-mock{
-    position:relative;
-    margin:0 auto;
-    width:290px;
-    background:var(--paper);
-    border:10px solid var(--sage-dark);
-    border-radius:38px;
-    box-shadow:var(--shadow);
-    overflow:hidden;
+    position:relative; margin:0 auto; width:290px;
+    background:var(--paper); border:10px solid var(--sage-dark);
+    border-radius:38px; box-shadow:var(--shadow); overflow:hidden;
   }
   .phone-notch{
     height:26px; background:var(--sage-dark);
     display:flex; align-items:center; justify-content:center;
   }
   .phone-notch::after{
-    content:"";
-    width:70px; height:14px; background:var(--sage-dark);
-    border-radius:0 0 12px 12px;
+    content:""; width:70px; height:14px; background:var(--sage-dark); border-radius:0 0 12px 12px;
   }
   .phone-topbar{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:14px 16px 10px;
+    display:flex; align-items:center; justify-content:space-between; padding:14px 16px 10px;
   }
   .phone-topbar .brand{
     display:flex; align-items:center; gap:8px;
-    font-family:'Cormorant Garamond', serif;
-    font-weight:700;
-    color:var(--sage-dark);
+    font-family:'Cormorant Garamond', serif; font-weight:700; color:var(--sage-dark);
   }
-  .phone-topbar .brand svg{ width:20px; height:20px; }
+  .phone-topbar .brand img{ width:22px; height:22px; border-radius:50%; object-fit:cover; }
   .phone-img{
-    margin:0 16px;
-    border-radius:16px;
-    overflow:hidden;
-    aspect-ratio:1/1;
+    margin:0 16px; border-radius:16px; overflow:hidden; aspect-ratio:1/1;
     background:linear-gradient(150deg, #e9dfc4, #cfe0cb 60%, #e6c7ad);
-    display:flex; align-items:center; justify-content:center;
-    position:relative;
+    display:flex; align-items:center; justify-content:center; position:relative;
   }
-  .phone-img svg{ width:64%; }
+  .phone-img img{ width:100%; height:100%; object-fit:cover; }
   .phone-actions{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:12px 18px 4px;
+    display:flex; align-items:center; justify-content:space-between; padding:12px 18px 4px;
   }
   .phone-actions .left{ display:flex; gap:14px; }
   .phone-actions svg{ width:19px; height:19px; color:var(--sage-dark); }
-  .phone-caption{
-    padding:2px 18px 20px;
-    font-size:.78rem;
-    color:var(--ink-soft);
-    line-height:1.5;
-  }
+  .phone-caption{ padding:2px 18px 20px; font-size:.78rem; color:var(--ink-soft); line-height:1.5; }
   .phone-caption b{ color:var(--sage-dark); display:block; margin-bottom:2px; font-size:.82rem;}
   .phone-caption .tags{ color:var(--sage-deep); }
-
-  /* =====================================================
-     COMMUNITY
-  ===================================================== */
-  .community-grid{
-    display:grid;
-    grid-template-columns:.9fr 1.1fr;
-    gap:60px;
-    align-items:center;
-  }
+  .community-grid{ display:grid; grid-template-columns:.9fr 1.1fr; gap:60px; align-items:center; }
   .community-art{
-    position:relative;
-    background:var(--paper);
-    border:1px solid var(--sage-line);
-    border-radius:28px;
-    padding:34px;
-    box-shadow:var(--shadow);
+    position:relative; background:var(--paper); border:1px solid var(--sage-line);
+    border-radius:28px; padding:34px; box-shadow:var(--shadow);
   }
   .community-art .quote{
-    font-family:'Cormorant Garamond', serif;
-    font-style:italic;
-    font-size:1.5rem;
-    color:var(--sage-dark);
-    line-height:1.4;
-    margin-bottom:18px;
+    font-family:'Cormorant Garamond', serif; font-style:italic;
+    font-size:1.5rem; color:var(--sage-dark); line-height:1.4; margin-bottom:18px;
   }
   .community-art .quote span{ color:var(--gold); }
-  .avatars{ display:flex; align-items:center; gap:-8px; margin-top:10px;}
+  .avatars{ display:flex; align-items:center; }
   .avatars .av{
-    width:42px; height:42px; border-radius:50%;
-    border:2.5px solid var(--paper);
-    margin-left:-12px;
-    background:var(--sage);
+    width:42px; height:42px; border-radius:50%; border:2.5px solid var(--paper);
+    margin-left:-12px; background:var(--sage);
     display:flex; align-items:center; justify-content:center;
-    font-family:'Cormorant Garamond', serif;
-    color:#fff; font-weight:700;
+    font-family:'Cormorant Garamond', serif; color:#fff; font-weight:700;
   }
   .avatars .av:first-child{ margin-left:0; }
   .avatars-row{ display:flex; align-items:center; gap:14px; margin-top:22px; }
   .avatars-row small{ color:var(--ink-soft); font-size:.82rem; }
-
   .perk-list{ display:flex; flex-direction:column; gap:26px; }
   .perk{
     display:flex; gap:20px; align-items:flex-start;
-    padding-bottom:26px;
-    border-bottom:1px solid var(--sage-line);
+    padding-bottom:26px; border-bottom:1px solid var(--sage-line);
   }
   .perk:last-child{ border-bottom:none; padding-bottom:0; }
   .perk-num{
-    font-family:'Cormorant Garamond', serif;
-    font-size:1.9rem;
-    color:var(--gold);
-    font-weight:600;
-    min-width:44px;
+    font-family:'Cormorant Garamond', serif; font-size:1.9rem;
+    color:var(--gold); font-weight:600; min-width:44px;
   }
-  .perk h4{
-    font-family:'Cormorant Garamond', serif;
-    font-size:1.35rem;
-    color:var(--sage-dark);
-    margin-bottom:6px;
-  }
+  .perk h4{ font-family:'Cormorant Garamond', serif; font-size:1.35rem; color:var(--sage-dark); margin-bottom:6px; }
   .perk p{ color:var(--ink-soft); font-size:.95rem; line-height:1.65; }
-
-  /* =====================================================
-     TEAM TEASER (-> about.html)
-  ===================================================== */
   .team-teaser{
     background:linear-gradient(180deg, var(--sage-dark) 0%, #26382c 100%);
-    color:var(--cream);
-    position:relative;
-    overflow:hidden;
+    color:var(--cream); position:relative; overflow:hidden;
   }
   .team-teaser::before{
-    content:"";
-    position:absolute; inset:0;
+    content:""; position:absolute; inset:0;
     background-image:radial-gradient(circle at 20% 20%, rgba(220,192,132,.12), transparent 40%),
                       radial-gradient(circle at 85% 75%, rgba(220,192,132,.10), transparent 40%);
   }
-  .team-inner{
-    position:relative;
-    text-align:center;
-    max-width:640px;
-    margin:0 auto;
-  }
+  .team-inner{ position:relative; text-align:center; max-width:640px; margin:0 auto; }
   .team-inner .eyebrow{ color:var(--gold-soft); justify-content:center; }
   .team-inner .eyebrow::before,.team-inner .eyebrow::after{ background:var(--gold-soft); }
   .team-inner h2{ color:var(--cream); }
   .team-inner p{ color:#cfe0cf; margin:18px 0 34px; line-height:1.75; }
-
-  /* =====================================================
-     FOOTER CTA + FOOTER
-  ===================================================== */
   .cta-band{
-    background:var(--paper);
-    border:1px solid var(--sage-line);
-    border-radius:28px;
-    padding:56px 40px;
-    text-align:center;
-    max-width:900px;
-    margin:0 auto;
-    box-shadow:var(--shadow);
-    position:relative;
+    background:var(--paper); border:1px solid var(--sage-line); border-radius:28px;
+    padding:56px 40px; text-align:center; max-width:900px; margin:0 auto; box-shadow:var(--shadow);
   }
   .cta-band h2{ margin-bottom:14px; }
   .cta-band p{ color:var(--ink-soft); margin-bottom:30px; }
   .cta-buttons{ display:flex; gap:18px; justify-content:center; flex-wrap:wrap; }
-
-  footer{
-    background:var(--cream-deep);
-    border-top:1px solid var(--sage-line);
-    padding:64px 0 26px;
-  }
+  footer{ background:var(--cream-deep); border-top:1px solid var(--sage-line); padding:64px 0 26px; }
   .footer-grid{
-    display:grid;
-    grid-template-columns:1.4fr 1fr 1fr 1.2fr;
-    gap:40px;
-    padding-bottom:40px;
-    border-bottom:1px solid var(--sage-line);
+    display:grid; grid-template-columns:1.4fr 1fr 1fr 1.2fr; gap:40px;
+    padding-bottom:40px; border-bottom:1px solid var(--sage-line);
   }
-  .footer-brand p{
-    color:var(--ink-soft);
-    font-size:.92rem;
-    line-height:1.7;
-    margin:16px 0 20px;
-    max-width:280px;
-  }
-  .footer-col h5{
-    font-family:'Cormorant Garamond', serif;
-    color:var(--sage-dark);
-    font-size:1.15rem;
-    margin-bottom:16px;
-  }
+  .footer-brand p{ color:var(--ink-soft); font-size:.92rem; line-height:1.7; margin:16px 0 20px; max-width:280px; }
+  .footer-col h5{ font-family:'Cormorant Garamond', serif; color:var(--sage-dark); font-size:1.15rem; margin-bottom:16px; }
   .footer-col ul{ display:flex; flex-direction:column; gap:11px; }
-  .footer-col a{
-    color:var(--ink-soft);
-    font-size:.92rem;
-    transition:color .2s ease;
-  }
+  .footer-col a{ color:var(--ink-soft); font-size:.92rem; transition:color .2s ease; }
   .footer-col a:hover{ color:var(--sage-deep); }
   .social-row{ display:flex; gap:12px; margin-top:6px; }
   .social-row a{
-    width:38px; height:38px; border-radius:50%;
-    border:1px solid var(--sage-line);
+    width:38px; height:38px; border-radius:50%; border:1px solid var(--sage-line);
     display:flex; align-items:center; justify-content:center;
     transition:background .2s ease, border-color .2s ease, transform .2s ease;
   }
   .social-row a:hover{ background:var(--sage); border-color:var(--sage); transform:translateY(-3px); }
   .social-row a:hover svg{ color:#fff; }
   .social-row svg{ width:16px; height:16px; color:var(--sage-dark); }
-
   .footer-bottom{
     display:flex; align-items:center; justify-content:space-between;
-    padding-top:24px;
-    font-size:.82rem;
-    color:var(--ink-soft);
-    flex-wrap:wrap;
-    gap:12px;
+    padding-top:24px; font-size:.82rem; color:var(--ink-soft); flex-wrap:wrap; gap:12px;
   }
   .footer-bottom span em{ color:var(--gold); font-style:italic; }
-
-  /* =====================================================
-     RESPONSIVE
-  ===================================================== */
   @media (max-width: 980px){
     .hero-grid{ grid-template-columns:1fr; }
     .hero-art{ order:-1; min-height:340px; }
@@ -631,20 +348,13 @@
     .phone-mock{ margin-top:20px; }
     .footer-grid{ grid-template-columns:1fr 1fr; }
   }
-
   @media (max-width: 720px){
     .nav-links{
-      position:fixed; top:74px; left:0; right:0;
-      background:var(--paper);
-      flex-direction:column;
-      align-items:flex-start;
-      gap:0;
-      padding:10px 28px 20px;
-      border-bottom:1px solid var(--sage-line);
-      transform:translateY(-130%);
-      opacity:0;
-      transition:transform .35s ease, opacity .3s ease;
-      z-index:99;
+      position:fixed; top:74px; left:0; right:0; background:var(--paper);
+      flex-direction:column; align-items:flex-start; gap:0;
+      padding:10px 28px 20px; border-bottom:1px solid var(--sage-line);
+      transform:translateY(-130%); opacity:0;
+      transition:transform .35s ease, opacity .3s ease; z-index:99;
     }
     .nav-links.open{ transform:translateY(0); opacity:1; }
     .nav-links a{ padding:12px 0; width:100%; border-bottom:1px solid rgba(111,146,115,.15); }
@@ -662,7 +372,6 @@
     .footer-grid{ grid-template-columns:1fr; gap:30px; }
     .footer-bottom{ flex-direction:column; align-items:flex-start; }
   }
-
   @media (max-width: 460px){
     .craft-grid{ grid-template-columns:repeat(3, 1fr); }
     .logo-text{ font-size:1.35rem; }
@@ -671,27 +380,18 @@
 </style>
 </head>
 <body>
-
-<!-- ============ HEADER ============ -->
 <header>
   <nav class="nav">
     <a href="index.html" class="logo">
-      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M8 40C8 40 8 26 30 26C52 26 52 40 52 40" stroke="#6f9273" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M14 40V30M22 40V27M30 40V26M38 40V27M46 40V30" stroke="#c39a4d" stroke-width="1.6" stroke-linecap="round"/>
-        <circle cx="30" cy="14" r="3" fill="#c39a4d"/>
-        <path d="M6 44H54" stroke="#2f4a35" stroke-width="2.5" stroke-linecap="round"/>
-      </svg>
+      <img class="logo-img" src="''' + b64 + '''" alt="Craft Setu">
       <span class="logo-text">Craft <em>Setu</em></span>
     </a>
-
     <ul class="nav-links" id="navLinks">
       <li><a href="#crafts">Explore Crafts</a></li>
       <li><a href="#share">Share Your Art</a></li>
       <li><a href="#community">Community</a></li>
       <li><a href="about.html">Our Team</a></li>
     </ul>
-
     <div class="nav-actions">
       <a href="about.html" class="btn btn-outline btn-small">Meet the Team</a>
       <a href="login.html" class="btn btn-primary btn-small">Log In</a>
@@ -702,7 +402,6 @@
   </nav>
 </header>
 
-<!-- ============ HERO ============ -->
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
@@ -722,72 +421,18 @@
         <div class="stat"><b>2.5k</b><span>Projects&nbsp;shared&nbsp;weekly</span></div>
       </div>
     </div>
-
     <div class="hero-art">
       <div class="art-ring"></div>
-
       <svg class="sparkle" style="top:6%; left:12%; width:20px;" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.2 8.8L23 11l-8.8 2.2L12 22l-2.2-8.8L1 11l8.8-2.2z"/></svg>
       <svg class="sparkle" style="top:18%; right:8%; width:14px; animation-delay:1s;" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.2 8.8L23 11l-8.8 2.2L12 22l-2.2-8.8L1 11l8.8-2.2z"/></svg>
       <svg class="sparkle" style="bottom:14%; left:6%; width:16px; animation-delay:2s;" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0l2.2 8.8L23 11l-8.8 2.2L12 22l-2.2-8.8L1 11l8.8-2.2z"/></svg>
-
-      <div class="bridge-wrap">
-        <svg viewBox="0 0 420 340" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;">
-          <!-- bridge arch -->
-          <path d="M40 210C40 210 60 90 210 90C360 90 380 210 380 210" stroke="#6f9273" stroke-width="6" stroke-linecap="round"/>
-          <path d="M40 210C40 210 60 100 210 100C360 100 380 210 380 210" stroke="#a9c2a4" stroke-width="1.4" stroke-dasharray="2 6"/>
-          <!-- suspenders -->
-          <line x1="80" y1="210" x2="80" y2="150" stroke="#c39a4d" stroke-width="2.2"/>
-          <line x1="130" y1="210" x2="130" y2="118" stroke="#c39a4d" stroke-width="2.2"/>
-          <line x1="180" y1="210" x2="180" y2="98" stroke="#c39a4d" stroke-width="2.2"/>
-          <line x1="240" y1="210" x2="240" y2="98" stroke="#c39a4d" stroke-width="2.2"/>
-          <line x1="290" y1="210" x2="290" y2="118" stroke="#c39a4d" stroke-width="2.2"/>
-          <line x1="340" y1="210" x2="340" y2="150" stroke="#c39a4d" stroke-width="2.2"/>
-          <!-- deck -->
-          <rect x="30" y="208" width="360" height="7" rx="3.5" fill="#4f7355"/>
-          <!-- pillars -->
-          <rect x="55" y="215" width="8" height="34" rx="2" fill="#4f7355"/>
-          <rect x="357" y="215" width="8" height="34" rx="2" fill="#4f7355"/>
-
-          <!-- pottery vase -->
-          <g transform="translate(160,175)">
-            <ellipse cx="45" cy="118" rx="46" ry="7" fill="#e2d6b3" opacity=".6"/>
-            <path d="M20 10 Q10 55 22 80 Q30 108 45 112 Q60 108 68 80 Q80 55 70 10 Z" fill="#4f7355"/>
-            <path d="M20 10 Q45 22 70 10" stroke="#2f4a35" stroke-width="2" fill="none"/>
-            <path d="M25 40 Q45 52 65 40" stroke="#c39a4d" stroke-width="1.6" fill="none" opacity=".7"/>
-            <path d="M22 62 Q45 76 68 62" stroke="#c39a4d" stroke-width="1.6" fill="none" opacity=".7"/>
-            <circle cx="45" cy="26" r="4" fill="#dcc084"/>
-          </g>
-
-          <!-- yarn balls -->
-          <circle cx="120" cy="270" r="22" fill="#d99b7c"/>
-          <path d="M100 262c10-14 30-14 40 0M99 271c11-11 31-11 42 0M101 280c10-13 29-13 39 0" stroke="#b97a5c" stroke-width="1.3" fill="none" opacity=".6"/>
-          <circle cx="300" cy="272" r="18" fill="#6f9273"/>
-          <path d="M285 266c8-11 22-11 30 0M284 274c9-9 23-9 32 0" stroke="#4f7355" stroke-width="1.2" fill="none" opacity=".6"/>
-
-          <!-- macrame hanging left -->
-          <g transform="translate(30,105)">
-            <line x1="10" y1="0" x2="10" y2="30" stroke="#c39a4d" stroke-width="1.4"/>
-            <path d="M0 30 L20 30 L15 55 L5 55 Z" fill="#e6c7ad" opacity=".85"/>
-            <line x1="7" y1="55" x2="5" y2="72" stroke="#c39a4d" stroke-width="1.2"/>
-            <line x1="13" y1="55" x2="15" y2="72" stroke="#c39a4d" stroke-width="1.2"/>
-          </g>
-        </svg>
-
-        <svg class="leaf-corner tl" viewBox="0 0 100 100" fill="none"><path d="M10 90C10 90 5 40 50 15C50 15 90 45 65 90" stroke="#a9c2a4" stroke-width="2" fill="none"/><path d="M20 78c8-10 18-14 18-14M35 55c6-10 14-16 14-16" stroke="#a9c2a4" stroke-width="1.4"/></svg>
-        <svg class="leaf-corner br" viewBox="0 0 100 100" fill="none"><path d="M10 90C10 90 5 40 50 15C50 15 90 45 65 90" stroke="#a9c2a4" stroke-width="2" fill="none"/><path d="M20 78c8-10 18-14 18-14M35 55c6-10 14-16 14-16" stroke="#a9c2a4" stroke-width="1.4"/></svg>
-      </div>
-
-      <div class="craft-badge b1">
-        <span class="dot"></span> Handmade Pottery
-      </div>
-      <div class="craft-badge b2">
-        <span class="dot" style="background:#6f9273;"></span> Macramé Art
-      </div>
+      <img class="hero-logo-main" src="''' + b64 + '''" alt="Craft Setu — Handmade with heart">
+      <div class="craft-badge b1"><span class="dot"></span> Handmade Pottery</div>
+      <div class="craft-badge b2"><span class="dot" style="background:#6f9273;"></span> Macramé Art</div>
     </div>
   </div>
 </section>
 
-<!-- ============ MARQUEE ============ -->
 <div class="marquee-strip">
   <div class="marquee-track">
     <span>Crochet</span><span>Knitting</span><span>Macramé</span><span>Embroidery</span><span>Pottery</span><span>Painting</span><span>Resin Art</span><span>Jewelry Making</span>
@@ -795,7 +440,6 @@
   </div>
 </div>
 
-<!-- ============ CRAFT CATEGORIES ============ -->
 <section class="section" id="crafts">
   <div class="container">
     <div class="section-head">
@@ -805,72 +449,29 @@
         <p style="max-width:none;">Learn step-by-step and discover the joy of making beautiful things — from timeless traditions to modern favorites.</p>
       </div>
     </div>
-
     <div class="craft-grid">
-      <div class="craft-item">
-        <div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><circle cx="18" cy="20" r="10" fill="#d99b7c"/><circle cx="30" cy="26" r="8" fill="#6f9273"/><path d="M10 34c6-4 12-2 14 2" stroke="#4f7355" stroke-width="1.6" fill="none"/></svg></div>
-        <span>Crochet</span>
-      </div>
-      <div class="craft-item">
-        <div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><circle cx="20" cy="22" r="11" fill="#c39a4d" opacity=".85"/><line x1="10" y1="10" x2="16" y2="16" stroke="#2f4a35" stroke-width="2"/><line x1="34" y1="10" x2="28" y2="16" stroke="#2f4a35" stroke-width="2"/></svg></div>
-        <span>Knitting</span>
-      </div>
-      <div class="craft-item">
-        <div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><rect x="16" y="8" width="16" height="6" rx="2" fill="#e6c7ad"/><path d="M18 14v10l6 12 6-12V14" stroke="#6f9273" stroke-width="2" fill="none"/><path d="M14 20l4 2M34 20l-4 2" stroke="#6f9273" stroke-width="2"/></svg></div>
-        <span>Macramé</span>
-      </div>
-      <div class="craft-item">
-        <div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="14" fill="none" stroke="#4f7355" stroke-width="1.5"/><circle cx="24" cy="16" r="4" fill="#d99b7c"/><circle cx="17" cy="27" r="4" fill="#c39a4d"/><circle cx="31" cy="27" r="4" fill="#6f9273"/></svg></div>
-        <span>Embroidery</span>
-      </div>
-      <div class="craft-item">
-        <div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M16 16Q24 10 32 16Q34 28 30 36Q24 40 18 36Q14 28 16 16Z" fill="#6f9273"/><path d="M20 22Q24 26 28 22" stroke="#c39a4d" stroke-width="1.4" fill="none"/></svg></div>
-        <span>Pottery</span>
-      </div>
-      <div class="craft-item">
-        <div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><rect x="10" y="10" width="28" height="22" rx="2" fill="#faf5e8" stroke="#4f7355" stroke-width="1.5"/><circle cx="18" cy="18" r="3" fill="#d99b7c"/><path d="M12 30l8-8 6 6 4-4 6 6" stroke="#6f9273" stroke-width="1.6" fill="none"/></svg></div>
-        <span>Painting</span>
-      </div>
-      <div class="craft-item">
-        <div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M14 12h20l-2 8H16z" fill="#e6c7ad"/><path d="M17 20l-3 16h20l-3-16" stroke="#4f7355" stroke-width="1.6" fill="none"/></svg></div>
-        <span>Paper Crafts</span>
-      </div>
-      <div class="craft-item">
-        <div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M18 34V18q0-6 6-6t6 6v16" stroke="#4f7355" stroke-width="2" fill="none"/><ellipse cx="24" cy="34" rx="12" ry="3" fill="#c39a4d" opacity=".5"/></svg></div>
-        <span>Home Décor</span>
-      </div>
-      <div class="craft-item">
-        <div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><polygon points="24,10 32,20 24,38 16,20" fill="#d99b7c" opacity=".85"/><line x1="24" y1="10" x2="24" y2="38" stroke="#fff" stroke-width="1"/></svg></div>
-        <span>Resin Art</span>
-      </div>
-      <div class="craft-item">
-        <div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M16 18Q24 12 32 18Q30 30 24 34Q18 30 16 18Z" fill="#c39a4d"/></svg></div>
-        <span>Clay Art</span>
-      </div>
-      <div class="craft-item">
-        <div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="16" r="5" fill="none" stroke="#4f7355" stroke-width="2"/><path d="M24 21v6l-5 9M24 27l5 9" stroke="#c39a4d" stroke-width="2"/></svg></div>
-        <span>Jewelry Making</span>
-      </div>
-      <div class="craft-item">
-        <div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><circle cx="16" cy="24" r="2.4" fill="#4f7355"/><circle cx="24" cy="24" r="2.4" fill="#4f7355"/><circle cx="32" cy="24" r="2.4" fill="#4f7355"/></svg></div>
-        <span>And More</span>
-      </div>
-      <div class="craft-item">
-        <div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M14 30c0-10 8-18 10-18s10 8 10 18" stroke="#6f9273" stroke-width="2" fill="none"/><path d="M14 30h20" stroke="#4f7355" stroke-width="2"/></svg></div>
-        <span>Candle Making</span>
-      </div>
+      <div class="craft-item"><div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><circle cx="18" cy="20" r="10" fill="#d99b7c"/><circle cx="30" cy="26" r="8" fill="#6f9273"/></svg></div><span>Crochet</span></div>
+      <div class="craft-item"><div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><circle cx="20" cy="22" r="11" fill="#c39a4d" opacity=".85"/><line x1="10" y1="10" x2="16" y2="16" stroke="#2f4a35" stroke-width="2"/><line x1="34" y1="10" x2="28" y2="16" stroke="#2f4a35" stroke-width="2"/></svg></div><span>Knitting</span></div>
+      <div class="craft-item"><div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><rect x="16" y="8" width="16" height="6" rx="2" fill="#e6c7ad"/><path d="M18 14v10l6 12 6-12V14" stroke="#6f9273" stroke-width="2" fill="none"/></svg></div><span>Macramé</span></div>
+      <div class="craft-item"><div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="14" fill="none" stroke="#4f7355" stroke-width="1.5"/><circle cx="24" cy="16" r="4" fill="#d99b7c"/><circle cx="17" cy="27" r="4" fill="#c39a4d"/><circle cx="31" cy="27" r="4" fill="#6f9273"/></svg></div><span>Embroidery</span></div>
+      <div class="craft-item"><div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M16 16Q24 10 32 16Q34 28 30 36Q24 40 18 36Q14 28 16 16Z" fill="#6f9273"/><path d="M20 22Q24 26 28 22" stroke="#c39a4d" stroke-width="1.4" fill="none"/></svg></div><span>Pottery</span></div>
+      <div class="craft-item"><div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><rect x="10" y="10" width="28" height="22" rx="2" fill="#faf5e8" stroke="#4f7355" stroke-width="1.5"/><path d="M12 30l8-8 6 6 4-4 6 6" stroke="#6f9273" stroke-width="1.6" fill="none"/></svg></div><span>Painting</span></div>
+      <div class="craft-item"><div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M14 12h20l-2 8H16z" fill="#e6c7ad"/><path d="M17 20l-3 16h20l-3-16" stroke="#4f7355" stroke-width="1.6" fill="none"/></svg></div><span>Paper Crafts</span></div>
+      <div class="craft-item"><div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M18 34V18q0-6 6-6t6 6v16" stroke="#4f7355" stroke-width="2" fill="none"/><ellipse cx="24" cy="34" rx="12" ry="3" fill="#c39a4d" opacity=".5"/></svg></div><span>Home Décor</span></div>
+      <div class="craft-item"><div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><polygon points="24,10 32,20 24,38 16,20" fill="#d99b7c" opacity=".85"/></svg></div><span>Resin Art</span></div>
+      <div class="craft-item"><div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><path d="M16 18Q24 12 32 18Q30 30 24 34Q18 30 16 18Z" fill="#c39a4d"/></svg></div><span>Clay Art</span></div>
+      <div class="craft-item"><div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="16" r="5" fill="none" stroke="#4f7355" stroke-width="2"/><path d="M24 21v6l-5 9M24 27l5 9" stroke="#c39a4d" stroke-width="2"/></svg></div><span>Jewelry Making</span></div>
+      <div class="craft-item"><div class="craft-icon"><svg viewBox="0 0 48 48" fill="none"><circle cx="16" cy="24" r="2.4" fill="#4f7355"/><circle cx="24" cy="24" r="2.4" fill="#4f7355"/><circle cx="32" cy="24" r="2.4" fill="#4f7355"/></svg></div><span>And More</span></div>
     </div>
   </div>
 </section>
 
-<!-- ============ SHARE YOUR ART ============ -->
 <section class="section share-section" id="share">
   <div class="container share-grid">
     <div class="share-copy">
       <div class="eyebrow">Share your art</div>
       <h2>Show Your Creativity to the World</h2>
       <p style="color:var(--ink-soft); line-height:1.75; max-width:440px;">Post your finished pieces, tell the story behind them, and watch a community of fellow makers cheer you on.</p>
-
       <ul class="feature-list">
         <li>
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#4f7355" stroke-width="1.8"><path d="M12 3v12M7 8l5-5 5 5M5 21h14"/></svg></div>
@@ -886,23 +487,17 @@
         </li>
       </ul>
     </div>
-
     <div class="phone-mock">
       <div class="phone-notch"></div>
       <div class="phone-topbar">
         <div class="brand">
-          <svg viewBox="0 0 60 60" fill="none"><path d="M8 40C8 40 8 26 30 26C52 26 52 40 52 40" stroke="#6f9273" stroke-width="3" stroke-linecap="round"/><path d="M6 44H54" stroke="#2f4a35" stroke-width="3" stroke-linecap="round"/></svg>
+          <img src="''' + b64 + '''" alt="">
           Craft Setu
         </div>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="#4f7355"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
       </div>
       <div class="phone-img">
-        <svg viewBox="0 0 200 200" fill="none">
-          <path d="M70 60Q100 30 130 60Q140 110 110 160Q100 175 90 160Q60 110 70 60Z" fill="#4f7355"/>
-          <path d="M75 90Q100 105 125 90" stroke="#c39a4d" stroke-width="2.4" fill="none" opacity=".7"/>
-          <path d="M72 120Q100 138 128 120" stroke="#c39a4d" stroke-width="2.4" fill="none" opacity=".7"/>
-          <circle cx="100" cy="45" r="6" fill="#dcc084"/>
-        </svg>
+        <img src="''' + b64 + '''" alt="Craft Setu">
       </div>
       <div class="phone-actions">
         <div class="left">
@@ -914,14 +509,13 @@
       </div>
       <div class="phone-caption">
         <b>2.5k likes</b>
-        Beautiful handmade pot! ??
+        Beautiful handmade craft!
         <div class="tags">#handmade #craftsetu #creativity</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ COMMUNITY ============ -->
 <section class="section" id="community">
   <div class="container community-grid">
     <div class="community-art">
@@ -935,12 +529,10 @@
         <small>Joined by 12,000+ makers this year</small>
       </div>
     </div>
-
     <div class="community-copy">
       <div class="eyebrow">Join the community</div>
       <h2>Connect With Creative People From Everywhere</h2>
       <p style="color:var(--ink-soft); line-height:1.75; margin:16px 0 32px; max-width:480px;">A warm, welcoming space where makers of every level gather to teach, learn, and celebrate the craft.</p>
-
       <div class="perk-list">
         <div class="perk">
           <div class="perk-num">01</div>
@@ -959,12 +551,11 @@
   </div>
 </section>
 
-<!-- ============ TEAM TEASER -> about.html ============ -->
 <section class="section team-teaser">
   <div class="container team-inner">
     <div class="eyebrow">The people behind Craft Setu</div>
     <h2>Built by Makers, for Makers</h2>
-    <p>Meet the small team of artisans, designers, and dreamers building the bridge between tradition and today's creators.</p>
+    <p>Meet the Class 8 student team building the bridge between tradition and today's creators.</p>
     <a href="about.html" class="btn btn-primary">
       Meet the Team
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -972,7 +563,6 @@
   </div>
 </section>
 
-<!-- ============ FINAL CTA ============ -->
 <section class="section" style="padding-top:60px;">
   <div class="container">
     <div class="cta-band">
@@ -987,13 +577,12 @@
   </div>
 </section>
 
-<!-- ============ FOOTER ============ -->
 <footer>
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
         <a href="index.html" class="logo">
-          <svg viewBox="0 0 60 60" fill="none"><path d="M8 40C8 40 8 26 30 26C52 26 52 40 52 40" stroke="#6f9273" stroke-width="2.5" stroke-linecap="round"/><path d="M6 44H54" stroke="#2f4a35" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <img class="logo-img" src="''' + b64 + '''" alt="Craft Setu">
           <span class="logo-text">Craft <em>Setu</em></span>
         </a>
         <p>Handmade with heart, connected by creativity. A home for artisans, learners, and lovers of beautiful things.</p>
@@ -1003,7 +592,6 @@
           <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 3h-2a4 4 0 00-4 4v3H7v4h2v7h4v-7h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
         </div>
       </div>
-
       <div class="footer-col">
         <h5>Explore</h5>
         <ul>
@@ -1012,36 +600,30 @@
           <li><a href="#community">Community</a></li>
         </ul>
       </div>
-
       <div class="footer-col">
         <h5>Craft Setu</h5>
         <ul>
           <li><a href="about.html">Our Team</a></li>
           <li><a href="login.html">Log In</a></li>
-          <li><a href="#">Help Center</a></li>
+          <li><a href="app.html">Open App</a></li>
         </ul>
       </div>
-
       <div class="footer-col">
         <h5>Stay Inspired</h5>
         <p style="color:var(--ink-soft); font-size:.88rem; margin-bottom:14px;">Get weekly craft ideas in your inbox.</p>
         <a href="login.html" class="btn btn-outline btn-small">Join the newsletter</a>
       </div>
     </div>
-
     <div class="footer-bottom">
       <span>© 2026 Craft Setu. All rights reserved.</span>
       <span><em>Create. Learn. Inspire.</em></span>
     </div>
   </div>
 </footer>
-
 <script>
   const burger = document.getElementById('burgerBtn');
   const navLinks = document.getElementById('navLinks');
-  burger.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
-  });
+  burger.addEventListener('click', () => navLinks.classList.toggle('open'));
   navLinks.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', () => navLinks.classList.remove('open'));
   });
