@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Craft Setu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #faf5e8;
+    --cream-deep: #f2e9d6;
+    --paper: #fffdf8;
+    --sage: #6f9273;
+    --sage-deep: #4f7355;
+    --sage-dark: #2f4a35;
+    --sage-line: #a9c2a4;
+    --gold: #c39a4d;
+    --gold-soft: #dcc084;
+    --clay: #d99b7c;
+    --ink: #33422f;
+    --ink-soft: #5c6b57;
+    --border: rgba(111,146,115,.18);
+    --shadow: 0 20px 45px -20px rgba(47,74,53,.35);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:radial-gradient(circle at 2px 2px, rgba(111,146,115,.09) 1.4px, transparent 1.4px);
+    background-size:26px 26px;
+    pointer-events:none;
+    z-index:0;
+  }
+  a{ text-decoration:none; color:inherit; }
+  ul{ list-style:none; }
+  h1,h2,h3{ font-family:'Cormorant Garamond', serif; color:var(--sage-dark); font-weight:600; }
+
+  /* NAV */
+  header{
+    position:sticky; top:0; z-index:100;
+    background:rgba(250,245,232,.9);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 28px; max-width:1180px; margin:0 auto;
+  }
+  .logo{ display:flex; align-items:center; gap:10px; }
+  .logo svg{ width:38px; height:38px; }
+  .logo-text{ font-family:'Cormorant Garamond', serif; font-size:1.65rem; font-weight:700; color:var(--sage-dark); line-height:1; }
+  .logo-text em{ font-style:italic; color:var(--gold); font-weight:600; }
+  .nav-links{ display:flex; align-items:center; gap:38px; }
+  .nav-links a{ font-size:.95rem; color:var(--ink-soft); position:relative; padding:4px 0; transition:color .25s ease; }
+  .nav-links a::after{ content:""; position:absolute; left:0; bottom:-2px; width:0; height:1.5px; background:var(--gold); transition:width .3s ease; }
+  .nav-links a:hover, .nav-links a.active{ color:var(--sage-dark); }
+  .nav-links a:hover::after, .nav-links a.active::after{ width:100%; }
+  .nav-actions{ display:flex; align-items:center; gap:14px; }
+  .btn{ display:inline-flex; align-items:center; gap:8px; font-family:'Jost', sans-serif; font-size:.92rem; font-weight:500; padding:11px 24px; border-radius:999px; cursor:pointer; border:none; transition:transform .25s ease, box-shadow .25s ease, background .25s ease; white-space:nowrap; }
+  .btn-primary{ background:linear-gradient(135deg, var(--sage) 0%, var(--sage-deep) 100%); color:#fbf8ef; box-shadow:0 12px 24px -10px rgba(79,115,85,.55); }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 16px 30px -10px rgba(79,115,85,.65); }
+  .btn-outline{ background:transparent; color:var(--sage-deep); border:1.5px solid var(--sage); }
+  .btn-outline:hover{ background:var(--sage); color:#fff; transform:translateY(-2px); }
+  .btn-small{ padding:9px 20px; font-size:.85rem; }
+  .burger{ display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:6px; }
+  .burger span{ width:24px; height:2px; background:var(--sage-dark); border-radius:2px; }
+
+  /* PAGE HEADER */
+  .page-header{
+    padding:8rem 0 4rem;
+    background:var(--cream-deep);
+    border-bottom:1px solid var(--border);
+    position:relative; overflow:hidden;
+  }
+  .page-header-bg{
+    position:absolute; top:50%; left:62%; transform:translate(-50%,-50%);
+    font-family:'Cormorant Garamond', serif; font-size:18vw; font-weight:600;
+    color:rgba(111,146,115,.06); white-space:nowrap; pointer-events:none; line-height:1; user-select:none;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:.78rem; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--sage-deep); font-weight:500; margin-bottom:1.4rem;
+  }
+  .eyebrow::before{ content:''; width:22px; height:1px; background:var(--gold); }
+  .page-title{
+    font-family:'Cormorant Garamond', serif;
+    font-size:clamp(2.6rem, 5.2vw, 4.4rem);
+    font-weight:600; line-height:1.05; position:relative; z-index:1;
+  }
+  .page-title em{ font-style:italic; color:var(--sage); }
+  .page-meta{ margin-top:1.4rem; display:flex; align-items:center; gap:1.8rem; flex-wrap:wrap; position:relative; z-index:1; }
+  .meta-item{ font-size:.78rem; color:var(--ink-soft); letter-spacing:.03em; }
+  .meta-item strong{ color:var(--sage-dark); font-weight:600; }
+  .meta-sep{ width:1px; height:18px; background:var(--border); }
+
+  /* LAYOUT */
+  .privacy-layout{
+    display:grid; grid-template-columns:230px 1fr; gap:0;
+    max-width:1180px; margin:0 auto; padding:4rem 28px; align-items:start; position:relative; z-index:1;
+  }
+
+  /* TOC */
+  .toc{ position:sticky; top:6rem; padding-right:2.6rem; }
+  .toc-label{ font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); font-weight:600; margin-bottom:1.1rem; display:flex; align-items:center; gap:.6rem; }
+  .toc-label::before{ content:''; width:1.4rem; height:1px; background:var(--gold); }
+  .toc-list{ display:flex; flex-direction:column; gap:.1rem; }
+  .toc-list a{
+    font-size:.78rem; color:var(--ink-soft); padding:.32rem 0 .32rem .8rem;
+    border-left:1px solid var(--sage-line); display:block; transition:all .2s; line-height:1.4;
+  }
+  .toc-list a:hover{ color:var(--sage-deep); border-left-color:var(--gold); }
+  .toc-list a.active{ color:var(--sage-dark); border-left-color:var(--gold); font-weight:600; }
+
+  /* CONTENT */
+  .privacy-content{ min-width:0; }
+  .policy-section{ margin-bottom:3.2rem; padding-bottom:3.2rem; border-bottom:1px solid var(--border); scroll-margin-top:7rem; }
+  .policy-section:last-child{ border-bottom:none; }
+  .section-num{ font-family:'Cormorant Garamond', serif; font-size:3.2rem; font-weight:500; color:var(--gold-soft); line-height:1; margin-bottom:.6rem; display:block; }
+  .section-title{ font-family:'Cormorant Garamond', serif; font-size:1.55rem; font-weight:700; margin-bottom:1.15rem; line-height:1.2; }
+  .section-title em{ font-style:italic; color:var(--sage); }
+  .policy-text{ font-size:.92rem; color:var(--ink-soft); line-height:1.85; font-weight:300; margin-bottom:1rem; }
+  .policy-text:last-child{ margin-bottom:0; }
+  .policy-text strong{ color:var(--ink); font-weight:600; }
+  .policy-text a{ color:var(--sage-deep); text-decoration:none; border-bottom:1px solid rgba(111,146,115,.35); transition:border-color .2s; }
+  .policy-text a:hover{ border-color:var(--sage-deep); }
+  .policy-list{ margin:1rem 0; }
+  .policy-list li{
+    font-size:.9rem; color:var(--ink-soft); line-height:1.75; font-weight:300;
+    padding:.5rem 0 .5rem 1.35rem; position:relative; border-bottom:1px solid rgba(111,146,115,.1);
+  }
+  .policy-list li:last-child{ border-bottom:none; }
+  .policy-list li::before{ content:''; position:absolute; left:0; top:1.05rem; width:5px; height:5px; background:var(--gold); border-radius:50%; }
+  .policy-list li strong{ color:var(--ink); font-weight:600; }
+
+  .highlight-box{
+    border:1px solid var(--sage-line); background:rgba(111,146,115,.06);
+    padding:1.2rem 1.4rem; margin:1.25rem 0; display:flex; gap:1rem; align-items:flex-start; border-radius:14px;
+  }
+  .highlight-icon{ flex-shrink:0; margin-top:.15rem; }
+  .highlight-text{ font-size:.86rem; color:var(--ink-soft); line-height:1.75; font-weight:300; }
+  .highlight-text strong{ color:var(--sage-dark); font-weight:600; }
+
+  .contact-card{
+    border:1px solid var(--sage-line); padding:1.4rem 1.7rem;
+    background:var(--paper); border-radius:16px; margin-top:1.4rem;
+  }
+  .contact-card-name{ font-family:'Cormorant Garamond', serif; font-size:1.18rem; font-weight:700; margin-bottom:.2rem; color:var(--sage-dark); }
+  .contact-card-role{ font-size:.65rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); margin-bottom:.85rem; font-weight:600; }
+  .contact-card-links{ display:flex; flex-direction:column; gap:.42rem; }
+  .contact-card-link{ font-size:.85rem; color:var(--ink-soft); text-decoration:none; display:flex; align-items:center; gap:.55rem; transition:color .2s; }
+  .contact-card-link:hover{ color:var(--sage-deep); }
+
+  /* FOOTER */
+  footer{
+    background:var(--cream-deep);
+    border-top:1px solid var(--sage-line);
+    padding:48px 0 24px;
+    position:relative; z-index:1;
+  }
+  .footer-bottom{
+    display:flex; align-items:center; justify-content:space-between;
+    max-width:1180px; margin:0 auto; padding:0 28px;
+    font-size:.82rem; color:var(--ink-soft); flex-wrap:wrap; gap:12px;
+  }
+  .footer-bottom em{ color:var(--gold); font-style:italic; }
+
+  @media (max-width: 900px){
+    .privacy-layout{ grid-template-columns:1fr; padding:2.6rem 22px; }
+    .toc{ position:static; padding-right:0; margin-bottom:2.4rem; }
+  }
+  @media (max-width: 720px){
+    .nav-links{
+      position:fixed; top:74px; left:0; right:0; background:var(--paper);
+      flex-direction:column; align-items:flex-start; gap:0;
+      padding:10px 28px 20px; border-bottom:1px solid var(--sage-line);
+      transform:translateY(-130%); opacity:0;
+      transition:transform .35s ease, opacity .3s ease; z-index:99;
+    }
+    .nav-links.open{ transform:translateY(0); opacity:1; }
+    .nav-links a{ padding:12px 0; width:100%; border-bottom:1px solid rgba(111,146,115,.15); }
+    .nav-actions .btn-outline{ display:none; }
+    .burger{ display:flex; }
+    .page-header{ padding:6.5rem 0 3rem; }
+    footer{ text-align:center; }
+    .footer-bottom{ flex-direction:column; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="index.html" class="logo">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 40C8 40 8 26 30 26C52 26 52 40 52 40" stroke="#6f9273" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M14 40V30M22 40V27M30 40V26M38 40V27M46 40V30" stroke="#c39a4d" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="30" cy="14" r="3" fill="#c39a4d"/>
+        <path d="M6 44H54" stroke="#2f4a35" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">Craft <em>Setu</em></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#crafts">Explore Crafts</a></li>
+      <li><a href="app.html">Share Your Art</a></li>
+      <li><a href="index.html#community">Community</a></li>
+      <li><a href="about.html">Our Team</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="about.html" class="btn btn-outline btn-small">Meet the Team</a>
+      <a href="login.html" class="btn btn-primary btn-small">Log In</a>
+      <button class="burger" id="burgerBtn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<section class="page-header">
+  <div class="page-header-bg">PRIVACY</div>
+  <div class="container" style="max-width:1180px;margin:0 auto;padding:0 28px;">
+    <div class="eyebrow">Legal</div>
+    <h1 class="page-title">Privacy<br><em>Policy.</em></h1>
+    <div class="page-meta">
+      <span class="meta-item">Effective: <strong>1 January 2026</strong></span>
+      <div class="meta-sep"></div>
+      <span class="meta-item">Last Updated: <strong>9 May 2026</strong></span>
+      <div class="meta-sep"></div>
+      <span class="meta-item">Jurisdiction: <strong>India</strong></span>
+    </div>
+  </div>
+</section>
+
+<div class="privacy-layout">
+
+  <!-- TOC -->
+  <aside class="toc">
+    <div class="toc-label">Contents</div>
+    <ul class="toc-list">
+      <li><a href="#overview" class="active">01 — Overview</a></li>
+      <li><a href="#data-collected">02 — Data We Collect</a></li>
+      <li><a href="#how-we-use">03 — How We Use It</a></li>
+      <li><a href="#community-features">04 — Community Features</a></li>
+      <li><a href="#storage">05 — Data Storage</a></li>
+      <li><a href="#sharing">06 — Sharing &amp; Third Parties</a></li>
+      <li><a href="#cookies">07 — Cookies</a></li>
+      <li><a href="#your-rights">08 — Your Rights</a></li>
+      <li><a href="#children">09 — Children's Privacy</a></li>
+      <li><a href="#changes">10 — Policy Changes</a></li>
+      <li><a href="#contact">11 — Contact Us</a></li>
+    </ul>
+  </aside>
+
+  <!-- CONTENT -->
+  <article class="privacy-content">
+
+    <div class="policy-section" id="overview">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Overview</h2>
+      <p class="policy-text">Craft Setu ("we," "us," or "our") is a community platform for makers, built by a team of student creators — <strong>Vanshika Tanwar</strong>, <strong>Pranjul Soni</strong>, <strong>Princy Rajput</strong>, and <strong>Sandhya</strong>. This Privacy Policy explains how we collect, use, store, and protect your personal information when you use our website and app.</p>
+      <p class="policy-text">By creating an account or using Craft Setu, you agree to the practices described in this policy. If you do not agree, please do not use the service.</p>
+      <div class="highlight-box">
+        <div class="highlight-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#c39a4d" stroke-width="1.2"/><path d="M9 6 L9 9.5" stroke="#c39a4d" stroke-width="1.4" stroke-linecap="round"/><circle cx="9" cy="12" r="0.8" fill="#c39a4d"/></svg>
+        </div>
+        <div class="highlight-text"><strong>Plain English summary:</strong> We only collect what we need to run your craft feed, profile, and orders. We never sell your personal data. Your craft photos, messages, and buyer details are only visible to the people they're meant for.</div>
+      </div>
+    </div>
+
+    <div class="policy-section" id="data-collected">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Data We <em>Collect</em></h2>
+      <p class="policy-text">We collect information in two ways — what you provide directly, and what is generated automatically through your use of Craft Setu.</p>
+      <ul class="policy-list">
+        <li><strong>Account Information</strong> — Your name and email address when you register and sign in through our authentication provider.</li>
+        <li><strong>Craft Posts</strong> — Photos, titles, categories, descriptions, and tags you upload to share your work in the feed.</li>
+        <li><strong>Social Data</strong> — Likes, follows, blocks, and messages you send or receive through Craft Setu's chat feature.</li>
+        <li><strong>Order Details (for sales)</strong> — If you buy or sell a craft, we collect the buyer's name, phone number, delivery address, and any note left for the seller, to fulfil a Pay-on-Delivery order.</li>
+        <li><strong>Usage Data</strong> — Pages visited, posts viewed, and general interactions used to keep the feed working smoothly.</li>
+        <li><strong>Device Information</strong> — Browser type and general technical details collected automatically for security purposes.</li>
+      </ul>
+    </div>
+
+    <div class="policy-section" id="how-we-use">
+      <span class="section-num">03</span>
+      <h2 class="section-title">How We <em>Use It</em></h2>
+      <p class="policy-text">Your data is used solely to run and improve Craft Setu. Specifically:</p>
+      <ul class="policy-list">
+        <li><strong>To provide the service</strong> — Authenticate your account, display your posts, and keep your feed up to date.</li>
+        <li><strong>To power community features</strong> — Show likes, followers, friends, and deliver chat messages between makers.</li>
+        <li><strong>To fulfil orders</strong> — Share your delivery details with the seller only when you place a Pay-on-Delivery order, so they can get your craft to you.</li>
+        <li><strong>To personalise your experience</strong> — Remember your profile, saved preferences, and past activity.</li>
+        <li><strong>To keep the platform safe</strong> — Detect abuse, enforce blocks, and protect makers from harassment.</li>
+      </ul>
+    </div>
+
+    <div class="policy-section" id="community-features">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Community <em>Features</em></h2>
+      <p class="policy-text">Craft Setu is built around sharing, so parts of your activity are visible to other makers by design:</p>
+      <ul class="policy-list">
+        <li><strong>Public posts</strong> — Craft photos, titles, descriptions, and tags you publish are visible to anyone using the app.</li>
+        <li><strong>Follows &amp; likes</strong> — Following another maker and liking posts is visible to that maker.</li>
+        <li><strong>Blocking</strong> — If you block someone, their posts are hidden from your feed and they can no longer message or follow you.</li>
+        <li><strong>Direct messages</strong> — Chat messages are only visible to you and the person you're messaging.</li>
+      </ul>
+      <div class="highlight-box">
+        <div class="highlight-icon">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2 L16 6 L16 12 L9 16 L2 12 L2 6 Z" stroke="#c39a4d" stroke-width="1.2"/><path d="M6 9 L8 11 L12 7" stroke="#c39a4d" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="highlight-text"><strong>Your buyer details stay private.</strong> Delivery address, phone number, and order notes are only shared with the specific seller you're ordering from — never shown in the public feed.</div>
+      </div>
+    </div>
+
+    <div class="policy-section" id="storage">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Data <em>Storage</em></h2>
+      <p class="policy-text">Craft Setu is built on <strong>Appwrite</strong>, which provides:</p>
+      <ul class="policy-list">
+        <li><strong>Appwrite Authentication</strong> — Securely manages your login session.</li>
+        <li><strong>Appwrite Storage</strong> — Your craft photos are stored in a managed storage bucket, accessible for viewing within the app.</li>
+        <li><strong>Appwrite Databases</strong> — Your posts, likes, follows, blocks, messages, and orders are stored in structured collections with access rules per collection.</li>
+      </ul>
+      <p class="policy-text">Appwrite may process and store data on servers outside India as part of its cloud infrastructure. We retain your data for as long as your account is active. If you'd like your account and associated data deleted, contact us using the details in Section 11.</p>
+    </div>
+
+    <div class="policy-section" id="sharing">
+      <span class="section-num">06</span>
+      <h2 class="section-title">Sharing &amp; <em>Third Parties</em></h2>
+      <p class="policy-text"><strong>We do not sell your personal data.</strong> We do not share your information with advertisers or data brokers. We share data only in these limited circumstances:</p>
+      <ul class="policy-list">
+        <li><strong>Service Providers</strong> — Appwrite (authentication, database, and file storage) processes data on our behalf to run the app.</li>
+        <li><strong>Between Makers</strong> — Order details are shared with the relevant seller only when you place an order; chat messages are shared only with the person you're messaging.</li>
+        <li><strong>Legal Requirements</strong> — If required by law or a valid government request, we may disclose information as required under applicable Indian law.</li>
+        <li><strong>Protection of Rights</strong> — To prevent fraud, abuse, or harm to users or the platform.</li>
+      </ul>
+    </div>
+
+    <div class="policy-section" id="cookies">
+      <span class="section-num">07</span>
+      <h2 class="section-title">Cookies</h2>
+      <p class="policy-text">Craft Setu uses a minimal set of cookies and browser storage mechanisms necessary to operate the app.</p>
+      <ul class="policy-list">
+        <li><strong>Authentication Session</strong> — Used to keep you signed in between visits. Essential for the app to function.</li>
+        <li><strong>Local Preferences</strong> — Small bits of UI state (like your last-viewed tab) may be cached locally in your browser.</li>
+      </ul>
+      <p class="policy-text">We do not use advertising cookies, tracking pixels, or third-party analytics cookies.</p>
+    </div>
+
+    <div class="policy-section" id="your-rights">
+      <span class="section-num">08</span>
+      <h2 class="section-title">Your <em>Rights</em></h2>
+      <p class="policy-text">You have the following rights with respect to your personal data:</p>
+      <ul class="policy-list">
+        <li><strong>Access</strong> — Request a copy of the personal data we hold about you.</li>
+        <li><strong>Correction</strong> — Request correction of inaccurate or incomplete data.</li>
+        <li><strong>Deletion</strong> — Request deletion of your account, posts, and associated data at any time.</li>
+        <li><strong>Withdrawal of Consent</strong> — Stop using the app at any time. Deleting your account withdraws all consent.</li>
+        <li><strong>Objection</strong> — Object to any processing of your data that you believe is not justified.</li>
+      </ul>
+      <p class="policy-text">To exercise any of these rights, contact us using the details in Section 11.</p>
+    </div>
+
+    <div class="policy-section" id="children">
+      <span class="section-num">09</span>
+      <h2 class="section-title">Children's <em>Privacy</em></h2>
+      <p class="policy-text">Craft Setu is not directed at children under the age of <strong>13</strong>. We do not knowingly collect personal information from children. If you believe a child has provided us with personal information, please contact us and we will delete it.</p>
+      <p class="policy-text">Users between the ages of 13 and 18 should use the service with the knowledge and consent of a parent or guardian.</p>
+    </div>
+
+    <div class="policy-section" id="changes">
+      <span class="section-num">10</span>
+      <h2 class="section-title">Policy <em>Changes</em></h2>
+      <p class="policy-text">We may update this Privacy Policy from time to time. When we make significant changes, we will:</p>
+      <ul class="policy-list">
+        <li>Update the "Last Updated" date at the top of this page</li>
+        <li>Notify registered users where practical for material changes</li>
+      </ul>
+      <p class="policy-text">Your continued use of Craft Setu after any changes constitutes acceptance of the updated policy.</p>
+    </div>
+
+    <div class="policy-section" id="contact">
+      <span class="section-num">11</span>
+      <h2 class="section-title">Contact <em>Us</em></h2>
+      <p class="policy-text">If you have questions, concerns, or requests regarding this Privacy Policy or your personal data, please reach out to our team:</p>
+
+      <div class="contact-card">
+        <div class="contact-card-name">Sandhya</div>
+        <div class="contact-card-role">CTO — Data &amp; Technical Privacy</div>
+        <div class="contact-card-links">
+          <a class="contact-card-link" href="mailto:hello@craftsetu.app">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="8" rx="1" stroke="#c39a4d" stroke-width="1"/><path d="M1 4.5 L7 8 L13 4.5" stroke="#c39a4d" stroke-width="1" stroke-linecap="round"/></svg>
+            hello@craftsetu.app
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-card" style="margin-top:.75rem">
+        <div class="contact-card-name">Vanshika Tanwar</div>
+        <div class="contact-card-role">CEO — General Enquiries</div>
+        <div class="contact-card-links">
+          <a class="contact-card-link" href="mailto:team@craftsetu.app">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="8" rx="1" stroke="#c39a4d" stroke-width="1"/><path d="M1 4.5 L7 8 L13 4.5" stroke="#c39a4d" stroke-width="1" stroke-linecap="round"/></svg>
+            team@craftsetu.app
+          </a>
+        </div>
+      </div>
+
+      <p class="policy-text" style="margin-top:1.25rem">We aim to respond to all privacy-related enquiries within <strong>48 hours</strong>.</p>
+    </div>
+
+  </article>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <span>© 2026 Craft Setu. All rights reserved.</span>
+    <span><em>Create. Learn. Inspire.</em></span>
+  </div>
+</footer>
+
+<script>
+  const burger = document.getElementById('burgerBtn');
+  const navLinks = document.getElementById('navLinks');
+  burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => navLinks.classList.remove('open'));
+  });
+
+  const sections = document.querySelectorAll('.policy-section');
+  const tocLinks = document.querySelectorAll('.toc-list a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        tocLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.toc-list a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
